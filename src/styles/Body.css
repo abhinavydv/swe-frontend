@@ -1,0 +1,114 @@
+.trending {
+    margin-top: 10%;
+    margin-left: 10.4%;
+    margin-right: 10%;
+}
+
+#heading {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
+    font-size: 2.2rem;
+    margin-bottom: 0;
+}
+
+#subHeading {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    margin-left: 3px;
+}
+
+.row {
+    margin-left: 10.4%;
+    margin-right: 10%;
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    height: 400px;
+}
+
+.card-l {
+    background-color: white;
+    width: 49%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.card-m {
+    background-color: white;
+    width: 32%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.mumbai {
+    background-image: url('../assets/mumbai.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.delhi {
+    background-image: url('../assets/delhi.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.hyderabad {
+    background-image: url('../assets/hyderabad.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.mysore {
+    background-image: url('../assets/mysore.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.goa {
+    background-image: url('../assets/goa.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.varanasi {
+    background-image: url('../assets/varanasi.jpeg');
+    background-size: cover;
+    background-position: center;
+
+}
+
+.spacer {
+    height: 80%;
+}
+
+.cardName {
+    width: 100%;
+    height: 15%;
+    background-image: linear-gradient(0deg,rgba(41, 41, 41, 0.9 ),rgba(113, 113, 113, 0.3),rgba(255,255,255,0.05));
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.cardNameContainer {
+    width: fit-content;
+    margin-left: 17px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+}
+
+h3,
+p {
+    width: fit-content;
+}
+
+h3 {
+    margin-bottom: 0;
+}
+
+p {
+    margin-top: 0;
+}
