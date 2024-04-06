@@ -1,5 +1,5 @@
 #bar {
-    background-color: rgba(208, 208, 208, 0.855);
+    background-color: rgba(208, 208, 208, 1);
     width: 67%;
     height: 60px;
     border-radius: 8px;
@@ -13,21 +13,6 @@
     font-optical-sizing: auto;
     font-style: normal;
     font-size: 0.9rem;
-}
-
-#search {
-    background-color: rgb(11, 133, 247);
-    width: 15%;
-    height: 80%;
-    border-radius: 8px;
-    color: white;
-    border: 2px solid transparent;
-}
-
-#search:hover {
-    background-color: white;
-    color: rgb(11, 133, 247);
-    transition: 0.3s;
 }
 
 #searchDiv {
@@ -55,6 +40,10 @@
     display: flex;
     align-items: center;
     font-weight: 400;
+}
+
+#searchIcon {
+    height: 20px;
 }
 
 #location {
