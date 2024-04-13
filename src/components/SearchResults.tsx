@@ -5,7 +5,7 @@ interface Props {
     searchBar: boolean;
 }
 
-const SerachResults: React.FC<Props> = ({ searchBar }) => {
+const SearchResults: React.FC<Props> = ({ searchBar }) => {
     return (
         <div>
             <Navbar searchBar={searchBar} />
@@ -14,4 +14,4 @@ const SerachResults: React.FC<Props> = ({ searchBar }) => {
     );
 }
 
-export default SerachResults;
+export default SearchResults;

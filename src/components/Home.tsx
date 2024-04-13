@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import Body from "./Body";
 import Navbar from "./Navbar";
 
@@ -9,7 +10,9 @@ const Home: React.FC<Props> = ({ searchBar }) => {
     return (
         <div>
             <Navbar searchBar={searchBar} />
-            <Body />
+            <Box>
+                <Body />
+            </Box>
         </div>
     )
 }

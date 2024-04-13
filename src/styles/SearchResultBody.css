@@ -1,5 +1,5 @@
 .page {
-    margin: 5% 10.1% 0;
+    margin: 5% 15% 0;
 }
 
 .heading {
@@ -12,10 +12,14 @@
 #results {
     margin-top: 2%;
     display: flex;
-    justify-content: space-between;
 }
 
 #filters {
     height: 100px;
     width: 31%;
+}
+
+#hotels {
+    padding: 20px;
+    width: 100%;
 }

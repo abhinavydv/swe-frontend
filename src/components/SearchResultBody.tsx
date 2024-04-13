@@ -1,4 +1,5 @@
 import '../styles/SearchResultBody.css';
+import HotelCard from './HotelCard';
 
 const SearchResultBody = () => {
     return (
@@ -11,7 +12,7 @@ const SearchResultBody = () => {
                 </div>
                 {/* hotels should be scrollable */}
                 <div id='hotels'>
-
+                    <HotelCard />
                 </div>
                 {/* TODO: filters and hotels should be scrollable independently */}
             </div>
