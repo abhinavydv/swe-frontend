@@ -2,7 +2,7 @@ import { Button, IconButton, Paper, Tooltip } from '@mui/material';
 import SampleHotel from '../assets/sampleHotel.jpeg';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import '../styles/HotelCard.css';
-import { BeachAccess, ChevronRight, FreeBreakfast, LocalParking, LocalTaxi, SportsVolleyball, Tv, Wifi } from '@mui/icons-material';
+import { BeachAccess, ChevronRight, FreeBreakfast, LocalParking, LocalTaxi, SportsVolleyball, Wifi } from '@mui/icons-material';
 
 const HotelCard = () => {
     const amenities = [<Wifi />, <BeachAccess />, <LocalParking />, <SportsVolleyball />, <FreeBreakfast />, <LocalTaxi />]
