@@ -1,4 +1,4 @@
-import { IconButton, Paper } from '@mui/material';
+import { Button, IconButton, Paper } from '@mui/material';
 import SampleHotel from '../assets/sampleHotel.jpeg';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import '../styles/HotelCard.css';
@@ -28,7 +28,7 @@ const HotelCard = () => {
                     <div className='amenitiesCard'>
                         <div className='vbar'></div>
                         <div className='amenities'>
-                            <p className='amenitiesHeading'>Amenities</p>
+                            <div className='amenitiesHeading'>Amenities</div>
                             <div className='amenitiesRow'>
 
                             </div>
@@ -38,19 +38,43 @@ const HotelCard = () => {
                         </div>
                     </div>
                 </div>
-                <div className='right'>
-                    <div className='rightTop'>
+            <div className='right'>
+                <div className='rightTop'>
+                    <div className='rightTopSpacer'></div>
+                    <div className='rightTopRating'>
+                        9.0
+                    </div>
+                </div>
+                <div className='rightTop'>
+                    <div className='rightTopSpacer'></div>
+                    <div className='review'>
+                        Excellent reviews
+                    </div>
+                </div>
+                <div className='rightVerticalSpacer'></div>
+                <div className='rightPriceSection'>
+                    <div className='totalPrice'>
                         <div className='rightTopSpacer'></div>
-                        <div className='rightTopRating'>
-                            9.0
+                        <div className='price'>
+                            ₹ 18,000
                         </div>
                     </div>
-                    <div>
-                        
+                    <div className='rateSection'>
+                        <div className='rightTopSpacer'></div>
+                        <div className='rate'>
+                            ₹ 3,000/night
+                        </div>
                     </div>
+                </div>
+                <div className='rightBottom'>
+                    <div className='rightTopSpacer'></div>
+                    <Button variant='contained' className='bookButton'>
+                        Book Now
+                    </Button>
                 </div>
             </div>
-        </Paper>
+        </div>
+    </Paper>
     );
 }
 
