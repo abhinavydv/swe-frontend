@@ -1,18 +1,16 @@
-import { Box } from "@mui/material";
 import Body from "./Body";
 import Navbar from "./Navbar";
 
 interface Props {
     searchBar: boolean;
+    isLoggedIn: boolean;
 }
 
-const Home: React.FC<Props> = ({ searchBar }) => {
+const Home: React.FC<Props> = ({ searchBar, isLoggedIn }) => {
     return (
         <div>
-            <Navbar searchBar={searchBar} />
-            <Box>
-                <Body />
-            </Box>
+            <Navbar searchBar={searchBar} isLoggedIn={isLoggedIn} />
+            <Body />
         </div>
     )
 }

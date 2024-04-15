@@ -5,12 +5,13 @@ import Bottomsection from "./Bottomsection";
 
 interface Props {
     searchBar: boolean;
+    isLoggedIn: boolean;
 }
 
-const Navbar: React.FC<Props> = ({ searchBar }) => {
+const Navbar: React.FC<Props> = ({ searchBar, isLoggedIn }) => {
     return (
         <div className='backGradient'>
-            <Topsection />
+            <Topsection isLoggedIn={isLoggedIn} />
             <Middlesection />
             <Bottomsection searchBar={searchBar} />
         </div>

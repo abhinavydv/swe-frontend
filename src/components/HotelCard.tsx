@@ -76,7 +76,10 @@ const HotelCard = () => {
                     </div>
                     <div className='rightBottom'>
                         <div className='rightTopSpacer'></div>
-                        <Button variant='contained' endIcon={<ChevronRight />}>
+                        <Button variant='contained' endIcon={<ChevronRight />} sx={{
+                            textTransform: 'none',
+                            whiteSpace: 'nowrap',
+                        }}>
                             Book Now
                         </Button>
                     </div>

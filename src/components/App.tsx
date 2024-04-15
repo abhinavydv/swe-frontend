@@ -7,7 +7,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Home searchBar={true} />}/>
+        <Route path='/' element={<Home searchBar={true} isLoggedIn={true} />}/>
         <Route path='/search' element={<SearchResults searchBar={true} />}/>
       </Routes>
     </Router>

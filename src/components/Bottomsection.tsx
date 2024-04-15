@@ -1,7 +1,8 @@
 import '../styles/Bottomsection.css';
-import Placeholder from '../assets/placeholder.png';
-import Calendar from '../assets/calendar.png';
-import { Button, TextField } from '@mui/material';
+import { Autocomplete, Button, TextField } from '@mui/material';
+import { DateRangePicker } from 'rsuite';
+import "rsuite/dist/rsuite.css";
+import 'vue-hotel-datepicker/dist/vueHotelDatepicker.css';
 import Search from '../assets/search.png'
 import * as React from 'react';
 
@@ -12,21 +13,28 @@ interface Props {
 const Bottomsection: React.FC<Props> = ({ searchBar }) => {
     return (
         <div id='bottomContainer'>
-            {/* TODO: Conditional rendering on bar to be done */}
             {searchBar ? (
                 <div id='bar'>
                     <div id='location'>
-                        <img src={Placeholder} id='pin'/>
-                        <TextField
-                            placeholder='Where do you want to go?'
-                            variant='standard'
-                            fullWidth
-                            sx={{mr: '10px'}}
+                        <Autocomplete
+                            freeSolo
+                            renderInput={(params) => <TextField {...params} label="Where do you want to go?" />}
+                            options={['Option 1', 'Option 2']}
+                            sx={{
+                                width: '100%',
+                                "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                    border: "none",
+                                },
+                            }}
                         />
                     </div>
                     <div id='dates'>
-                        <img src={Calendar} id='calendar'/>
-                        {/* TODO: Date Range picker not decided yet */}
+                        <DateRangePicker 
+                            placeholder='Check-in - Check-out'
+                            size='lg'
+                            appearance='subtle'
+                            format="dd.MM.yyyy"
+                        />
                     </div>
                     <div id='search'>
                         <Button
