@@ -1,0 +1,186 @@
+
+@keyframes gradient-animation {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
+
+* {
+    box-sizing: border-box;
+} 
+.login-container {
+  max-width: 500px;
+  margin: 8% auto;
+  background-color: white; 
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
+
+}
+
+.login-title {
+    background-image: linear-gradient(-150deg,#0d5bed,#8f58f4,rgb(255, 200, 0)); /* Initial gradient */
+    animation: gradient-animation 7s ease infinite alternate;
+    background-size: 200% 200%;
+    padding-top:10px ;
+    height: 120px;
+    text-align: center;
+    color: white;
+    font-family: "Roboto Condensed",sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal ;
+    margin-bottom: 40px;
+}
+
+.login-to {
+    font-size:2rem;
+    font-weight: 400;
+}
+
+.login-body{
+    padding-right:50px;
+    padding-left:50px;
+}
+.login-name{
+  text-align: center;
+  color: darkgray;
+  font-size:1.3rem;
+  font-family: "Roboto Condensed",sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal ;
+  margin-bottom: 1rem;
+}
+
+
+  /* Form styles */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+
+.login-switch{
+  text-align: center;
+  color: black;
+  font-size:1rem;
+  font-family: "Roboto Condensed",sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal ;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  text-decoration: underline;
+  padding-bottom: 1rem;
+}
+
+
+
+.register-container{
+    max-width: 700px;
+    margin: 6% auto;
+    background-color: white; 
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
+  
+}
+.register-title{
+    background-image: linear-gradient(-150deg,#0d5bed,#8f58f4,rgb(255, 200, 0)); /* Initial gradient */
+    animation: gradient-animation 7s ease infinite alternate;
+    background-size: 200% 200%;
+    padding-top:10px ;
+    height: 150px;
+    text-align: center;
+    color: white;
+    font-family: "Roboto Condensed",sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal ;
+    margin-bottom: 40px;
+}
+.register-to{
+    font-size:2rem;
+    font-weight: 400;
+}
+.brand{
+    font-size:3rem;
+    font-weight: 300;
+}
+.register-body{
+    padding-right:50px;
+    padding-left:50px;
+}
+.register-name{
+    text-align: center;
+    color: darkgray;
+    font-size:1.3rem;
+    font-family: "Roboto Condensed",sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal ;
+    margin-bottom: 1rem;
+}
+.register-form{
+
+    display: flex;
+    flex-direction: column;
+}
+.input-group{
+    font-size:1rem;
+    font-family: "Roboto Condensed",sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal ;
+    color:black;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.name {
+    width: 11rem;
+}
+
+
+.register-switch{
+    text-align: center;
+    color: black;
+    font-size:1rem;
+    font-family: "Roboto Condensed",sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal ;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+    text-decoration: underline;
+    
+}
+
+
+
+input[type="text"]:focus,
+  input[type="password"]:focus {
+    border-color: #1c39bb; /* Blue border color on focus */
+    outline: none;
+  }
+  
+  button[type="submit"] {
+    height: 3rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #1c39bb ; /* Blue button color */
+    color: #fff; /* White button text color */
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover{
+    background-color: white;
+    border: 2px #1c39bb solid;
+    color: #1c39bb;
+  }
+
+  

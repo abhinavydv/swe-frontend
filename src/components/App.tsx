@@ -1,8 +1,10 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Home from './Home'
 import SearchResults from './SearchResults'
-import Login from './Login'
-import Register from './Register'
+import LoginCustomer from './LoginCustomer'
+import RegisterCustomer from './RegisterCustomer'
+import LoginPartner from './LoginPartner'
+import RegisterPartner from './RegisterPartner'
 
 import { createContext, useState } from 'react'
 import HotelPage from './HotelPage';
@@ -26,16 +28,14 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />}/>
           <Route path='/search' element={<SearchResults />}/>
-<<<<<<< Updated upstream
-        <Route path='/login' element={<Login  />}/>
-        <Route path='/register' element={<Register  />}/>
-      </Routes>
-    </Router>
-=======
+          <Route path='partner-login' element={<LoginPartner />} />
+          <Route path='partner-register' element={<RegisterPartner />}/>
+          <Route path='customer-login' element={<LoginCustomer />}/>
+          <Route path='customer-register' element={<RegisterCustomer />}/>
           <Route path='hotel-page' element={<HotelPage />} />
         </Routes>
       </Router>
->>>>>>> Stashed changes
+
     </AppContext.Provider>
   )
 }
