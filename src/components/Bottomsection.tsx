@@ -5,10 +5,10 @@ import "rsuite/dist/rsuite.css";
 import 'vue-hotel-datepicker/dist/vueHotelDatepicker.css';
 import Search from '../assets/search.png'
 import { useContext } from 'react';
-import { AppContext } from './App';
+import { AppContext, AppContextInterface } from './App';
 
 const Bottomsection = () => {
-    const searchBar = useContext(AppContext)
+    const { searchBar } = useContext(AppContext) as AppContextInterface;
 
     return (
         <div id='bottomContainer'>

@@ -3,9 +3,15 @@ import SampleHotel from '../assets/sampleHotel.jpeg';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import '../styles/HotelCard.css';
 import { BeachAccess, ChevronRight, FreeBreakfast, LocalParking, LocalTaxi, SportsVolleyball, Wifi } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const HotelCard = () => {
+    const navigate = useNavigate();
     const amenities = [<Wifi />, <BeachAccess />, <LocalParking />, <SportsVolleyball />, <FreeBreakfast />, <LocalTaxi />]
+
+    const handleButtonClick = () => {
+        navigate('/hotel-page')
+    }
 
     return (
         <Paper elevation={2} sx={{
@@ -76,7 +82,7 @@ const HotelCard = () => {
                     </div>
                     <div className='rightBottom'>
                         <div className='rightTopSpacer'></div>
-                        <Button variant='contained' endIcon={<ChevronRight />} sx={{
+                        <Button variant='contained' endIcon={<ChevronRight />} onClick={handleButtonClick} sx={{
                             textTransform: 'none',
                             whiteSpace: 'nowrap',
                         }}>
