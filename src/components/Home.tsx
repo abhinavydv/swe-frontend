@@ -1,15 +1,10 @@
 import Body from "./Body";
 import Navbar from "./Navbar";
 
-interface Props {
-    searchBar: boolean;
-    isLoggedIn: boolean;
-}
-
-const Home: React.FC<Props> = ({ searchBar, isLoggedIn }) => {
+const Home = () => {
     return (
         <div>
-            <Navbar searchBar={searchBar} isLoggedIn={isLoggedIn} />
+            <Navbar />
             <Body />
         </div>
     )

@@ -1,17 +1,13 @@
 import Navbar from "./Navbar";
 import SearchResultBody from "./SearchResultBody";
 
-interface Props {
-    searchBar: boolean;
-}
-
-const SearchResults: React.FC<Props> = ({ searchBar }) => {
+const SearchResults = () => {
     return (
         <div>
-            <Navbar searchBar={searchBar} />
+            <Navbar />
             <SearchResultBody />
         </div>
-    );
+    )
 }
 
 export default SearchResults;

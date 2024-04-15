@@ -4,13 +4,12 @@ import { DateRangePicker } from 'rsuite';
 import "rsuite/dist/rsuite.css";
 import 'vue-hotel-datepicker/dist/vueHotelDatepicker.css';
 import Search from '../assets/search.png'
-import * as React from 'react';
+import { useContext } from 'react';
+import { AppContext } from './App';
 
-interface Props {
-    searchBar: boolean;
-}
+const Bottomsection = () => {
+    const searchBar = useContext(AppContext)
 
-const Bottomsection: React.FC<Props> = ({ searchBar }) => {
     return (
         <div id='bottomContainer'>
             {searchBar ? (

@@ -1,10 +1,11 @@
 import { Person, } from "@mui/icons-material";
 import { Button, Tooltip } from "@mui/material";
-interface Props {
-    isLoggedIn: boolean;
-}
+import { useContext } from "react";
+import { AppContext } from "./App";
 
-const Topsection: React.FC<Props> = ({ isLoggedIn }) => {
+const Topsection = () => {
+    const isLoggedIn = useContext(AppContext);
+
     return (
         <div className='topSection'>
             <div id='topContainer'>
