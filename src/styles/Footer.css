@@ -1,0 +1,11 @@
+.footer-link {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  color: white;
+  font-size: medium;
+}
+
+.footer-link :hover {
+    color: white;
+}

@@ -5,6 +5,7 @@ import LoginCustomer from './LoginCustomer'
 import RegisterCustomer from './RegisterCustomer'
 import LoginPartner from './LoginPartner'
 import RegisterPartner from './RegisterPartner'
+import { Footer } from './Footer'
 
 import { createContext, useState } from 'react'
 import HotelPage from './HotelPage';
@@ -34,8 +35,8 @@ function App() {
           <Route path='/customer/register' element={<RegisterCustomer />}/>
           <Route path='/hotel-page' element={<HotelPage />} />
         </Routes>
+        <Footer />
       </Router>
-
     </AppContext.Provider>
   )
 }
