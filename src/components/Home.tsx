@@ -10,6 +10,10 @@ const Home = () => {
         setSearchBar(true);
     },[])
 
+    if (window){
+        console.log(window.location)
+    }
+
     return (
         <div>
             <Navbar />

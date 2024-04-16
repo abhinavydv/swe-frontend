@@ -66,7 +66,7 @@ const RegisterCustomer = () => {
                 </form>
 
 
-                    <Link to={'/partner-register'}><div className='register-switch'>Are you a partner?</div></Link>
+                    <Link to={'/partner/register'}><div className='register-switch'>Are you a partner?</div></Link>
 
             </div>
 

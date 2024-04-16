@@ -32,7 +32,7 @@ const LoginCustomer= () => {
                 </form>
 
 
-                    <Link to={'/partner-login'}><div className='login-switch'>Are you a partner?</div></Link>
+                    <Link to={'/partner/login'}><div className='login-switch'>Are you a partner?</div></Link>
 
             </div>
 
