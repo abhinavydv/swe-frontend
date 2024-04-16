@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { AppContext } from "./App";
+
 function Middlesection()  {
+    const { user } = useContext(AppContext);
+
     return (
         <div className='middleSection'>
             <div id='middleContainer'>
@@ -6,7 +11,7 @@ function Middlesection()  {
                     WANDERLUST.COM
                 </div>
                 <div className='motto'>
-                    Where to next?
+                    {user?.role == "customer" ? "Where to next?" : "List your property now!"}
                 </div>
             </div>
         </div>

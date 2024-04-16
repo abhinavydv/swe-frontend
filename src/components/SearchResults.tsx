@@ -9,7 +9,7 @@ const SearchResults = () => {
     useEffect(() => {
         setSearchBar(true);
     },[])
-    
+
     return (
         <div>
             <Navbar />

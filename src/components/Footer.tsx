@@ -86,7 +86,7 @@ export const Footer = () => {
                                         color: "white",
                                     }}
                                 >
-                                    test@example.com
+                                    wanderlust@iith-ac.in
                                 </Typography>
                             </Box>
                         </Box>
