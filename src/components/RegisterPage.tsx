@@ -13,7 +13,7 @@ import { Button } from 'rsuite';
 
 
 
-const Register = (role:any) => {
+const Register = ({role}:any) => {
 
     const [firstName,setFirstName] = useState('');
     const [middleName,setMiddleName] = useState('');
@@ -137,7 +137,7 @@ const Register = (role:any) => {
             console.log("Error")
         }
     }
-
+    console.log(role)
     return (
         <div className='register-container' >
             <div className='register-title'>
@@ -150,7 +150,8 @@ const Register = (role:any) => {
             </div>
             <div className="register-body">
                 <div className='register-name'>
-                {role == "partner" && "Partner Registration" || "Customer Registration"}
+
+                {role == "partner" && "Partner Login" || "Customer Login"}
                 </div>
                 <FormControl className='register-form'>
                 
