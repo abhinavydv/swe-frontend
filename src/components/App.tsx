@@ -7,10 +7,6 @@ import LoginPartner from './LoginPartner'
 import RegisterPartner from './RegisterPartner'
 import { createContext, useState } from 'react'
 import HotelPage from './HotelPage';
-import { PartnerHome } from './partner/PartnerHome'
-import { Box } from '@mui/material'
-import { DateRange } from 'rsuite/esm/DateRangePicker'
-
 
 interface UserDataInterface {
   isLoggedIn: boolean;

@@ -1,4 +1,4 @@
-import { Box, Typography, createTheme } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import "../styles/Navbar.css"
 import "../styles/Footer.css"
 import { Link } from "react-router-dom"

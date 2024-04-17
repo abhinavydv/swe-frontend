@@ -3,8 +3,6 @@ import SampleImage from '../assets/sampleHotel.jpeg';
 import { RoomCard } from './RoomCard';
 import { RoomAmenities } from './RoomAmenities';
 import { DateRangePicker } from 'rsuite';
-import { useContext } from 'react';
-import { AppContext, AppContextInterface } from './App';
 import { Button } from '@mui/material';
 import { ChevronRight } from '@mui/icons-material';
 
