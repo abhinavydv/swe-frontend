@@ -17,7 +17,7 @@ const Bottomsection = () => {
                     <div id='location'>
                         <Autocomplete
                             freeSolo
-                            renderInput={(params) => <TextField {...params} label="Where do you want to go?" />}
+                            renderInput={(params) => <TextField {...params} placeholder="Where do you want to go?" />}
                             options={['Option 1', 'Option 2']}
                             sx={{
                                 width: '100%',

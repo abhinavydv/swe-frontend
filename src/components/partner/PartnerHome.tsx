@@ -1,6 +1,5 @@
 import { Box } from "@mui/material"
 import Navbar from "../Navbar";
-import Listing from "./Listing";
 
 export const PartnerHome = () =>  {
 

@@ -5,6 +5,7 @@ import LoginCustomer from './LoginCustomer'
 import RegisterCustomer from './RegisterCustomer'
 import LoginPartner from './LoginPartner'
 import RegisterPartner from './RegisterPartner'
+import ProfilePage from './ProfilePage'
 import { Footer } from './Footer'
 
 import { createContext, useState } from 'react'
@@ -46,6 +47,7 @@ function App() {
             <Route path='/customer/login' element={<LoginCustomer />}/>
             <Route path='/customer/register' element={<RegisterCustomer />}/>
             <Route path='/hotel-page' element={<HotelPage />} />
+            <Route path='/profile' element={<ProfilePage />} />
           </Routes>
           <Box sx={{marginTop: "auto"}}>
             <Footer/>
