@@ -1,0 +1,108 @@
+.roomType,
+.roomCardContent,
+.feature {
+    font-family: "Hind", sans-serif;
+}
+
+.roomType {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: black;   
+    display: flex;
+    margin-bottom: 0.3rem;
+}
+
+.bedIcon {
+    width: 2rem;
+    height: 1.5rem;
+    margin: 0 0.5rem;
+}
+
+.roomCardContent {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.features {
+    padding: 0.5rem 0.1rem;
+}
+
+.green-tick {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.feature {
+    font-weight: 900;
+    font-size: 0.9rem;
+    color: rgb(76, 151, 0);
+}
+
+.red-cross {
+    width: 0.7rem;
+    height: 0.7rem;
+    margin: 0.2rem 0.5rem 0 0.35rem;
+}
+
+.bad {
+    display: flex;
+    align-items: center;
+}
+
+.bad .feature {
+    margin-top: 0.2rem;
+    font-weight: 400;
+    color: red;
+    align-items: flex-end;
+}
+
+.cross-spacer {
+    width: 0.77rem;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+}
+
+.right-spacer {
+    flex-grow: 1;
+}
+
+.right-total-price {
+    display: flex;
+    flex-direction: row;
+}
+
+.price-spacer {
+    flex-grow: 1;
+}
+
+.price {
+    font-family: "Hind", sans-serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+
+.rate {
+    font-family: "Hind", sans-serif;
+    font-weight: 500;
+    font-size: 0.7rem;
+    color: rgba(100, 100, 100, 0.8);
+}
+
+.add-remove {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.max-room-warning {
+    display: flex;
+    margin-top: 0.5rem;
+    font-family: "Hind", sans-serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    color: rgba(222, 2, 2, 0.8);
+}

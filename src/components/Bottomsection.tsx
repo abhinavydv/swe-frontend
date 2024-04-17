@@ -33,6 +33,7 @@ const Bottomsection = () => {
                             size='lg'
                             appearance='subtle'
                             format="dd.MM.yyyy"
+                            onChange={(value) => console.log(value?.[0])}
                         />
                     </div>
                     <div id='search'>

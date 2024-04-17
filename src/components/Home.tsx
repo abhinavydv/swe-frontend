@@ -1,5 +1,6 @@
 import Body from "./Body";
 import Navbar from "./Navbar";
+import { Footer } from "./Footer";
 import { AppContext, AppContextInterface } from "./App";
 import { useContext, useEffect } from "react";
 
@@ -18,6 +19,7 @@ const Home = () => {
         <div>
             <Navbar />
             <Body />
+            <Footer />
         </div>
     )
 }

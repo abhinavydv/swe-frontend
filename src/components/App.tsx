@@ -5,13 +5,11 @@ import LoginCustomer from './LoginCustomer'
 import RegisterCustomer from './RegisterCustomer'
 import LoginPartner from './LoginPartner'
 import RegisterPartner from './RegisterPartner'
-import ProfilePage from './ProfilePage'
-import { Footer } from './Footer'
-
 import { createContext, useState } from 'react'
 import HotelPage from './HotelPage';
 import { PartnerHome } from './partner/PartnerHome'
 import { Box } from '@mui/material'
+import { DateRange } from 'rsuite/esm/DateRangePicker'
 
 
 interface UserDataInterface {
@@ -24,8 +22,10 @@ interface UserDataInterface {
 export interface AppContextInterface {
   user: UserDataInterface;
   searchBar: boolean;
+  dateRangeValue: [Date, Date],
   setUser: (user: UserDataInterface) => void;
   setSearchBar: (searchBar: boolean) => void;
+  setDateRangeValue: (startDate: [Date, Date]) => void;
 }
 
 export const AppContext = createContext<Partial<AppContextInterface>>({});
@@ -33,27 +33,22 @@ export const AppContext = createContext<Partial<AppContextInterface>>({});
 function App() {
   const [user, setUser] = useState<UserDataInterface>({isLoggedIn: true, name: "Abhinav", email: "ab@iith-ac.in", role: "partner"});
   const [searchBar, setSearchBar] = useState<boolean>(false);
+  const [dateRangeValue, setDateRangeValue] = useState<[Date, Date]>();
 
   return (
-    <AppContext.Provider value={{ user, searchBar, setUser, setSearchBar }} >
-      <Box minHeight="100vh" sx={{display: "flex", flexDirection: "column"}}>
-        <Router>
-          <Routes>
-            <Route path='/' element={<Home />}/>
-            <Route path='/search' element={<SearchResults />}/>
-            <Route path='/partner' element={<PartnerHome />} />
-            <Route path='/partner/login' element={<LoginPartner />} />
-            <Route path='/partner/register' element={<RegisterPartner />}/>
-            <Route path='/customer/login' element={<LoginCustomer />}/>
-            <Route path='/customer/register' element={<RegisterCustomer />}/>
-            <Route path='/hotel-page' element={<HotelPage />} />
-            <Route path='/profile' element={<ProfilePage />} />
-          </Routes>
-          <Box sx={{marginTop: "auto"}}>
-            <Footer/>
-          </Box>
-        </Router>
-      </Box>
+    <AppContext.Provider value={{ user, searchBar, dateRangeValue, setUser, setSearchBar, setDateRangeValue, }} >
+      <Router>
+        <Routes>
+          <Route path='/' element={<Home />}/>
+          <Route path='/search' element={<SearchResults />}/>
+          <Route path='partner-login' element={<LoginPartner />} />
+          <Route path='partner-register' element={<RegisterPartner />}/>
+          <Route path='customer-login' element={<LoginCustomer />}/>
+          <Route path='customer-register' element={<RegisterCustomer />}/>
+          <Route path='hotel-page' element={<HotelPage />} />
+          <Route path='hotel-page' element={<HotelPage />} />
+        </Routes>
+      </Router>
     </AppContext.Provider>
   )
 }

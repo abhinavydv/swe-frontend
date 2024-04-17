@@ -2,7 +2,7 @@ import '../styles/Body.css';
 
 function Body() {
     return (
-        <div>
+        <div className='page'>
             <div className='trending'>
                 <h1 className='heading'>Trending Destinations</h1>
                 <h3 id='subHeading'>Popular choices of over a million Indians</h3>

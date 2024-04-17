@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material"
+import { Box, Typography, createTheme } from "@mui/material"
 import "../styles/Navbar.css"
 import "../styles/Footer.css"
 import { Link } from "react-router-dom"
@@ -28,15 +28,9 @@ export const Footer = () => {
                     </Grid>
                     <Grid item xs={4} sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                         <Box sx={{display: "flex", flexDirection: "column", width: "fit-content"}}>
-                            <Typography
-                                variant="h4"
-                                sx={{
-                                    color: "white",
-                                    fontWeight: "bold",
-                                }}
-                            >
-                                Wanderlust.com
-                            </Typography>
+                            <div className="footer-company">
+                                WANDERLUST.COM
+                            </div>
                             <Typography
                                 variant="h6"
                                 sx={{
