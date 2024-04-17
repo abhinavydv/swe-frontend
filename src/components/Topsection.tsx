@@ -61,7 +61,7 @@ const Topsection = () => {
                                 textTransform: 'none',
                                 letterSpacing: '0.06rem',
                             }}>
-                                View bookings
+                                Add hotel
                             </Button>
                             <div className='separator'></div>
                             <Button sx={{
