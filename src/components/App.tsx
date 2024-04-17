@@ -7,7 +7,9 @@ import LoginPartner from './LoginPartner'
 import RegisterPartner from './RegisterPartner'
 import { createContext, useState } from 'react'
 import HotelPage from './HotelPage';
+import axios from 'axios'
 
+axios.defaults.withCredentials = true
 interface UserDataInterface {
   isLoggedIn: boolean;
   name: string;
