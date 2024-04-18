@@ -33,7 +33,7 @@ const Register = ({role}:any) => {
     const [passwordError, setPasswordError] = useState(false);
     const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
-    const [status, setStatus] = useState(false);
+    const [_status, setStatus] = useState(false);
 
     const navigate = useNavigate();
 
