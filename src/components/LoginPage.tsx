@@ -1,14 +1,15 @@
 import {  Button, TextField } from '@mui/material';
 import '../styles/Login-Register.css'
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import axios from 'axios';
+import { AppContext, UserDataInterface } from './App';
 
 const Login= ({role}: any) => {
+    const { setUser } = useContext(AppContext);
     const [password, setPassword] = useState('');
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
-
 
     const [loginStatus, setLoginStatus] = useState('');
     const [_, setButtonStatus] = useState('');
@@ -31,58 +32,48 @@ const Login= ({role}: any) => {
         if (password === '')
             setPasswordError(true);
 
-
         if (username !== '' && password !== '') {
-
-
-            await axios.post('https://backend.iith-ac.in/login', {
-            role: role,
-            username: username,
-            password: password,
-            }, { withCredentials: true })
-            .then((response) => {
-
-                console.log(response);
-
-                console.log(response.data.message);
-
+            await axios.post(
+                '/users/login',
+                {
+                    // role: role,
+                    email: username,
+                    password: password,
+                }
+            ).then((response) => {
                 var result = JSON.stringify(response.data);
-
                 var json = JSON.parse(result);
 
-                console.log(json.message);
-
-                //setLoginStatus(json.data[0]);
-
-                if (json.message == 'Login Successful') {
-
-                
-
-                // setIsAuth(true);
-                // setSignedDetails(null);
-                // setJustSignedUp(false);
-                // setLoginStatus(json.message);
+                if (json.status == 'OK') {
                     setButtonStatus("Login");
+                    axios.get("/users/logged").then((res) => {
+                        if (res.data.status === "OK") {
+                            setUser && setUser({
+                                isLoggedIn: true,
+                                first_name: res.data.first_name,
+                                last_name: res.data.last_name,
+                                phone: res.data.phone,
+                                email: res.data.email,
+                                address: res.data.address,
+                                gender: res.data.gender,
+                                dob: res.data.dob,
+                                profile_picture: res.data.profile_picture,
+                                role: res.data.role,
+                            } as UserDataInterface);
+                        }
+                    }, (err) => {
+                        console.log("error", err);
+                    });
                     navigate('/');
-
                 }
-                else if (json.message == 'Incorrect Password') {
-
+                else {
                     setLoginStatus(json.message);
                     setPasswordError(true);
                     setButtonStatus("Try Again");
                 }
-                else {
-                    setLoginStatus(json.message);
-                    setUsernameError(true);
-                    setButtonStatus("Try Again");
-                    navigate('/login');
-
-                }
             });
         }
     }
-    
 
     return (
         <div className='login-container' >
@@ -126,7 +117,7 @@ const Login= ({role}: any) => {
                 </form>
 
 
-                    <Link to={'/customer-login'}><div className='login-switch'>Are you a {role == "partner"? "customer": "partner"}?</div></Link>
+                    <Link to={(role == "partner"? "/customer": "/partner")+'/login'}><div className='login-switch'>Are you a {role == "partner"? "customer": "partner"}?</div></Link>
 
             </div>
 

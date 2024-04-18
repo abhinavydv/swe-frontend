@@ -9,12 +9,13 @@ import ProfilePage from './common/ProfilePage'
 import { Footer } from './Footer'
 import { Box } from '@mui/material'
 import { PartnerHome } from './partner/PartnerHome'
-import { createContext, useState } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import HotelPage from './HotelPage';
 import axios from 'axios'
 
 
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL = "http://localhost:8000";
 
 export interface UserDataInterface {
     isLoggedIn: boolean;
@@ -33,6 +34,7 @@ export interface UserDataInterface {
 export interface AppContextInterface {
     user: UserDataInterface;
     searchBar: boolean;
+    mounted: boolean;
     setUser: (user: UserDataInterface) => void;
     setSearchBar: (searchBar: boolean) => void;
 }
@@ -41,7 +43,7 @@ export const AppContext = createContext<Partial<AppContextInterface>>({});
 
 function App() {
     const [user, setUser] = useState<UserDataInterface>({
-        isLoggedIn: true,
+        isLoggedIn: false,
         first_name: "Abhinav",
         last_name: "Yadav",
         phone: "1234567890",
@@ -54,9 +56,32 @@ function App() {
         role: "partner",
     });
     const [searchBar, setSearchBar] = useState<boolean>(false);
+    const [mounted, setMounted] = useState<boolean>(false);
+
+    useEffect(() => {
+        axios.get("/users/logged").then((res) => {
+            console.log("data", res.data);
+            if (res.data.status === "OK")
+                setUser({
+                    isLoggedIn: true,
+                    first_name: res.data.user.first_name,
+                    last_name: res.data.user.last_name,
+                    phone: res.data.user.phone_number,
+                    email: res.data.user.email_id,
+                    address: res.data.user.address,
+                    gender: res.data.user.gender,
+                    dob: res.data.user.dob,
+                    profile_picture: res.data.user.profile_image_path,
+                    role: res.data.user.role,
+                } as UserDataInterface)
+            setMounted(true);
+        }, (err) => {
+            console.log("error", err);
+        });
+    }, [])
 
     return (
-        <AppContext.Provider value={{ user, searchBar, setUser, setSearchBar }} >
+        <AppContext.Provider value={{ user, searchBar, mounted, setUser, setSearchBar }} >
             <Box minHeight="100vh" sx={{display: "flex", flexDirection: "column"}}>
                 <Router>
                     <Routes>

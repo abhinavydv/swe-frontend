@@ -5,26 +5,25 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { MuiTelInput } from 'mui-tel-input'
 import axios from "axios";
-
+import { AppContext, UserDataInterface } from './App';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button } from 'rsuite';
 
 
-
-
 const Register = ({role}:any) => {
+    const { setUser } = useContext(AppContext);
 
-    const [firstName,setFirstName] = useState('');
-    const [middleName,setMiddleName] = useState('');
-    const [lastName,setLastName] = useState('');
+    const [firstName,setFirstName] = useState('A');
+    const [middleName,setMiddleName] = useState('B');
+    const [lastName,setLastName] = useState('C');
 
     const [dob,setDoB] = useState('');
-    const [phoneNumber,setPhoneNumber] = useState('');
+    const [phoneNumber,setPhoneNumber] = useState('+914568');
 
-    const [email,setEmailID] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [email,setEmailID] = useState('234');
+    const [password, setPassword] = useState('12');
+    const [confirmPassword, setConfirmPassword] = useState('12');
 
     // const [DoBError, setDoBError] = useState(false);
     const [FirstNameError, setFirstNameError] = useState(false);
@@ -104,28 +103,46 @@ const Register = ({role}:any) => {
 
         if (!err ) {
 
-            await axios.post('https://backend.iith-ac.in/register', {
+            await axios.post('/users/register', {
                 role: role,
-                firstName: firstName,
-                middleName: middleName,
-                lastName: lastName,
+                first_name: firstName,
+                // middle_name: middleName,
+                last_name: lastName,
                 dob: dob,
-                phoneNumber: phoneNumber,
+                phone_number: phoneNumber,
                 email: email,
                 password: password,
+                gender: "",
+                nationality: "",
+                profile_picture: ""
             })
             .then((res: any) => {
-
-                    console.log(res.data);
+                    // console.log(res.data);
                     setStatus(res.data.status);
-                    if (status === true){
-                        
-                        navigate("/");
+                    if (res.data.status === "OK"){
+                        axios.get("/users/logged").then((res) => {
+                            if (res.data.status === "OK") {
+                                setUser && setUser({
+                                    isLoggedIn: true,
+                                    first_name: res.data.first_name,
+                                    last_name: res.data.last_name,
+                                    phone: res.data.phone,
+                                    email: res.data.email,
+                                    address: res.data.address,
+                                    gender: res.data.gender,
+                                    dob: res.data.dob,
+                                    profile_picture: res.data.profile_picture,
+                                    role: res.data.role,
+                                } as UserDataInterface);
+                            }
+                        }, (err) => {
+                            console.log("error", err);
+                        });
+                        navigate('/');
                     }
                     else {
-                        navigate("/partner-register")
+                        // navigate("/partner/register")
                     }
-
             })
             .catch((err: any) => {
 
@@ -262,7 +279,7 @@ const Register = ({role}:any) => {
                 </FormControl>
 
                 <Box sx={{display: "flex", justifyContent: "center"}}>
-                    <Link to={'/customer-register'}><div className='register-switch'>Are you a {role == "partner"? "customer": "partner"}?</div></Link>
+                    <Link to={'/customer/register'}><div className='register-switch'>Are you a {role == "partner"? "customer": "partner"}?</div></Link>
                 </Box>
 
             </div>

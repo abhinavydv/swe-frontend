@@ -1,5 +1,5 @@
 import { Box, Tabs, Card} from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Topsection from "../Topsection";
 import { AppContext } from "../App";
 import { useNavigate } from "react-router-dom";
@@ -8,15 +8,9 @@ import { ProfileTabPanel } from "./TabPanels";
 
 
 const ProfilePage = () => {
-    const { user } = useContext(AppContext);
+    const { user, mounted } = useContext(AppContext);
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!user?.isLoggedIn) {
-            navigate('/customer/login?redirect=/profile');
-        }
-    });
 
     const [ selectedTab, setSelectTab ] = useState(0);
 
@@ -27,7 +21,12 @@ const ProfilePage = () => {
         "Performance",
     ]
 
-    if (!user){
+    if (mounted && !user?.isLoggedIn) {
+        console.log(user)
+        navigate('/customer/login?redirect=/profile');
+    }
+
+    if (!mounted || !user){
         return <Box>Loading...</Box>
     }
 
