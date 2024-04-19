@@ -55,21 +55,19 @@
 
 .rooms {
     padding: 0.1rem 1rem 0.1rem;
+    width: 60%;
 }
 
 .rooms-row {
     display: flex;
-}
-
-.change-dates {
-    margin-top: 1rem;
-    padding: 1rem 0.9rem;
-    width: 100%;
-    height: fit-content;
-    background-color: rgb(255, 221, 29);
-    border-radius: 0.1rem;
+    justify-content: space-between;
 }
 
 .proceed {
-    margin: 0.7rem 1rem;
+    margin: 0.7rem 0;
+    display: flex;
+}
+
+.right-summary {
+    width: 37%;
 }

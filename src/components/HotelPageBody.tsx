@@ -2,9 +2,9 @@ import '../styles/HotelPageBody.css';
 import SampleImage from '../assets/sampleHotel.jpeg';
 import { RoomCard } from './RoomCard';
 import { RoomAmenities } from './RoomAmenities';
-import { DateRangePicker } from 'rsuite';
 import { Button } from '@mui/material';
 import { ChevronRight } from '@mui/icons-material';
+import { BookingSummary } from './BookingSummary';
 
 const HotelPageBody = () => {
     // const { dateRangeValue, setDateRangeValue } = useContext(AppContext) as AppContextInterface;
@@ -38,17 +38,34 @@ const HotelPageBody = () => {
                     <RoomCard roomType='Suite' capacity={3} bedType='Queen' maxAvailable={4} />
                     <RoomCard roomType='Executive Suite' capacity={4} bedType='King' maxAvailable={4} />
                 </div>
-                <div className='change-dates'>
-                    <DateRangePicker onChange={(value) => {console.log(value);}} />
+                <div className='right-summary'>
+                    <BookingSummary selectedRooms={[
+                        {
+                            roomType: 'Standard',
+                            capacity: 2,
+                            rate: 2000,
+                            numSelected: 1
+                        },
+                        {
+                            roomType: 'Suite',
+                            capacity: 3,
+                            rate: 3000,
+                            numSelected: 2
+                        }
+                    ]} duration={[
+                        new Date('2022-11-01'),
+                        new Date('2022-11-03')
+                    ]} />
+                    <div className='proceed'>
+                        <div className='hori-spacer'></div>
+                        <Button variant='contained' sx={{
+                            textTransform: 'none',
+                            fontSize: '1rem'
+                        }} endIcon={<ChevronRight />}>
+                            Proceed with booking
+                        </Button>
+                    </div>
                 </div>
-            </div>
-            <div className='proceed'>
-                <Button variant='contained' sx={{
-                    textTransform: 'none',
-                    fontSize: '1rem'
-                }} endIcon={<ChevronRight />}>
-                    Proceed with booking
-                </Button>
             </div>
         </div>
     );

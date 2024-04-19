@@ -49,7 +49,6 @@ export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvai
     return (
         <div>
             <Paper sx={{
-                    width: '47rem',
                     borderRadius: '5px',
                     padding: '1rem',
                     margin: '1rem 0',
