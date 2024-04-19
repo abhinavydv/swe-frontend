@@ -40,13 +40,13 @@ const Login= ({role}: any) => {
                     email: username,
                     password: password,
                 }
-            ).then((response) => {
+            ).then((response: any) => {
                 var result = JSON.stringify(response.data);
                 var json = JSON.parse(result);
 
                 if (json.status == 'OK') {
                     setButtonStatus("Login");
-                    axios.get("/users/logged").then((res) => {
+                    axios.get("/users/logged").then((res: any) => {
                         if (res.data.status === "OK") {
                             setUser && setUser({
                                 isLoggedIn: true,
@@ -61,7 +61,7 @@ const Login= ({role}: any) => {
                                 role: res.data.role,
                             } as UserDataInterface);
                         }
-                    }, (err) => {
+                    }, (err: any) => {
                         console.log("error", err);
                     });
                     navigate('/');
