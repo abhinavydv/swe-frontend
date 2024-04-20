@@ -17,7 +17,7 @@ const Home = () => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar enteredDates={null} enteredQuery={null} />
             <Body />
             <Footer />
         </div>

@@ -3,12 +3,17 @@ import Topsection from "./Topsection";
 import Middlesection from "./Middlesection";
 import Bottomsection from "./Bottomsection";
 
-const Navbar = () => {
+interface Props {
+    enteredQuery: string | null;
+    enteredDates: string | null;
+}
+
+const Navbar: React.FC<Props> = ({ enteredQuery, enteredDates }) => {
     return (
         <div className='backGradient'>
             <Topsection />
             <Middlesection />
-            <Bottomsection />
+            <Bottomsection enteredDates={enteredDates} enteredQuery={enteredQuery} />
         </div>
     )
 }

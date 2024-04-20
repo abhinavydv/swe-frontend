@@ -15,7 +15,8 @@ import axios from 'axios'
 
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:8000";
+// axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
+axios.defaults.baseURL = "http://127.0.0.1:8000";
 
 export interface UserDataInterface {
     isLoggedIn: boolean;
@@ -35,8 +36,10 @@ export interface AppContextInterface {
     user: UserDataInterface;
     searchBar: boolean;
     mounted: boolean;
+    dateRange: Date[];
     setUser: (user: UserDataInterface) => void;
     setSearchBar: (searchBar: boolean) => void;
+    setDateRange: (dateRange: Date[]) => void;
 }
 
 export const AppContext = createContext<Partial<AppContextInterface>>({});
@@ -57,6 +60,7 @@ function App() {
     });
     const [searchBar, setSearchBar] = useState<boolean>(false);
     const [mounted, setMounted] = useState<boolean>(false);
+    const [dateRange, setDateRange] = useState<Date[]>([]);
 
     useEffect(() => {
         axios.get("/users/logged").then((res) => {
@@ -81,7 +85,7 @@ function App() {
     }, [])
 
     return (
-        <AppContext.Provider value={{ user, searchBar, mounted, setUser, setSearchBar }} >
+        <AppContext.Provider value={{ user, searchBar, mounted, dateRange, setUser, setSearchBar, setDateRange }} >
             <Box minHeight="100vh" sx={{display: "flex", flexDirection: "column"}}>
                 <Router>
                     <Routes>
