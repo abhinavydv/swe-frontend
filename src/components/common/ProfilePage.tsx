@@ -19,6 +19,15 @@ const ProfilePage = () => {
         "Account",
         "Preferences",
         "Performance",
+        "About"
+    ]
+
+    const tabpanels = [
+        <ProfileTabPanel user={user}/>,
+        <Box>Account</Box>,
+        <Box>Preferences</Box>,
+        <Box>Performance</Box>,
+        <Box>About</Box>
     ]
 
     if (mounted && !user?.isLoggedIn) {
@@ -69,11 +78,18 @@ const ProfilePage = () => {
                             {tabs.map((tab, index) => <LeftTab key={index} label={tab} />)}
                         </Tabs>
                         <Box width="100%">
-                            <TabPanel title="Profile" value={selectedTab} index={0} sx={{
+                            {/* <TabPanel title="Profile" value={selectedTab} index={0} sx={{
                                 padding: "1rem",
                             }}>
                                 <ProfileTabPanel user={user}/>
-                            </TabPanel>
+                            </TabPanel> */}
+                            {tabpanels.map((tabpanel, index) =>(
+                                <TabPanel key={index} value={selectedTab} index={index} sx={{
+                                    padding: "1rem",
+                                }}>
+                                    {tabpanel}
+                                </TabPanel>
+                            ))}
                         </Box>
                     </Box>
                 </Card>

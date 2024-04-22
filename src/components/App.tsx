@@ -84,6 +84,7 @@ function App() {
                     dob: res.data.user.dob,
                     profile_picture: res.data.user.profile_image_path,
                     role: res.data.user.role,
+                    nationality: res.data.user.nationality
                 } as UserDataInterface)
             setMounted(true);
         }, (err) => {

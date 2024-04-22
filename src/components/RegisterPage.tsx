@@ -19,7 +19,7 @@ const Register = ({role}:any) => {
     const [lastName,setLastName] = useState('C');
 
     const [dob,setDoB] = useState('');
-    const [phoneNumber,setPhoneNumber] = useState('+914568');
+    const [phoneNumber,setPhoneNumber] = useState('+914568123456');
 
     const [email,setEmailID] = useState('234');
     const [password, setPassword] = useState('12');
