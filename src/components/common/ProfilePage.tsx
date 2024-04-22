@@ -4,7 +4,7 @@ import Topsection from "../Topsection";
 import { AppContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { LeftTab, TabPanel } from "./TabPanel";
-import { ProfileTabPanel } from "./TabPanels";
+import { ProfileTabPanel, AccountTabPanel, KYPTabPanel, PerformanceTabPanel, AboutTabPanel } from "./TabPanels";
 
 
 const ProfilePage = () => {
@@ -14,24 +14,33 @@ const ProfilePage = () => {
 
     const [ selectedTab, setSelectTab ] = useState(0);
 
-    const tabs = [
-        "Profile",
-        "Account",
-        "Preferences",
-        "Performance",
-        "About"
-    ]
-
-    const tabpanels = [
-        <ProfileTabPanel user={user}/>,
-        <Box>Account</Box>,
-        <Box>Preferences</Box>,
-        <Box>Performance</Box>,
-        <Box>About</Box>
-    ]
+    var tabs: string[] = [];
+    var tabpanels: any = [];
+    if (user?.isLoggedIn){
+        if (user.role === "customer"){
+            tabs = ["Profile", "Account", "Preferences", "Reviews", "Previous Bookings", "About"];
+            tabpanels = [
+                <ProfileTabPanel user={user}/>,
+                <AccountTabPanel />,
+                <Box>Preferences</Box>,
+                <Box>Reviews</Box>,
+                <Box>Previous Bookings</Box>,
+                <Box>About</Box>
+            ]
+        }
+        if (user.role === "partner"){
+            tabs = ["Profile", "Account", "KYP", "Performance", "About"];
+            tabpanels = [
+                <ProfileTabPanel user={user}/>,
+                <AccountTabPanel />,
+                <KYPTabPanel />,
+                <PerformanceTabPanel />,
+                <AboutTabPanel />
+            ]
+        }
+    }
 
     if (mounted && !user?.isLoggedIn) {
-        console.log(user)
         navigate('/customer/login?redirect=/profile');
     }
 
@@ -78,13 +87,8 @@ const ProfilePage = () => {
                             {tabs.map((tab, index) => <LeftTab key={index} label={tab} />)}
                         </Tabs>
                         <Box width="100%">
-                            {/* <TabPanel title="Profile" value={selectedTab} index={0} sx={{
-                                padding: "1rem",
-                            }}>
-                                <ProfileTabPanel user={user}/>
-                            </TabPanel> */}
-                            {tabpanels.map((tabpanel, index) =>(
-                                <TabPanel key={index} value={selectedTab} index={index} sx={{
+                            {tabpanels.map((tabpanel: any, index: number) =>(
+                                <TabPanel title={tabs[index]} key={index} value={selectedTab} index={index} sx={{
                                     padding: "1rem",
                                 }}>
                                     {tabpanel}

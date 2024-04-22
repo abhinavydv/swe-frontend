@@ -1,5 +1,5 @@
 import '../styles/Bottomsection.css';
-import { Autocomplete, Button, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { DateRangePicker } from 'rsuite';
 import "rsuite/dist/rsuite.css";
 import 'vue-hotel-datepicker/dist/vueHotelDatepicker.css';

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { AppContext } from "./App";
 import { Link } from "react-router-dom";
-import Home from "./Home";
+
 
 function Middlesection()  {
     const { user } = useContext(AppContext);
