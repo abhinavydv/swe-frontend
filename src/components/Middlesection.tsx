@@ -1,5 +1,7 @@
 import { useContext } from "react";
 import { AppContext } from "./App";
+import { Link } from "react-router-dom";
+import Home from "./Home";
 
 function Middlesection()  {
     const { user } = useContext(AppContext);
@@ -8,7 +10,10 @@ function Middlesection()  {
         <div className='middleSection'>
             <div id='middleContainer'>
                 <div className='company'>
-                    WANDERLUST.COM
+                    <Link to='/' style={{
+                        color: 'white',
+                        textDecoration: 'none',
+                    }} >WANDERLUST.COM</Link>
                 </div>
                 <div className='motto'>
                     {user?.role == "customer" ? "Where to next?" : "List your property now!"}

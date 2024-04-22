@@ -1,10 +1,12 @@
 import { Person, } from "@mui/icons-material";
 import { Button, Tooltip } from "@mui/material";
 import { useContext } from "react";
-import { AppContext } from "./App";
+import { AppContext, AppContextInterface } from "./App";
+import { useNavigate } from "react-router-dom";
 
 const Topsection = () => {
-    const { user } = useContext(AppContext);
+    const { user, setSearchBar } = useContext(AppContext) as AppContextInterface;
+    const navigate = useNavigate();
 
     return (
         <div className='topSection'>
@@ -27,7 +29,7 @@ const Topsection = () => {
                                 fontWeight: '100',
                                 textTransform: 'none',
                                 letterSpacing: '0.06rem',
-                            }}>
+                            }} onClick={() => {setSearchBar(false); navigate('/user/wishlist')}}>
                                 Hotel wishlist
                             </Button>
                             <div className='separator'></div>
@@ -38,7 +40,7 @@ const Topsection = () => {
                                 minHeight: '0',
                                 minWidth: '0',
                                 borderRadius: '50%',
-                            }}>
+                            }} onClick={() => {navigate('/profile')}}>
                                 <Tooltip title='My Account'>
                                     <Person />
                                 </Tooltip>
@@ -71,7 +73,7 @@ const Topsection = () => {
                                 minHeight: '0',
                                 minWidth: '0',
                                 borderRadius: '50%',
-                            }}>
+                            }} onClick={() => {navigate('/profile')}}>
                                 <Tooltip title='My Account'>
                                     <Person/>
                                 </Tooltip>
@@ -84,7 +86,7 @@ const Topsection = () => {
                             fontWeight: '100',
                             textTransform: 'none',
                             letterSpacing: '0.06rem',
-                        }}>
+                        }} onClick={() => {navigate('/customer/register')}}>
                             New here? Register Now
                         </Button>
                         <div className='separator'></div>
@@ -93,7 +95,7 @@ const Topsection = () => {
                             fontWeight: '100',
                             textTransform: 'none',
                             letterSpacing: '0.06rem',
-                        }}>
+                        }} onClick={() => {navigate('/customer/login')}}>
                             Log in
                         </Button>
                     </div>

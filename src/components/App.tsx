@@ -12,6 +12,7 @@ import { PartnerHome } from './partner/PartnerHome'
 import { createContext, useEffect, useState } from 'react'
 import HotelPage from './HotelPage';
 import axios from 'axios'
+import { Wishlist } from './Wishlist'
 
 
 axios.defaults.withCredentials = true;
@@ -37,16 +38,20 @@ export interface AppContextInterface {
     searchBar: boolean;
     mounted: boolean;
     dateRange: Date[];
+    priceRange: number[];
+    maxLowestPrice: number;
     setUser: (user: UserDataInterface) => void;
     setSearchBar: (searchBar: boolean) => void;
     setDateRange: (dateRange: Date[]) => void;
+    setPriceRange: (priceRange: number[]) => void;
+    setMaxLowestPrice: (maxLowestPrice: number) => void;
 }
 
 export const AppContext = createContext<Partial<AppContextInterface>>({});
 
 function App() {
     const [user, setUser] = useState<UserDataInterface>({
-        isLoggedIn: false,
+        isLoggedIn: true,
         first_name: "Abhinav",
         last_name: "Yadav",
         phone: "1234567890",
@@ -56,11 +61,13 @@ function App() {
         dob: "03-05-2000",
         nationality: "India",
         profile_picture: "https://oshiprint.in/image/cache/catalog/poster/new/mqp1380-1100x1100h.jpeg.webp",
-        role: "partner",
+        role: "customer",
     });
     const [searchBar, setSearchBar] = useState<boolean>(false);
     const [mounted, setMounted] = useState<boolean>(false);
     const [dateRange, setDateRange] = useState<Date[]>([]);
+    const [priceRange, setPriceRange] = useState<number[]>([0,Infinity]);
+    const [maxLowestPrice, setMaxLowestPrice] = useState<number>(0);
 
     useEffect(() => {
         axios.get("/users/logged").then((res) => {
@@ -85,7 +92,7 @@ function App() {
     }, [])
 
     return (
-        <AppContext.Provider value={{ user, searchBar, mounted, dateRange, setUser, setSearchBar, setDateRange }} >
+        <AppContext.Provider value={{ user, searchBar, mounted, dateRange, priceRange, maxLowestPrice ,setUser, setSearchBar, setDateRange, setPriceRange, setMaxLowestPrice }} >
             <Box minHeight="100vh" sx={{display: "flex", flexDirection: "column"}}>
                 <Router>
                     <Routes>
@@ -96,8 +103,9 @@ function App() {
                         <Route path='/partner/register' element={<RegisterPartner />}/>
                         <Route path='/customer/login' element={<LoginCustomer />}/>
                         <Route path='/customer/register' element={<RegisterCustomer />}/>
-                        <Route path='/hotel-page' element={<HotelPage />} />
+                        <Route path='/hotel' element={<HotelPage />} />
                         <Route path='/profile' element={<ProfilePage />} />
+                        <Route path='/user/wishlist' element={<Wishlist />} />
                     </Routes>
                     <Box sx={{marginTop: "auto"}}>
                         <Footer/>

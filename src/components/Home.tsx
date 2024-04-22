@@ -1,14 +1,14 @@
 import Body from "./Body";
 import Navbar from "./Navbar";
-import { Footer } from "./Footer";
 import { AppContext, AppContextInterface } from "./App";
 import { useContext, useEffect } from "react";
 
 const Home = () => {
-    const { setSearchBar } = useContext(AppContext) as AppContextInterface;
+    const { setSearchBar, setDateRange } = useContext(AppContext) as AppContextInterface;
 
     useEffect(() => {
         setSearchBar(true);
+        setDateRange([]);
     },[])
 
     if (window){
@@ -19,7 +19,6 @@ const Home = () => {
         <div>
             <Navbar enteredDates={null} enteredQuery={null} />
             <Body />
-            <Footer />
         </div>
     )
 }

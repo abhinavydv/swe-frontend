@@ -12,9 +12,8 @@ const HotelPage = () => {
 
     return (
         <div>
-            <Navbar />
+            <Navbar enteredDates={null} enteredQuery={null}/>
             <HotelPageBody />
-            <Footer />
         </div>
     )
 }

@@ -14,12 +14,13 @@ interface Props {
 }
 
 const Bottomsection: React.FC<Props> = ({ enteredQuery, enteredDates }) => {
-    const { searchBar, dateRange, setDateRange } = useContext(AppContext) as AppContextInterface;
+    const { searchBar, dateRange, setDateRange, setSearchBar } = useContext(AppContext) as AppContextInterface;
     const [query, setQuery] = useState<string>('');
     const navigate = useNavigate();
 
     const handleSubmit = () => {
-        const dates = dateRange.length != 0 ? `${dateRange[0].toISOString().split('T')[0]}__${dateRange[1].toISOString().split('T')[0]}` : '';
+        setSearchBar(true);
+        const dates = dateRange.length != 0 ? `${dateRange[0].toISOString().split('T')[0]}__${dateRange[1].toISOString().split('T')[0]}` : ' ';
         navigate(`/search?query=${query}&dates=${dates}`);
     }
 

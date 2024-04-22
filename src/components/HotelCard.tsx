@@ -4,14 +4,25 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import '../styles/HotelCard.css';
 import { BeachAccess, ChevronRight, FreeBreakfast, LocalParking, LocalTaxi, SportsVolleyball, Wifi } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AppContext, AppContextInterface } from './App';
+import { Hotel } from './SearchResults';
 
-const HotelCard = () => {
+interface Props {
+    hotel: Hotel;
+}
+
+export const numNights = (dateRange: Date[]) => Math.floor((dateRange[1].getTime() - dateRange[0].getTime()) / (1000 * 60 * 60 * 24));
+
+const HotelCard: React.FC<Props> = ({ hotel }) => {
+    const { setSearchBar, dateRange } = useContext(AppContext) as AppContextInterface;
     const navigate = useNavigate();
     const amenities = [<Wifi />, <BeachAccess />, <LocalParking />, <SportsVolleyball />, <FreeBreakfast />, <LocalTaxi />]
 
     const handleButtonClick = () => {
-        navigate('/hotel-page')
-    }
+        setSearchBar(false);
+        navigate('/hotel')
+    }   
 
     return (
         <Paper elevation={2} sx={{
@@ -33,8 +44,8 @@ const HotelCard = () => {
             </div>
             <div className='hotelDetails'>
                 <div className='left'>
-                    <span className='hotelName'>Aalia Villas Anjuna, Goa by Aalia Collection Opens</span>
-                    <p className='location'>Anjuna, Goa</p>
+                    <span className='hotelName'>{hotel.hotel_name}</span>
+                    <p className='location'>{hotel.address}</p>
                     <div className='rightTopSpacer'></div>
                     <div className='amenitiesCard'>
                         <div className='vbar'></div>
@@ -42,7 +53,7 @@ const HotelCard = () => {
                             <div className='amenitiesHeading'>Amenities</div>
                             <div className='amenitiesRow'>
                                 {amenities.map((amenity, index) => (
-                                    <div className='amenity' key={index}>
+                                    <div className='hotel-amenity' key={index}>
                                         <Tooltip title='some amenity'>
                                             {amenity}
                                         </Tooltip>
@@ -56,7 +67,7 @@ const HotelCard = () => {
                     <div className='rightTop'>
                         <div className='rightTopSpacer'></div>
                         <div className='rightTopRating'>
-                            9.0
+                            {hotel.rating.toFixed(1)}
                         </div>
                     </div>
                     <div className='rightTop'>
@@ -69,14 +80,14 @@ const HotelCard = () => {
                     <div className='rightPriceSection'>
                         <div className='totalPrice'>
                             <div className='rightTopSpacer'></div>
-                            <div className='price'>
-                                ₹ 18,000
-                            </div>
+                            {dateRange.length != 0 && (<div className='price'>
+                                ₹ {numNights(dateRange) * hotel.lowest_price}
+                            </div>)}
                         </div>
                         <div className='rateSection'>
                             <div className='rightTopSpacer'></div>
                             <div className='rate'>
-                                ₹ 3,000/night
+                                {dateRange.length == 0 && <div>Starting from</div>} ₹ {hotel.lowest_price}/night
                             </div>
                         </div>
                     </div>
