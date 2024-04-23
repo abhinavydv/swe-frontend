@@ -1,16 +1,12 @@
 import { Card, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Slider } from "@mui/material";
 import '../styles/Filters.css';
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { DateRangePicker } from "rsuite";
 import { AppContext, AppContextInterface } from "./App";
 import { useNavigate } from "react-router-dom";
-import { Hotel } from "./SearchResults";
+import { SearchResultsContext, SearchResultsInterface } from "./SearchResults";
 
 const valueText = (value: number) => `₹ ${value}`
-
-interface amenityCheckInterface {
-    [key: string]: boolean;
-}
 
 interface Props {
     place: string;
@@ -18,32 +14,20 @@ interface Props {
 }
 
 const Filters: React.FC<Props> = ({ place, maxLowestPrice }) => {
-    const [amenities, setAmenities] = useState<amenityCheckInterface>({
-        'Wifi': false,
-        'Beach Access': false,
-        'Parking': false,
-        'Beach Volleyball': false,
-        'Breakfast': false,
-        'Cab services': false,
-    });
+    const { amenities, setAmenities } = useContext(SearchResultsContext) as SearchResultsInterface;
 
     const { priceRange, setDateRange, setPriceRange } = useContext(AppContext) as AppContextInterface;
 
     const navigate = useNavigate();
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAmenities({ ...amenities, [event.target.name]: event.target.checked });
-
-        // updateHotels();
-
-
-    }
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setAmenities({ ...amenities, [event.target.name]: event.target.checked });
 
     return (
         <div>
             <Card variant='outlined' sx={{
-                        height: '100%',
+                        height: 'fit-content%',
                         padding: '0.7rem 0.9rem',
+                        width: 'fit-content',
                     }} >
                 <div className="adjust-price">
                     <div className="filter-section">
@@ -51,6 +35,7 @@ const Filters: React.FC<Props> = ({ place, maxLowestPrice }) => {
                         <Slider
                             min={0}
                             max={maxLowestPrice}
+                            step={500}
                             size="small"
                             getAriaLabel={() => 'Price range'}
                             valueLabelDisplay="on"
@@ -60,6 +45,7 @@ const Filters: React.FC<Props> = ({ place, maxLowestPrice }) => {
 
                             sx={{
                                 marginTop: '2.2rem',
+                                marginRight: '2rem',
                             }}
                         />
                     </div>

@@ -1,20 +1,21 @@
-import { Button, IconButton, Paper, Tooltip } from '@mui/material';
+import { Button, Checkbox, Paper, Tooltip } from '@mui/material';
 import SampleHotel from '../assets/sampleHotel.jpeg';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import '../styles/HotelCard.css';
-import { BeachAccess, ChevronRight, FreeBreakfast, LocalParking, LocalTaxi, SportsVolleyball, Wifi } from '@mui/icons-material';
+import { BeachAccess, ChevronRight, Favorite, FavoriteBorder, FreeBreakfast, LocalParking, LocalTaxi, SportsVolleyball, Wifi } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { AppContext, AppContextInterface } from './App';
 import { Hotel } from './SearchResults';
+import axios from 'axios';
 
 interface Props {
     hotel: Hotel;
+    removeFromWishlist: (hotel: Hotel) => void;
 }
 
 export const numNights = (dateRange: Date[]) => Math.floor((dateRange[1].getTime() - dateRange[0].getTime()) / (1000 * 60 * 60 * 24));
 
-const HotelCard: React.FC<Props> = ({ hotel }) => {
+const HotelCard: React.FC<Props> = ({ hotel, removeFromWishlist }) => {
     const { setSearchBar, dateRange } = useContext(AppContext) as AppContextInterface;
     const navigate = useNavigate();
     const amenities = [<Wifi />, <BeachAccess />, <LocalParking />, <SportsVolleyball />, <FreeBreakfast />, <LocalTaxi />]
@@ -22,7 +23,7 @@ const HotelCard: React.FC<Props> = ({ hotel }) => {
     const handleButtonClick = () => {
         setSearchBar(false);
         navigate('/hotel')
-    }   
+    }
 
     return (
         <Paper elevation={2} sx={{
@@ -33,14 +34,13 @@ const HotelCard: React.FC<Props> = ({ hotel }) => {
                                 }}>
             <div className='hotelImage'>
                 <img src={SampleHotel} className='image'/>
-                <IconButton sx={{
-                                    position: 'absolute',
-                                    top: '2%',
-                                    right: '1.5%',
-                                    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                                }}>
-                    <FavoriteBorderOutlinedIcon />
-                </IconButton>
+                <Checkbox onChange={() => removeFromWishlist(hotel)} checkedIcon={<FavoriteBorder />} icon={<Favorite sx={{fill: 'crimson'}} />} sx={{
+                    position: 'absolute',
+                    top: '2%',
+                    right: '1.5%',
+                    color: 'white',
+                    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                }} />
             </div>
             <div className='hotelDetails'>
                 <div className='left'>

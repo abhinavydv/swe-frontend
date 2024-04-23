@@ -20,7 +20,7 @@ const Topsection = () => {
                                 fontWeight: '100',
                                 textTransform: 'none',
                                 letterSpacing: '0.06rem',
-                            }}>
+                            }} onClick={() => {setSearchBar(false); navigate('/user/past_bookings')}}>
                                 View my bookings
                             </Button>
                             <div className='separator'></div>

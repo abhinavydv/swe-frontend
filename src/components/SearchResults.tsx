@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { AppContext, AppContextInterface } from "./App";
 import Navbar from "./Navbar";
 import SearchResultBody from "./SearchResultBody";
@@ -8,11 +8,12 @@ import { numNights } from "./HotelCard";
 export type Hotel = {
     hotel_id: string;
     address: string;
-    amenities: string;
+    amenities: number;
     hotel_name: string;
     lowest_price: number;
     rating: number;
     img_path: string;
+    isWishlisted?: boolean;
 }
 
 type QueryResults = {
@@ -26,6 +27,17 @@ const findMaxLowestPrice = (hotels: Hotel[], dateRange: Date[]) => {
     return dateRange.length == 0 ? Math.max(...hotels.map(hotel => hotel.lowest_price)) : Math.max(...hotels.map(hotel => hotel.lowest_price*numNights(dateRange)));
 };
 
+export interface amenityCheckInterface {
+    [key: string]: boolean;
+}
+
+export interface SearchResultsInterface {
+    amenities: amenityCheckInterface;
+    setAmenities: (amenities: amenityCheckInterface) => void;
+}
+
+export const SearchResultsContext = createContext<Partial<SearchResultsInterface>>({});
+
 const SearchResults = () => {
     const [queryResults, setQueryResults] = useState<QueryResults>();
     const [enteredQuery, setQuery] = useState<string>('');
@@ -34,7 +46,7 @@ const SearchResults = () => {
         {
             hotel_id: "1",
             address: "Anjuna, Goa",
-            amenities: "1010101011",
+            amenities: 4,
             hotel_name: "Aalia Villas Anjuna, Goa by Aalia Collection Opens",
             lowest_price: 3000,
             rating: 9.2,
@@ -43,13 +55,24 @@ const SearchResults = () => {
         {
             hotel_id: "2",
             address: "Indian Institute of Technology, Hyderabad",
-            amenities: "1010101011",
+            amenities: 9,
             hotel_name: "International Guest House, IITH",
             lowest_price: 2000,
             rating: 7.0,
             img_path: "https://r-cf.bstatic.com/images/hotel/max1024x768/268/268016203.jpg"
         },
     ]);
+    const [amenities, setAmenities] = useState<amenityCheckInterface>({
+        'Wifi': false,
+        'Beach Access': false,
+        'Gym': false,
+        'Parking': false,
+        'Beach Volleyball': false,
+        'Breakfast': false,
+        'Cab services': false,
+        'Kitchen': false,
+        'Swimming Pool': false,
+    });
 
     const { dateRange } = useContext(AppContext) as AppContextInterface;
 
@@ -71,6 +94,7 @@ const SearchResults = () => {
     },[])
 
     return (
+        <SearchResultsContext.Provider value={{ amenities, setAmenities }}>
         <div>
             <Navbar enteredDates={enteredDates} enteredQuery={enteredQuery} />
             {queryResults?.alert == false ? <SearchResultBody hotels={hotels} place={enteredQuery} maxLowestPrice={findMaxLowestPrice(hotels,dateRange)} /> : (
@@ -79,6 +103,7 @@ const SearchResults = () => {
                 </div>
             )}
         </div>
+        </SearchResultsContext.Provider>
     )
 }
 

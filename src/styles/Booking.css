@@ -1,0 +1,10 @@
+.date-bill {
+    display: flex;
+    align-items: center;
+}
+
+.duration,
+.total-bill {
+    margin-top: 0.2rem;
+    font-weight: 500;
+}

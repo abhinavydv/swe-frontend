@@ -13,6 +13,7 @@ import { createContext, useEffect, useState } from 'react'
 import HotelPage from './HotelPage';
 import axios from 'axios'
 import { Wishlist } from './Wishlist'
+import { PastBookings } from './PastBookings'
 
 
 axios.defaults.withCredentials = true;
@@ -107,6 +108,7 @@ function App() {
                         <Route path='/hotel' element={<HotelPage />} />
                         <Route path='/profile' element={<ProfilePage />} />
                         <Route path='/user/wishlist' element={<Wishlist />} />
+                        <Route path='/user/past_bookings' element={<PastBookings />} />
                     </Routes>
                     <Box sx={{marginTop: "auto"}}>
                         <Footer/>
