@@ -4,7 +4,7 @@ import Topsection from "../Topsection";
 import { AppContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { LeftTab, TabPanel } from "./TabPanel";
-import { ProfileTabPanel, AccountTabPanel, KYPTabPanel, PerformanceTabPanel, AboutTabPanel } from "./TabPanels";
+import { ProfileTabPanel, AccountTabPanel, KYPTabPanel, PerformanceTabPanel, AboutTabPanel, PreviousBookingsTabPanel } from "./TabPanels";
 
 
 const ProfilePage = () => {
@@ -18,14 +18,12 @@ const ProfilePage = () => {
     var tabpanels: any = [];
     if (user?.isLoggedIn){
         if (user.role === "customer"){
-            tabs = ["Profile", "Account", "Preferences", "Reviews", "Previous Bookings", "About"];
+            tabs = ["Profile", "Account", "Previous Bookings", "About"];
             tabpanels = [
                 <ProfileTabPanel user={user}/>,
                 <AccountTabPanel />,
-                <Box>Preferences</Box>,
-                <Box>Reviews</Box>,
-                <Box>Previous Bookings</Box>,
-                <Box>About</Box>
+                <PreviousBookingsTabPanel />,
+                <AboutTabPanel />
             ]
         }
         if (user.role === "partner"){

@@ -134,27 +134,27 @@ const Register = ({role}:any) => {
                                     profile_picture: res.data.profile_picture,
                                     role: res.data.role,
                                 } as UserDataInterface);
+                                navigate('/');
                             }
                         }, (err) => {
                             console.log("error", err);
+                            alert("Error: " + err);
                         });
-                        navigate('/');
                     }
                     else {
                         // navigate("/partner/register")
+                        alert(res.data.message)
                     }
             })
             .catch((err: any) => {
-
-                    console.log(err);
+                    alert(err);
             });
 
         }
-        else{
-            console.log("Error")
-        }
+        // else{
+        //     console.log("Error")
+        // }
     }
-    console.log(role)
     return (
         <div className='register-container' >
             <div className='register-title'>

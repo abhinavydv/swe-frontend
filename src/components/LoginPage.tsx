@@ -60,18 +60,23 @@ const Login= ({role}: any) => {
                                 profile_picture: res.data.profile_picture,
                                 role: res.data.role,
                             } as UserDataInterface);
+                            navigate('/');
+                        } else {
+                            alert("Error: " + res.data.message);
                         }
                     }, (err: any) => {
                         console.log("error", err);
+                        alert("Error: " + err);
                     });
-                    navigate('/');
                 }
                 else {
                     setLoginStatus(json.message);
                     setPasswordError(true);
                     setButtonStatus("Try Again");
                 }
-            });
+            }, ((err) => {
+                alert("Error: " + err);
+            }));
         }
     }
 

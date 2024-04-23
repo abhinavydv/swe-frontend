@@ -35,7 +35,7 @@ export const ProfileTabPanel = ({user, ...props}: ProfileTabPanelProps) => {
             }
             setCountries(c);
         }).catch((err) => {
-            console.log(err);
+            alert(err);
         })
     }, [])
 
@@ -351,7 +351,7 @@ export const KYPTabPanel = ({...props}: any) => {
                 alert("File Uploaded Successfully");
             }
             else {
-                alert("Failed to upload file. Please try again.")
+                alert("Failed to upload file. Please try again. " + res.data.message)
             }
         }, (err) => {
             alert("Failed to upload file. Please try again.\n"+err)
@@ -483,5 +483,32 @@ export const AboutTabPanel = ({...props}: any) => {
             itinerary, let Wanderlust be your trusted companion in the journey of exploration and
             discovery. Book with us today and unlock a world of possibilities.
         </Typography>
+    </Box>
+}
+
+
+export const PreviousBookingsTabPanel = ({...props}: any) => {
+    const [bookings, setBookings] = useState<any[]>([]);
+
+    useEffect(() => {
+        axios.get("/bookings/past_bookings").then((res) => {
+            if (res.data.status === "OK"){
+                setBookings(res.data.bookings);
+                console.log(res.data.bookings);
+            }
+        }, (err) => {
+            console.log(err);
+        })
+    }, [])
+
+    return <Box {...props} sx={{marginTop: "2rem"}}>
+        Previous Bookings
+        {
+            bookings.map((_booking, i) => (
+                <Box key={i}>
+                    Booking ID: {i}
+                </Box>
+            ))
+        }
     </Box>
 }

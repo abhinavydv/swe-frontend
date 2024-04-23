@@ -60,10 +60,9 @@ const SearchResults = () => {
         setDates(dates);
         
         axios.post<QueryResults>(`/search/${query}`).then((res) => {
-            console.log("data",res.data);
             setQueryResults(res.data);
 
-            if(!res.data.alert) {
+            if(res.data.status === "OK") {
                 setHotels([...hotels, ...res.data.hotels])
             }
         }, (err) => {
