@@ -41,18 +41,36 @@ const HotelPage = () => {
 
     useEffect(() => {
         setSearchBar(false);
+        
 
-        const hotel_id = window.location.pathname.split('?')[1]?.split('&')[0]?.split('=')[1];
-        const check_in_date = window.location.pathname.split('?')[1]?.split('&')[1]?.split('=')[1]?.split('__')[0];
-        const check_out_date = window.location.pathname.split('?')[1]?.split('&')[1]?.split('=')[1]?.split('__')[1];
+        // const hotel_id = window.location.pathname.split('?')[1]?.split('&')[0]?.split('=')[1];
+        // const check_in_date = window.location.pathname.split('?')[1]?.split('&')[1]?.split('=')[1]?.split('__')[0];
+        // const check_out_date = window.location.pathname.split('?')[1]?.split('&')[1]?.split('=')[1]?.split('__')[1];
+        const urlParams = new URLSearchParams(window.location.search);
+        const hotel_id = urlParams.get('hotel_id');
+        const dateRange = urlParams.get('dates');
+        
+        if (!hotel_id || !dateRange) {
+            console.error('Missing or malformed URL parameters');
+            return;
+        }
 
-        axios.post('/search/get_hotel_page',{hotel_id: Number(hotel_id), date_range: {start_date: check_in_date, end_date: check_out_date}}).then((res) => {
+        const [check_in_date, check_out_date] = dateRange.split('__');
+
+        axios.post('/search/get_hotel_page',{
+            hotel_id: parseInt(hotel_id), 
+            date_range: {
+                start_date: check_in_date, 
+                end_date: check_out_date,
+            },}).then((res) => {
             console.log('data',res.data);
 
             if(res.data.status === "OK") {
                 setHotelInfo(res.data.hotel_page)
             }
         }, (err) => {
+            console.log(hotel_id)
+            console.log(check_in_date)
             console.log(err);
         });
     },[])

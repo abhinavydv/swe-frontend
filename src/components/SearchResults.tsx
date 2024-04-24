@@ -65,7 +65,7 @@ const SearchResults = () => {
         setQuery(query);
         setDates(dates);
         
-        axios.post<QueryResults>(`/search/`,{text: query, date_range: {start_date: "", end_date: ""}}).then((res) => {
+        axios.post<QueryResults>('/search/no_filter',{text: query, date_range: {start_date: "", end_date: ""}}).then((res) => {
             setQueryResults(res.data);
 
             if(res.data.status === "OK") {
