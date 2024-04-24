@@ -33,18 +33,18 @@ export const Wishlist = () => {
             lowest_price: 2000,
             rating: 7.0,
             img_path: "https://r-cf.bstatic.com/images/hotel/max1024x768/268/268016203.jpg",
-            isWishlisted: false
+            isWishlisted: true
         },
     ]);
 
-    const removeFromWishlist = (hotel: Hotel) => {
-        axios.post('/search/delete_from_wishlist', {hotel_id: hotel.hotel_id}).then((res) => {
+    const removeFromWishlist = (hotel_id: string) => {
+        axios.post('/search/delete_from_wishlist', {hotel_id: hotel_id}).then((res) => {
             console.log(res.data);
         }, (err) => {
             console.log(err);
         });
     
-        setHotels(hotels.filter((h) => h.hotel_id !== hotel.hotel_id));
+        setHotels(hotels.filter((h) => h.hotel_id !== hotel_id));
     }
 
 
@@ -59,7 +59,7 @@ export const Wishlist = () => {
         }, (err) => {
             console.log(err);
         })
-    })
+    },[])
 
     return (
         <div>

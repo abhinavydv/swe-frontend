@@ -48,6 +48,13 @@ export interface AppContextInterface {
     setMaxLowestPrice: (maxLowestPrice: number) => void;
 }
 
+type QueryResults = {
+    status: string;
+    message: string;
+    alert: boolean;
+    user?: UserDataInterface;
+}
+
 export const AppContext = createContext<Partial<AppContextInterface>>({});
 
 function App() {
@@ -88,6 +95,7 @@ function App() {
                     nationality: res.data.user.nationality
                 } as UserDataInterface)
             setMounted(true);
+            console.log("user", user);
         }, (err) => {
             console.log("error", err);
         });
@@ -105,7 +113,7 @@ function App() {
                         <Route path='/partner/register' element={<RegisterPartner />}/>
                         <Route path='/customer/login' element={<LoginCustomer />}/>
                         <Route path='/customer/register' element={<RegisterCustomer />}/>
-                        <Route path='/hotel' element={<HotelPage />} />
+                        <Route path='/hotels' element={<HotelPage />} />
                         <Route path='/profile' element={<ProfilePage />} />
                         <Route path='/user/wishlist' element={<Wishlist />} />
                         <Route path='/user/past_bookings' element={<PastBookings />} />

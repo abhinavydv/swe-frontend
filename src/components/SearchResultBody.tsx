@@ -1,13 +1,13 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import '../styles/SearchResultBody.css';
 import Filters from './Filters';
 import HotelCard from './HotelCard';
 import { Hotel, SearchResultsContext, SearchResultsInterface, amenityCheckInterface } from './SearchResults';
 import { AppContext, AppContextInterface } from './App';
+import axios from 'axios';
 
 interface Props {
     place: string;
-    hotels: Hotel[];
     maxLowestPrice: number;
 }
 
@@ -26,9 +26,41 @@ const getFilteredHotels = (hotels: Hotel[], dateRange: Date[], priceRange: numbe
     return amenityFiltered;
 }
 
-const SearchResultBody: React.FC<Props> = ({ place, hotels, maxLowestPrice }) => {
+const SearchResultBody: React.FC<Props> = ({ place, maxLowestPrice }) => {
     const { dateRange, priceRange } = useContext(AppContext) as AppContextInterface;
-    const { amenities } = useContext(SearchResultsContext) as SearchResultsInterface;
+    const { amenities, hotels, setHotels } = useContext(SearchResultsContext) as SearchResultsInterface;
+
+    const removeFromWishlist = (hotel_id: string) => {
+        axios.post('/search/delete_from_wishlist', {hotel_id: hotel_id}).then((res) => {
+            console.log(res.data);
+        }, (err) => {
+            console.log(err);
+        });
+
+        const updatedHotels = hotels.map((hotel) => {
+            if (hotel.hotel_id === hotel_id) {
+                return {...hotel, isWishlisted: false};
+            }
+            return hotel;
+        });
+        setHotels(updatedHotels);
+    }
+
+    const addToWishlist = (hotel_id: string) => {
+        axios.post('/search/add_to_wishlist', {hotel_id: hotel_id}).then((res) => {
+            console.log(res.data);
+        }, (err) => {
+            console.log(err);
+        });
+
+        const updateHotels = hotels.map((hotel) => {
+            if (hotel.hotel_id === hotel_id) {
+                return {...hotel, isWishlisted: true};
+            }
+            return hotel;
+        });
+        setHotels(updateHotels);
+    }
 
     const filteredHotels = getFilteredHotels(hotels,dateRange,priceRange,amenities);
 
@@ -40,7 +72,7 @@ const SearchResultBody: React.FC<Props> = ({ place, hotels, maxLowestPrice }) =>
                     <Filters place={place} maxLowestPrice={maxLowestPrice} />
                 </div>
                 <div id='hotels'>
-                    {filteredHotels.map((hotel, index) => <HotelCard key={index} hotel={hotel} />)}
+                    {filteredHotels.map((hotel, index) => <HotelCard removeFromWishlist={removeFromWishlist} addToWishlist={addToWishlist} key={index} hotel={hotel} />)}
                 </div>
             </div>
         </div>

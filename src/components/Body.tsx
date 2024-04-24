@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import '../styles/Body.css';
 
 function Body() {
@@ -9,7 +10,7 @@ function Body() {
             </div>
 
             <div className='row'>
-                <div className='card-l mumbai'>
+                <Link to='/search?query=Mumbai&dates=' className='card-l mumbai'>
                     <div className='fade'>
                         <div className='spacer'></div>
                         <div className='cardName'>
@@ -19,8 +20,8 @@ function Body() {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className='card-l delhi'>
+                </Link>
+                <Link to='/search?query=Delhi&dates=' className='card-l delhi'>
                     <div className='fade'>
                         <div className='spacer'></div>
                         <div className='cardName'>
@@ -30,11 +31,11 @@ function Body() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </Link>
             </div>
 
             <div className='row'>
-                <div className='card-m hyderabad'>
+                <Link to='/search?query=Hyderabad&dates=' className='card-m hyderabad'>
                     <div className='fade'>
                         <div className='spacer'></div>
                         <div className='cardName'>
@@ -44,9 +45,8 @@ function Body() {
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div className='card-m goa'>
+                </Link>
+                <Link to='/search?query=Goa&dates=' className='card-m goa'>
                     <div className='fade'>
                         <div className='spacer'></div>
                         <div className='cardName'>
@@ -55,9 +55,8 @@ function Body() {
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div className='card-m mysore'>
+                </Link>
+                <Link to='/search?query=Mysore&dates=' className='card-m mysore'>
                     <div className='fade'>
                         <div className='spacer'></div>
                         <div className='cardName'>
@@ -67,7 +66,7 @@ function Body() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </Link>
             </div>
             
         </div>

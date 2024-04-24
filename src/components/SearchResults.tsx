@@ -33,7 +33,9 @@ export interface amenityCheckInterface {
 
 export interface SearchResultsInterface {
     amenities: amenityCheckInterface;
+    hotels: Hotel[];
     setAmenities: (amenities: amenityCheckInterface) => void;
+    setHotels: (hotels: Hotel[]) => void;
 }
 
 export const SearchResultsContext = createContext<Partial<SearchResultsInterface>>({});
@@ -42,26 +44,7 @@ const SearchResults = () => {
     const [queryResults, setQueryResults] = useState<QueryResults>();
     const [enteredQuery, setQuery] = useState<string>('');
     const [enteredDates, setDates] = useState<string>('');
-    const [hotels, setHotels] = useState<Hotel[]>([
-        {
-            hotel_id: "1",
-            address: "Anjuna, Goa",
-            amenities: 4,
-            hotel_name: "Aalia Villas Anjuna, Goa by Aalia Collection Opens",
-            lowest_price: 3000,
-            rating: 9.2,
-            img_path: "https://r-cf.bstatic.com/images/hotel/max1024x768/268/268016203.jpg"
-        },
-        {
-            hotel_id: "2",
-            address: "Indian Institute of Technology, Hyderabad",
-            amenities: 9,
-            hotel_name: "International Guest House, IITH",
-            lowest_price: 2000,
-            rating: 7.0,
-            img_path: "https://r-cf.bstatic.com/images/hotel/max1024x768/268/268016203.jpg"
-        },
-    ]);
+    const [hotels, setHotels] = useState<Hotel[]>([]);
     const [amenities, setAmenities] = useState<amenityCheckInterface>({
         'Wifi': false,
         'Beach Access': false,
@@ -82,11 +65,11 @@ const SearchResults = () => {
         setQuery(query);
         setDates(dates);
         
-        axios.post<QueryResults>(`/search/${query}`).then((res) => {
+        axios.post<QueryResults>(`/search/`,{text: query, date_range: {start_date: "", end_date: ""}}).then((res) => {
             setQueryResults(res.data);
 
             if(res.data.status === "OK") {
-                setHotels([...hotels, ...res.data.hotels])
+                setHotels([...res.data.hotels])
             }
         }, (err) => {
             console.log("Error: ",err);
@@ -94,10 +77,10 @@ const SearchResults = () => {
     },[])
 
     return (
-        <SearchResultsContext.Provider value={{ amenities, setAmenities }}>
+        <SearchResultsContext.Provider value={{ amenities, hotels, setAmenities, setHotels }}>
         <div>
             <Navbar enteredDates={enteredDates} enteredQuery={enteredQuery} />
-            {queryResults?.alert == false ? <SearchResultBody hotels={hotels} place={enteredQuery} maxLowestPrice={findMaxLowestPrice(hotels,dateRange)} /> : (
+            {queryResults?.alert == false ? <SearchResultBody place={enteredQuery} maxLowestPrice={findMaxLowestPrice(hotels,dateRange)} /> : (
                 <div className="page heading">
                     No results to display
                 </div>

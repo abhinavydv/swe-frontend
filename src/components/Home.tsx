@@ -2,18 +2,21 @@ import Body from "./Body";
 import Navbar from "./Navbar";
 import { AppContext, AppContextInterface } from "./App";
 import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-    const { setSearchBar, setDateRange } = useContext(AppContext) as AppContextInterface;
+    const { user, setSearchBar, setDateRange } = useContext(AppContext) as AppContextInterface;
+
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if(!user.isLoggedIn) {
+            navigate('/customer/login');
+        }
+
         setSearchBar(true);
         setDateRange([]);
     },[])
-
-    if (window){
-        console.log(window.location)
-    }
 
     return (
         <div>
