@@ -1,5 +1,6 @@
-import { Box, FormControl, TextField } from '@mui/material';
-import '../styles/Login-Register.css'
+import { Box, FormControl, TextField, Button } from '@mui/material';
+// import '../styles/Login-Register.css'
+import '../styles/OTP.css'
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -7,23 +8,24 @@ import { MuiTelInput } from 'mui-tel-input'
 import axios from "axios";
 import { AppContext, UserDataInterface } from './App';
 import { Link, useNavigate } from 'react-router-dom';
-import { useContext, useState } from 'react';
-import { Button } from 'rsuite';
+import { useContext, useEffect, useState } from 'react';
+// import { Button } from 'rsuite';
+import OtpInput from './OTP';
 
 
 const Register = ({role}:any) => {
     const { setUser } = useContext(AppContext);
 
-    const [firstName,setFirstName] = useState('A');
-    const [middleName,setMiddleName] = useState('B');
-    const [lastName,setLastName] = useState('C');
+    const [firstName,setFirstName] = useState('Harsh');
+    const [middleName,setMiddleName] = useState('');
+    const [lastName,setLastName] = useState('Goyal');
 
     const [dob,setDoB] = useState('');
-    const [phoneNumber,setPhoneNumber] = useState('+914568123456');
+    const [phoneNumber,setPhoneNumber] = useState('+918448673532');
 
-    const [email,setEmailID] = useState('234');
-    const [password, setPassword] = useState('12');
-    const [confirmPassword, setConfirmPassword] = useState('12');
+    const [email,setEmailID] = useState('harshsunny97@gmail.com');
+    const [password, setPassword] = useState('SWE');
+    const [confirmPassword, setConfirmPassword] = useState('SWE');
 
     // const [DoBError, setDoBError] = useState(false);
     const [FirstNameError, setFirstNameError] = useState(false);
@@ -36,7 +38,60 @@ const Register = ({role}:any) => {
     const [_status, setStatus] = useState(false);
 
     const navigate = useNavigate();
+    const [time, setTime] = useState(0);
+    const [OTPError, setOTPError] = useState(false);
+    const [inputotp, setInputOtp] = useState('');
+    const [actualotp, setActualOtp] = useState('');
+    const [otpstatus, setOtpStatus] = useState(false);
+    const [display, setDisplay] = useState(false);
+    const onOTP = (value: string) => {
+        console.log(typeof(value)); 
+        setInputOtp(value);
+    };
 
+    useEffect(() => {
+        let intervalId: NodeJS.Timeout;
+
+        if(time == 0) {setOtpStatus(false);}
+
+        if (otpstatus) {
+        intervalId = setInterval(() => {
+            setTime(time => time - 1);
+        }, 1000);
+        }
+
+
+        return () => clearInterval(intervalId);
+    }, [time])
+
+    const onGetOTP = (e: any) => {
+        e.preventDefault();
+        setOtpStatus(true)
+        axios.post('/users/otp', {
+            email: email,
+        }).then( (res: any) => {
+            if (res.data.status == "OK") {
+                alert("OTP Sent Successfully")
+                // enable submit button
+                setActualOtp(res.data.otp)
+                setTime(60);
+                setDisplay(true);
+            }
+            else {
+                alert("Incorrect Email ID")
+                setOtpStatus(false)
+            }
+        })
+    }
+    // .then(res: any) => {
+
+    //         setOtpStatus(res.)
+    //         if 
+                
+    //             };
+
+
+    // } 
 
     const onRegister = async (e: any) => {
 
@@ -76,6 +131,12 @@ const Register = ({role}:any) => {
             // setStatus(false)
             alert('Password and Confirm Password do not match')
             err = true
+        }
+
+        if (actualotp !== inputotp){
+            setOTPError(true)
+            err= true
+            alert("Incorrect OTP")
         }
 
         if (email === ''){
@@ -155,6 +216,7 @@ const Register = ({role}:any) => {
         // else{
         //     console.log("Error")
         // }
+
     }
     return (
         <div className='register-container' >
@@ -171,8 +233,9 @@ const Register = ({role}:any) => {
 
                 {role == "partner" && "Partner Login" || "Customer Login"}
                 </div>
+
                 <FormControl className='register-form'>
-                
+
                 {/* <form className="register-form"> */}
                     <div className="input-group">
                         <div className='name'>
@@ -267,14 +330,68 @@ const Register = ({role}:any) => {
                             required
                         />
                     </div>
+                    <Button 
+                        type="submit"
+                        className='get-otp-btn'
+                        // variant="contained"
+                        onClick={onGetOTP}
+                        disabled={otpstatus}
+                        sx={{
+                            marginBottom: '1rem',
+                            height: '3rem',
+                            border: 'none',
+                            borderRadius: '5px',
+                            backgroundColor: '#1c39bb' ,
+                            color: 'white',
+                            fontSize: '16px',
+                            cursor: 'pointer',
+                            transition: 'background-color 0.3s ease',
+                            "&.Mui-disabled": {
+                                background: "#F2F2F2",
+                                color: "black"
+                            },
+                            ":hover": {
+                                backgroundColor: 'white',
+                                border: '2px #1c39bb solid',
+                                color: '#1c39bb',
+                            },
+                        }}
+                    >
+                        Get OTP
+                    </Button>
+
+                {display && <OtpInput value={inputotp} valueLength={6} onChange={onOTP} />}
+
+                {display && <div className='timer'>{time} seconds left</div>}
+
                     {/* <button type="submit" className="register-btn">Register</button> */}
                     <Button 
                         type="submit"
                         className='register-btn'
-                        // variant="contained"
                         onClick={onRegister}
+                        disabled={!otpstatus}
+                        sx={{
+                            marginBottom: '1rem',
+                            height: '3rem',
+                            border: 'none',
+                            borderRadius: '5px',
+                            backgroundColor: '#1c39bb' ,
+                            color: 'white',
+                            fontSize: '16px',
+                            cursor: 'pointer',
+                            transition: 'background-color 0.3s ease',
+                            "&.Mui-disabled": {
+                                background: "#F2F2F2",
+                                color: "black"
+                            },
+                            ":hover": {
+                                backgroundColor: 'white',
+                                border: '2px #1c39bb solid',
+                                color: '#1c39bb',
+                            }
+                        }}
                     >
-                        Register
+                        Submit
                     </Button>
                 {/* </form> */}
                 </FormControl>
@@ -290,3 +407,5 @@ const Register = ({role}:any) => {
 }
 
 export default Register;
+
+

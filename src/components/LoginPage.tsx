@@ -118,7 +118,28 @@ const Login= ({role}: any) => {
                             />
                     </div>
 
-                    <Button type="submit" className="login-btn" onClick={onLogin}>Login</Button>
+                    <Button type="submit" className="login-btn" onClick={onLogin}
+                                            sx={{
+                                                marginBottom: '1rem',
+                                                height: '3rem',
+                                                border: 'none',
+                                                borderRadius: '5px',
+                                                backgroundColor: '#1c39bb' ,
+                                                color: 'white',
+                                                fontSize: '16px',
+                                                cursor: 'pointer',
+                                                transition: 'background-color 0.3s ease',
+                                                "&.Mui-disabled": {
+                                                    background: "#F2F2F2",
+                                                    color: "black"
+                                                },
+                                                ":hover": {
+                                                    backgroundColor: 'white',
+                                                    border: '2px #1c39bb solid',
+                                                    color: '#1c39bb',
+                                                }
+                                            }}
+                    >Login</Button>
                 </form>
 
 
