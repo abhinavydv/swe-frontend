@@ -120,19 +120,20 @@ const Register = ({role}:any) => {
                     // console.log(res.data);
                     setStatus(res.data.status);
                     if (res.data.status === "OK"){
-                        axios.get("/users/logged").then((res) => {
-                            if (res.data.status === "OK") {
+                        axios.get("/users/logged").then((res2) => {
+                            console.log("data", res2.data);
+                            if (res2.data.status === "OK") {
                                 setUser && setUser({
                                     isLoggedIn: true,
-                                    first_name: res.data.first_name,
-                                    last_name: res.data.last_name,
-                                    phone: res.data.phone,
-                                    email: res.data.email,
-                                    address: res.data.address,
-                                    gender: res.data.gender,
-                                    dob: res.data.dob,
-                                    profile_picture: res.data.profile_picture,
-                                    role: res.data.role,
+                                    first_name: res2.data.first_name,
+                                    last_name: res2.data.last_name,
+                                    phone: res2.data.phone,
+                                    email: res2.data.email,
+                                    address: res2.data.address,
+                                    gender: res2.data.gender,
+                                    dob: res2.data.dob,
+                                    profile_picture: res2.data.profile_picture,
+                                    role: res2.data.role,
                                 } as UserDataInterface);
                                 navigate('/');
                             }

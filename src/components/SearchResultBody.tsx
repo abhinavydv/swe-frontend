@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import '../styles/SearchResultBody.css';
 import Filters from './Filters';
 import HotelCard from './HotelCard';
-import { Hotel, SearchResultsContext, SearchResultsInterface, amenityCheckInterface } from './SearchResults';
+import { Hotel, SearchResultsContext, SearchResultsInterface, amenityCheckInterface, axiosHeader } from './SearchResults';
 import { AppContext, AppContextInterface } from './App';
 import axios from 'axios';
 
@@ -31,7 +31,9 @@ const SearchResultBody: React.FC<Props> = ({ place, maxLowestPrice }) => {
     const { amenities, hotels, setHotels } = useContext(SearchResultsContext) as SearchResultsInterface;
 
     const removeFromWishlist = (hotel_id: string) => {
-        axios.post('/search/delete_from_wishlist', {hotel_id: hotel_id}).then((res) => {
+        axios.post('/search/delete_from_wishlist', {hotel_id: parseInt(hotel_id)}, {
+            headers: axiosHeader
+        }).then((res) => {
             console.log(res.data);
         }, (err) => {
             console.log(err);
@@ -47,19 +49,21 @@ const SearchResultBody: React.FC<Props> = ({ place, maxLowestPrice }) => {
     }
 
     const addToWishlist = (hotel_id: string) => {
-        axios.post('/search/add_to_wishlist', {hotel_id: hotel_id}).then((res) => {
+        axios.post('/search/add_to_wishlist', {hotel_id: parseInt(hotel_id)},{
+            headers: axiosHeader
+        }).then((res) => {
             console.log(res.data);
         }, (err) => {
             console.log(err);
         });
 
-        const updateHotels = hotels.map((hotel) => {
+        const updatedHotels = hotels.map((hotel) => {
             if (hotel.hotel_id === hotel_id) {
                 return {...hotel, isWishlisted: true};
             }
             return hotel;
         });
-        setHotels(updateHotels);
+        setHotels(updatedHotels);
     }
 
     const filteredHotels = getFilteredHotels(hotels,dateRange,priceRange,amenities);

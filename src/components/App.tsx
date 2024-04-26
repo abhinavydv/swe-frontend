@@ -59,19 +59,19 @@ export const AppContext = createContext<Partial<AppContextInterface>>({});
 
 function App() {
     const [user, setUser] = useState<UserDataInterface>(
-        {
-        isLoggedIn: true,
-        first_name: "Abhinav",
-        last_name: "Yadav",
-        phone: "1234567890",
-        email: "ab@iith-ac.in", 
-        address: "IIT Hyderabad",
-        gender: "Attack Helicopter",
-        dob: "03-05-2000",
-        nationality: "India",
-        profile_picture: "https://oshiprint.in/image/cache/catalog/poster/new/mqp1380-1100x1100h.jpeg.webp",
-        role: "customer",
-    }
+    //     {
+    //     isLoggedIn: true,
+    //     first_name: "Abhinav",
+    //     last_name: "Yadav",
+    //     phone: "1234567890",
+    //     email: "ab@iith-ac.in", 
+    //     address: "IIT Hyderabad",
+    //     gender: "Attack Helicopter",
+    //     dob: "03-05-2000",
+    //     nationality: "India",
+    //     profile_picture: "https://oshiprint.in/image/cache/catalog/poster/new/mqp1380-1100x1100h.jpeg.webp",
+    //     role: "customer",
+    // }
     );
     const [searchBar, setSearchBar] = useState<boolean>(false);
     const [mounted, setMounted] = useState<boolean>(false);
@@ -95,11 +95,7 @@ function App() {
                     profile_picture: res.data.user.profile_image_path,
                     role: res.data.user.role,
                     nationality: res.data.user.nationality
-                } as UserDataInterface)} else {
-                    // setUser({
-                    //     isLoggedIn: false,
-                    // })
-                }
+                } as UserDataInterface)}
             setMounted(true);
             console.log("user", user);
         }, (err) => {

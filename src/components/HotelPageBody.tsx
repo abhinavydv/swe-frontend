@@ -7,6 +7,8 @@ import { ChevronRight } from '@mui/icons-material';
 import { BookingSummary } from './BookingSummary';
 import { HotelPageContext, HotelPageInterface, Room } from './HotelPage';
 import { createContext, useContext, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export interface BookingSummaryInterface {
     bill: number;
@@ -22,6 +24,18 @@ const HotelPageBody = () => {
 
     const [bill, setBill] = useState(0);
     const [selectedRooms, setSelectedRooms] = useState(Array(hotelInfo.available_rooms.length).fill(0));
+
+    const navigate = useNavigate();
+
+    const handleProceed = () => {
+        axios.get("/users/logged").then((res) => {
+            if(res.data.status == "Error") navigate('/customer/login');
+        }, (err) => {
+            console.log(err);
+        })
+
+        
+    }
 
     return (
         <div className='page'>
@@ -56,7 +70,7 @@ const HotelPageBody = () => {
                             <Button variant='contained' sx={{
                                 textTransform: 'none',
                                 fontSize: '1rem'
-                            }} endIcon={<ChevronRight />} disabled={bill == 0} >
+                            }} endIcon={<ChevronRight />} disabled={bill == 0} onClick={handleProceed} >
                                 Proceed with booking
                             </Button>
                         </div>

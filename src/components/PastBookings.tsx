@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { BookingCard } from "./BookingCard"
 import Navbar from "./Navbar"
+import { useNavigate } from "react-router-dom"
 
 export type Booking = {
     booking_id: string;
@@ -24,7 +25,6 @@ type QueryResults = {
 }
 
 export const PastBookings = ()  => {
-    const [queryResults, setQueryResults] = useState<QueryResults>();
     const [bookings, setBookings] = useState<Booking[]>([
         // {
         //     booking_id: "1",
@@ -50,25 +50,28 @@ export const PastBookings = ()  => {
         // }
     ]);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         axios.get('/bookings/past_bookings').then((res) => {
             console.log("data",res.data);
-            setQueryResults(res.data);
-
-            if(!res.data.alert) {
-                setBookings([...bookings,...res.data.past_bookings]);
-            }
+            
+            if(res.data.status == "Error") {
+                if(res.data.message == "user not logged in") {
+                    navigate('/customer/login');
+                }
+            } else if(res.data.status == "OK") setBookings(res.data.past_bookings);
         }, (err) => {
             console.log(err);
         });
-    })
+    },[])
 
     return (
         <div>
             <Navbar enteredDates={null} enteredQuery={null} />
             <div className="page">
-                {true == true && <div className="heading">Past Bookings</div>}
-                {true == true ? bookings.map((booking, index) => {
+                {bookings.length > 0 && <div className="heading">Past Bookings</div>}
+                {bookings.length > 0 ? bookings.map((booking, index) => {
                     return <BookingCard key={index} booking={booking} />
                 }) : (
                     <div className="heading">No past bookings found</div>

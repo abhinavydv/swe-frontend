@@ -2,8 +2,9 @@ import { useEffect, useState } from "react"
 import HotelCard from "./HotelCard"
 import Navbar from "./Navbar"
 import axios from "axios"
-import { Hotel } from "./SearchResults"
+import { Hotel, axiosHeader } from "./SearchResults"
 import '../styles/Wishlist.css'
+import { useNavigate } from "react-router-dom"
 
 type QueryResults = {
     status: string;
@@ -14,31 +15,14 @@ type QueryResults = {
 
 export const Wishlist = () => {
     const [queryResults, setQueryResults] = useState<QueryResults>();
-    const [hotels, setHotels] = useState<Hotel[]>([
-        // {
-        //     hotel_id: "1",
-        //     address: "Anjuna, Goa",
-        //     amenities: 4,
-        //     hotel_name: "Aalia Villas Anjuna, Goa by Aalia Collection Opens",
-        //     lowest_price: 3000,
-        //     rating: 9.2,
-        //     img_path: "https://r-cf.bstatic.com/images/hotel/max1024x768/268/268016203.jpg",
-        //     isWishlisted: true
-        // },
-        // {
-        //     hotel_id: "2",
-        //     address: "Indian Institute of Technology, Hyderabad",
-        //     amenities: 9,
-        //     hotel_name: "International Guest House, IITH",
-        //     lowest_price: 2000,
-        //     rating: 7.0,
-        //     img_path: "https://r-cf.bstatic.com/images/hotel/max1024x768/268/268016203.jpg",
-        //     isWishlisted: true
-        // },
-    ]);
+    const [hotels, setHotels] = useState<Hotel[]>([]);
+
+    const navigate = useNavigate();
 
     const removeFromWishlist = (hotel_id: string) => {
-        axios.post('/search/delete_from_wishlist', {hotel_id: hotel_id}).then((res) => {
+        axios.post('/search/delete_from_wishlist',{hotel_id: parseInt(hotel_id)}, {
+            headers: axiosHeader
+        }).then((res) => {
             console.log(res.data);
         }, (err) => {
             console.log(err);
@@ -51,11 +35,12 @@ export const Wishlist = () => {
     useEffect(() => {
         axios.get('/search/view_wishlist').then((res) => {
             console.log("data",res.data);
-            setQueryResults(res.data);
 
-            if(!res.data.alert) {
-                setHotels([...hotels,...res.data.wishlist]);
-            }
+            if(res.data.status == "Error") {
+                if(res.data.message == "user not logged in") {
+                    navigate('/customer/login');
+                }
+            } else if(res.data.status == "OK") setHotels(res.data.wishlist);
         }, (err) => {
             console.log(err);
         })
