@@ -15,26 +15,26 @@ type QueryResults = {
 export const Wishlist = () => {
     const [queryResults, setQueryResults] = useState<QueryResults>();
     const [hotels, setHotels] = useState<Hotel[]>([
-        {
-            hotel_id: "1",
-            address: "Anjuna, Goa",
-            amenities: 4,
-            hotel_name: "Aalia Villas Anjuna, Goa by Aalia Collection Opens",
-            lowest_price: 3000,
-            rating: 9.2,
-            img_path: "https://r-cf.bstatic.com/images/hotel/max1024x768/268/268016203.jpg",
-            isWishlisted: true
-        },
-        {
-            hotel_id: "2",
-            address: "Indian Institute of Technology, Hyderabad",
-            amenities: 9,
-            hotel_name: "International Guest House, IITH",
-            lowest_price: 2000,
-            rating: 7.0,
-            img_path: "https://r-cf.bstatic.com/images/hotel/max1024x768/268/268016203.jpg",
-            isWishlisted: true
-        },
+        // {
+        //     hotel_id: "1",
+        //     address: "Anjuna, Goa",
+        //     amenities: 4,
+        //     hotel_name: "Aalia Villas Anjuna, Goa by Aalia Collection Opens",
+        //     lowest_price: 3000,
+        //     rating: 9.2,
+        //     img_path: "https://r-cf.bstatic.com/images/hotel/max1024x768/268/268016203.jpg",
+        //     isWishlisted: true
+        // },
+        // {
+        //     hotel_id: "2",
+        //     address: "Indian Institute of Technology, Hyderabad",
+        //     amenities: 9,
+        //     hotel_name: "International Guest House, IITH",
+        //     lowest_price: 2000,
+        //     rating: 7.0,
+        //     img_path: "https://r-cf.bstatic.com/images/hotel/max1024x768/268/268016203.jpg",
+        //     isWishlisted: true
+        // },
     ]);
 
     const removeFromWishlist = (hotel_id: string) => {

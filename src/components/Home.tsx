@@ -10,9 +10,9 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(!user.isLoggedIn) {
-            navigate('/customer/login');
-        }
+        // if(!user?.isLoggedIn) {
+        //     navigate('/customer/login');
+        // }
 
         setSearchBar(true);
         setDateRange([]);

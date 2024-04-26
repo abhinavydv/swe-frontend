@@ -3,28 +3,28 @@ import Navbar from "./Navbar"
 import { AppContext, AppContextInterface } from "./App"
 import HotelPageBody from "./HotelPageBody";
 import axios from "axios";
-import { Hotel } from "@mui/icons-material";
+import { axiosHeader } from "./SearchResults";
 
 export type RoomAmenity = {
     name: string;
-    type: 'good' | 'bad';
+    quality: 'good' | 'bad';
 }
 
 export type Room = {
-    type: string;
-    bed: string;
-    maxOccupancy: number;
+    room_type: number;
+    bed_type: string;
+    max_occupancy: number;
     amenities: RoomAmenity[];
-    maxAvailable: number;
-    rate: number;
+    number_of_rooms: number;
+    price: number;
 }
 
 export type HotelInfo = {
     hotel_name: string;
     amenities: number;
-    images: string[];
+    photos: string[];
     description: string;
-    rooms: Room[];
+    available_rooms: Room[];
 }
 
 export interface HotelPageInterface {
@@ -37,36 +37,136 @@ export const HotelPageContext = createContext<Partial<HotelPageInterface>>({});
 const HotelPage = () => {
     const { setSearchBar } = useContext(AppContext) as AppContextInterface;
 
-    const [hotelInfo, setHotelInfo] = useState<HotelInfo>();
+    const [hotelInfo, setHotelInfo] = useState<HotelInfo>({
+        hotel_name: 'Aalia Villas Anjuna, Goa by Aalia Collection Opens',
+        amenities: 55,
+        photos: [
+            'https://t3.ftcdn.net/jpg/00/29/13/38/360_F_29133877_bfA2n7cWV53fto2BomyZ6pyRujJTBwjd.jpg',
+            'https://t3.ftcdn.net/jpg/00/29/13/38/360_F_29133877_bfA2n7cWV53fto2BomyZ6pyRujJTBwjd.jpg',
+            'https://t3.ftcdn.net/jpg/00/29/13/38/360_F_29133877_bfA2n7cWV53fto2BomyZ6pyRujJTBwjd.jpg',
+            'https://t3.ftcdn.net/jpg/00/29/13/38/360_F_29133877_bfA2n7cWV53fto2BomyZ6pyRujJTBwjd.jpg',
+            'https://t3.ftcdn.net/jpg/00/29/13/38/360_F_29133877_bfA2n7cWV53fto2BomyZ6pyRujJTBwjd.jpg',
+            'https://t3.ftcdn.net/jpg/00/29/13/38/360_F_29133877_bfA2n7cWV53fto2BomyZ6pyRujJTBwjd.jpg',
+            'https://t3.ftcdn.net/jpg/00/29/13/38/360_F_29133877_bfA2n7cWV53fto2BomyZ6pyRujJTBwjd.jpg',
+        ],
+        description: 'AaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAaliaAalia',
+        available_rooms: [
+            {
+                room_type: 0,
+                bed_type: 'Single',
+                max_occupancy: 2,
+                amenities: [
+                    {
+                        name: 'Free Cancellation',
+                        quality: 'good'
+                    },
+                    {
+                        name: 'Complimentary Breakfast',
+                        quality: 'good'
+                    },
+                    {
+                        name: 'Extra charges applicable for lunch and dinner',
+                        quality: 'bad'
+                    }
+                ],
+                number_of_rooms: 4,
+                price: 4000
+            },
+            {
+                room_type: 1,
+                bed_type: 'Queen',
+                max_occupancy: 3,
+                amenities: [
+                    {
+                        name: 'Free Cancellation',
+                        quality: 'good'
+                    },
+                    {
+                        name: 'Complimentary Breakfast',
+                        quality: 'good'
+                    },
+                    {
+                        name: 'Extra charges applicable for lunch and dinner',
+                        quality: 'bad'
+                    }
+                ],
+                number_of_rooms: 4,
+                price: 6000
+            },
+            {
+                room_type: 2,
+                bed_type: 'Queen',
+                max_occupancy: 3,
+                amenities: [
+                    {
+                        name: 'Free Cancellation',
+                        quality: 'good'
+                    },
+                    {
+                        name: 'Complimentary Breakfast',
+                        quality: 'good'
+                    },
+                    {
+                        name: 'Extra charges applicable for lunch and dinner',
+                        quality: 'bad'
+                    }
+                ],
+                number_of_rooms: 4,
+                price: 9000
+            },
+            {
+                room_type: 3,
+                bed_type: 'King',
+                max_occupancy: 4,
+                amenities: [
+                    {
+                        name: 'Free Cancellation',
+                        quality: 'good'
+                    },
+                    {
+                        name: 'Complimentary Breakfast',
+                        quality: 'good'
+                    },
+                    {
+                        name: 'Extra charges applicable for lunch and dinner',
+                        quality: 'bad'
+                    }
+                ],
+                number_of_rooms: 4,
+                price: 11000
+            }
+        ]
+    });
 
     useEffect(() => {
         setSearchBar(false);
-        
-
-        // const hotel_id = window.location.pathname.split('?')[1]?.split('&')[0]?.split('=')[1];
-        // const check_in_date = window.location.pathname.split('?')[1]?.split('&')[1]?.split('=')[1]?.split('__')[0];
-        // const check_out_date = window.location.pathname.split('?')[1]?.split('&')[1]?.split('=')[1]?.split('__')[1];
+    
         const urlParams = new URLSearchParams(window.location.search);
         const hotel_id = urlParams.get('hotel_id');
-        const dateRange = urlParams.get('dates');
+        const _dateRange = urlParams.get('dates');
         
-        if (!hotel_id || !dateRange) {
+        if (!hotel_id || !_dateRange) {
             console.error('Missing or malformed URL parameters');
             return;
         }
 
-        const [check_in_date, check_out_date] = dateRange.split('__');
-
-        axios.post('/search/get_hotel_page',{
+        const [check_in_date, check_out_date] = _dateRange.split('__');
+        const data = {
             hotel_id: parseInt(hotel_id), 
             date_range: {
                 start_date: check_in_date, 
-                end_date: check_out_date,
-            },}).then((res) => {
+                end_date: check_out_date
+            }
+        };
+
+        axios.post('/search/get_hotel_page',data,{
+            headers: axiosHeader
+        }).then((res) => {
             console.log('data',res.data);
 
             if(res.data.status === "OK") {
                 setHotelInfo(res.data.hotel_page)
+                console.log("Hotel data is set now");
             }
         }, (err) => {
             console.log(hotel_id)

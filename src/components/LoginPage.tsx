@@ -122,6 +122,7 @@ const Login= ({role}: any) => {
                 </form>
 
 
+                    <Link to={(role == "partner"? "/customer": "/partner")+'/register'}><div className='login-switch'>Don't have an account? Register now</div></Link>
                     <Link to={(role == "partner"? "/customer": "/partner")+'/login'}><div className='login-switch'>Are you a {role == "partner"? "customer": "partner"}?</div></Link>
 
             </div>

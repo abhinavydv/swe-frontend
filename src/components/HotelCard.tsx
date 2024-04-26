@@ -13,7 +13,7 @@ interface Props {
     addToWishlist?: (hotel: string) => void;
 }
 
-export const numNights = (dateRange: Date[]) => Math.floor((dateRange[1].getTime() - dateRange[0].getTime()) / (1000 * 60 * 60 * 24));
+export const numNights = (dateRange: Date[]) => Math.floor((dateRange[1]?.getTime() - dateRange[0]?.getTime()) / (1000 * 60 * 60 * 24));
 
 const HotelCard: React.FC<Props> = ({ hotel, removeFromWishlist = () => {}, addToWishlist = () => {} }) => {
     const { setSearchBar, dateRange } = useContext(AppContext) as AppContextInterface;

@@ -38,6 +38,10 @@ export interface SearchResultsInterface {
     setHotels: (hotels: Hotel[]) => void;
 }
 
+export const axiosHeader = {
+    "Content-Type": "application/json",
+}
+
 export const SearchResultsContext = createContext<Partial<SearchResultsInterface>>({});
 
 const SearchResults = () => {
@@ -64,8 +68,13 @@ const SearchResults = () => {
         const dates = window.location.search.split('?')[1].split('&')[1].split('=')[1];
         setQuery(query);
         setDates(dates);
+
+        const data = {text: query, date_range: dates};
+        console.log(data);
         
-        axios.post<QueryResults>('/search/no_filter',{text: query, date_range: {start_date: "", end_date: ""}}).then((res) => {
+        axios.post('/search/',data,{
+            headers: axiosHeader,
+        }).then((res) => {
             setQueryResults(res.data);
 
             if(res.data.status === "OK") {

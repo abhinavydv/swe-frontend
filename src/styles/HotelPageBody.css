@@ -32,15 +32,16 @@
     height: 100%;
 }
 
-.row {
+.hotel-page-row {
     display: flex;
     margin: 1rem 0 4rem;
     height: fit-content;
 }
 
-.description {
+.hotel-description {
     padding: 0.2rem 0 0.2rem 1.3rem;
     white-space: pre-line;
+    word-break: break-all;
     font-family: "Hind", sans-serif;
     font-weight: 500;
     font-size: 0.9rem;

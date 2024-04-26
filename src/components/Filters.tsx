@@ -72,7 +72,6 @@ const Filters: React.FC<Props> = ({ place, maxLowestPrice }) => {
                     </div>
                     <div className="filter-heading">Change dates</div>
                     <DateRangePicker
-                        aria-required
                         placeholder='Check-in - Check-out'
                         size='lg'
                         appearance='subtle'

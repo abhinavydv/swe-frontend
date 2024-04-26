@@ -72,10 +72,10 @@
   font-family: "Roboto Condensed",sans-serif;
   font-optical-sizing: auto;
   font-style: normal ;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
+  margin-bottom: 0.9rem;
+  margin-top: 0.5rem;
   text-decoration: underline;
-  padding-bottom: 1rem;
+  /* padding-bottom: 1rem; */
 }
 
 

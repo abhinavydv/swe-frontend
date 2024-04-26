@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'
 import Home from './Home'
 import SearchResults from './SearchResults'
 import LoginCustomer from './LoginCustomer'
@@ -22,16 +22,16 @@ axios.defaults.baseURL = "http://127.0.0.1:8000";
 
 export interface UserDataInterface {
     isLoggedIn: boolean;
-    first_name: string;
-    last_name: string;
-    phone: string;
-    email: string;
-    address: string;
-    gender: string;
-    dob: string;
-    nationality: string;
-    profile_picture: string;
-    role: "customer" | "partner";
+    first_name?: string;
+    last_name?: string;
+    phone?: string;
+    email?: string;
+    address?: string;
+    gender?: string;
+    dob?: string;
+    nationality?: string;
+    profile_picture?: string;
+    role?: "customer" | "partner";
 }
 
 export interface AppContextInterface {
@@ -58,7 +58,8 @@ type QueryResults = {
 export const AppContext = createContext<Partial<AppContextInterface>>({});
 
 function App() {
-    const [user, setUser] = useState<UserDataInterface>({
+    const [user, setUser] = useState<UserDataInterface>(
+        {
         isLoggedIn: true,
         first_name: "Abhinav",
         last_name: "Yadav",
@@ -70,7 +71,8 @@ function App() {
         nationality: "India",
         profile_picture: "https://oshiprint.in/image/cache/catalog/poster/new/mqp1380-1100x1100h.jpeg.webp",
         role: "customer",
-    });
+    }
+    );
     const [searchBar, setSearchBar] = useState<boolean>(false);
     const [mounted, setMounted] = useState<boolean>(false);
     const [dateRange, setDateRange] = useState<Date[]>([]);
@@ -81,7 +83,7 @@ function App() {
         axios.get("/users/logged").then((res) => {
             console.log("data", res.data);
             if (res.data.status === "OK")
-                setUser({
+                {setUser({
                     isLoggedIn: true,
                     first_name: res.data.user.first_name,
                     last_name: res.data.user.last_name,
@@ -93,7 +95,11 @@ function App() {
                     profile_picture: res.data.user.profile_image_path,
                     role: res.data.user.role,
                     nationality: res.data.user.nationality
-                } as UserDataInterface)
+                } as UserDataInterface)} else {
+                    // setUser({
+                    //     isLoggedIn: false,
+                    // })
+                }
             setMounted(true);
             console.log("user", user);
         }, (err) => {

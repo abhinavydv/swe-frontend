@@ -1,9 +1,17 @@
 import Beach from '../assets/beach.png';
 import Wifi from '../assets/wifi.png';
-import AC from '../assets/ac.png';
-import MiniBar from '../assets/minibar.png';
-import BathRoom from '../assets/bath.png';
+import Gym from '../assets/gym.png';
+import Parking from '../assets/parking.png';
+import BeachVolleyball from '../assets/beach-volleyball.png';
+import Breakfast from '../assets/breakfast.png';
+import CabServices from '../assets/cab.png';
+import Kitchen from '../assets/kitchen.png';
+import SwimmingPool from '../assets/swimming-pool.png';
 import '../styles/RoomAmenities.css';
+import { SearchResultsContext, SearchResultsInterface, amenityCheckInterface } from './SearchResults';
+import { useContext, useState } from 'react';
+import { HotelPageContext, HotelPageInterface } from './HotelPage';
+import { LocalParking, SportsGymnastics } from '@mui/icons-material';
 
 interface AmenityProps {
     amenityName: string;
@@ -14,11 +22,15 @@ interface IconMapInterface {
 }
 
 const amenityIconMap: IconMapInterface = {
-    'Seafront room': Beach,
-    'Free WiFi': Wifi,
-    'Air conditioning': AC,
-    'Minibar': MiniBar,
-    'Private Bathroom': BathRoom,
+    'Beach Access': Beach,
+    'Wifi': Wifi,
+    'Gym': Gym,
+    'Parking': Parking,
+    'Beach Volleyball': BeachVolleyball,
+    'Breakfast': Breakfast,
+    'Cab services': CabServices,
+    'Kitchen': Kitchen,
+    'Swimming Pool': SwimmingPool,
 }
 
 const Amenity: React.FC<AmenityProps> = ({ amenityName }) => {
@@ -31,7 +43,32 @@ const Amenity: React.FC<AmenityProps> = ({ amenityName }) => {
 }
 
 export const RoomAmenities = () => {
-    const amenitiesList = ['Free WiFi', 'Air conditioning', 'Minibar', 'Private Bathroom', 'Free WiFi', 'Air conditioning']
+    // const { amenities } = useContext(SearchResultsContext) as SearchResultsInterface;
+    const { hotelInfo } = useContext(HotelPageContext) as HotelPageInterface;
+
+    const [amenities, setAmenities] = useState<amenityCheckInterface>({
+        'Wifi': false,
+        'Beach Access': false,
+        'Gym': false,
+        'Parking': false,
+        'Beach Volleyball': false,
+        'Breakfast': false,
+        'Cab services': false,
+        'Kitchen': false,
+        'Swimming Pool': false,
+    });
+
+    const amenitiesList = [] as string[];
+    
+    const keys = Object.keys(amenities);
+    let counter = hotelInfo.amenities;
+    for(let i = 0; i < keys.length; i++) {
+        if(counter%2 == 1) {
+            amenitiesList.push(keys[i]);
+        }
+        counter = counter >> 1;
+    }
+
 
     return (
         <div>

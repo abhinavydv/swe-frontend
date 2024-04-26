@@ -1,22 +1,21 @@
 import '../styles/BookingSummary.css';
 import { Person } from "@mui/icons-material";
+import { BookingSummaryContext, BookingSummaryInterface } from './HotelPageBody';
+import { useContext } from 'react';
+import { duration } from 'moment';
+import { HotelPageContext, HotelPageInterface } from './HotelPage';
+import { AppContext, AppContextInterface } from './App';
+import { roomTypeMap } from './RoomCard';
 
-type room = {
-    roomType: string;
-    capacity: number;
-    rate: number;
-    numSelected: number;
-}
+export const BookingSummary = () => {
 
-interface Props {
-    selectedRooms: room[];
-    duration: [Date, Date]
-}
+    const { bill, selectedRooms } = useContext(BookingSummaryContext) as BookingSummaryInterface;
+    const { hotelInfo } = useContext(HotelPageContext) as HotelPageInterface;
+    const { dateRange } = useContext(AppContext) as AppContextInterface;
 
-export const BookingSummary: React.FC<Props> = ({ selectedRooms, duration }) => {
+    const availableRooms = hotelInfo.available_rooms;
 
-    const noRoomSelected = () => selectedRooms.length === 0;
-    let totalPrice = 0;
+    const noRoomSelected = () => selectedRooms.every((roomCount) => roomCount == 0);
 
     return (
         <div className='booking-summary'>
@@ -26,12 +25,10 @@ export const BookingSummary: React.FC<Props> = ({ selectedRooms, duration }) => 
             ) : (
                 <div className="outer">
                     <div className="room-details">
-                        {selectedRooms.map((room, index) => {
-                            totalPrice += room.rate * room.numSelected;
-
-                            return (
+                        {availableRooms.map((room, index) => {
+                            if(selectedRooms[room.room_type] > 0) return (
                                 <div className="room-detail" key={index}>
-                                    {room.roomType} ● {room.capacity} <Person /> X {room.numSelected}
+                                    {roomTypeMap[room.room_type]} ● {room.max_occupancy} <Person /> X {selectedRooms[room.room_type]}
                                 </div>
                             )
                         })}
@@ -39,11 +36,11 @@ export const BookingSummary: React.FC<Props> = ({ selectedRooms, duration }) => 
                     <div className="horizontal-bar"></div>
                     <div className="total">
                         <div className="booking-duration">
-                            {duration[0].toDateString()} - {duration[1].toDateString()}
+                            {dateRange[0].toDateString()} - {dateRange[1].toDateString()}
                         </div>
                         <div className="hori-spacer"></div>
                         <div className="summary-price">
-                            ₹{totalPrice}
+                            ₹{bill}
                         </div>
                     </div>
                 </div>

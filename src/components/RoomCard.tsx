@@ -6,13 +6,26 @@ import QueenBed from '../assets/queen-bed.png'
 import KingBed from '../assets/king-bed.png'
 import Tick from '../assets/tick.png'
 import Cross from '../assets/cross.png'
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { RoomAmenity } from "./HotelPage"
+import { numNights } from "./HotelCard"
+import { AppContext, AppContextInterface } from "./App"
+import { BookingSummaryContext, BookingSummaryInterface } from "./HotelPageBody"
+
+export const roomTypeMap: {[key: number]: string} = {
+    0: 'Standard',
+    1: 'Executive',
+    2: 'Suite',
+    3: 'Executive Suite',
+}
 
 interface Props {
-    roomType: string;
+    roomType: number;
     capacity: number;
     bedType: string;
     maxAvailable: number;
+    roomAmenities: RoomAmenity[];
+    rate: number;
 }
 
 interface IconMapInterface {
@@ -25,24 +38,42 @@ const bedIconMap: IconMapInterface = {
     'King': KingBed,
 }
 
-export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvailable }) => {
-    const [roomSelectionCount, setRoomSelectionCount] = useState(0);
+export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvailable, roomAmenities, rate }) => {
+    const { dateRange } = useContext(AppContext) as AppContextInterface;
+
+    const totalPrice = rate*numNights(dateRange);
+    
+    const { bill, selectedRooms, setBill, setSelectedRooms } = useContext(BookingSummaryContext) as BookingSummaryInterface;
     const [maxFlag, setMaxFlag] = useState(false);
 
+    console.log(dateRange);
+
     const handleIncrement = () => {
-        if(roomSelectionCount == maxAvailable) {
+        if(selectedRooms[roomType] == maxAvailable) {
             setMaxFlag(true)
         } else {
-            setRoomSelectionCount(roomSelectionCount + 1)
+            setSelectedRooms(selectedRooms.map((room, index) => {
+                if(index == roomType) {
+                    return room + 1;
+                }
+                return room;
+            }));
+            setBill(bill + totalPrice);
         }
     }
 
     const handleDecrement = () => {
-        if(roomSelectionCount == maxAvailable) {
+        if(selectedRooms[roomType] == maxAvailable) {
             setMaxFlag(false);
         }
-        if(roomSelectionCount > 0) {
-            setRoomSelectionCount(roomSelectionCount - 1)
+        if(selectedRooms[roomType] > 0) {
+            setSelectedRooms(selectedRooms.map((room, index) => {
+                if(index == roomType) {
+                    return room - 1;
+                }
+                return room;
+            }));
+            setBill(bill - totalPrice);
         }
     }
 
@@ -58,24 +89,29 @@ export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvai
                 }} elevation={3}>
                 <div className="left">
                     <div className='roomType'>
-                        {roomType} ● {capacity} <Person />
+                        {roomTypeMap[roomType]} ● {capacity} <Person />
                     </div>
                     <div className='roomCardContent'>
-                        Bed: <img src={bedIconMap[bedType]} className='bedIcon' /> {bedType}-size bed
+                        Bed: <img src={bedIconMap[bedType]} className='bedIcon' /> {bedType}-sized bed
                         <div className='features'>
-                            <div className="feature">
-                                <img src={Tick} className='green-tick' /> Free cancellation
-                            </div>
-                            <div className="feature">
-                                <img src={Tick} className='green-tick' /> Complimentary Breakfast
-                            </div>
-                            <div className="bad">
-                                <img src={Cross} className='red-cross' />
-                                <div className="cross-spacer"></div>
-                                <div className="feature">
-                                    Extra charges applicable for lunch and dinner
-                                </div>
-                            </div>
+                            {roomAmenities.map((amenity, index) => (
+                                amenity.quality == 'good' && (
+                                    <div key={index} className="feature">
+                                        <img src={Tick} className='green-tick' /> {amenity.name}
+                                    </div>
+                                )
+                            ))}
+                            {roomAmenities.map((amenity, index) => (
+                                amenity.quality == 'bad' && (
+                                    <div key={index} className="bad">
+                                        <img src={Cross} className='red-cross' />
+                                        <div className="cross-spacer"></div>
+                                        <div className="feature">
+                                            {amenity.name}
+                                        </div>
+                                    </div>
+                                )
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -86,13 +122,13 @@ export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvai
                     <div className="right-total-price">
                         <div className="price-spacer"></div>
                         <div className="price">
-                            ₹18,000
+                            ₹{totalPrice}
                         </div>
                     </div>
                     <div className="right-total-price">
                         <div className="price-spacer"></div>
                         <div className="rate">
-                            ₹ 3,000/night
+                            ₹ {rate}/night
                         </div>
                     </div>
                     <div className="right-spacer"></div>
@@ -115,7 +151,7 @@ export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvai
                                 "&:hover": { color: "rgb(15, 145, 215)", }
                             }} />
                         </IconButton>
-                        {roomSelectionCount}
+                        {selectedRooms[roomType]}
                         <IconButton  sx={{
                             borderRadius: '50%',
                             marginLeft: '0.5rem',
