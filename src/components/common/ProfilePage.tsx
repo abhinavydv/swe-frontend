@@ -12,13 +12,17 @@ const ProfilePage = () => {
 
     const navigate = useNavigate();
 
-    const [ selectedTab, setSelectTab ] = useState(0);
+    const [ selectedTab, setSelectedTab ] = useState(0);
 
     var tabs: string[] = [];
     var tabpanels: any = [];
     
     if (mounted && !user?.isLoggedIn) {
         navigate('/customer/login?redirect=/profile');
+    }
+
+    if (!mounted){
+        return <Box>Loading...</Box>
     }
 
     if (user?.isLoggedIn){
@@ -33,6 +37,7 @@ const ProfilePage = () => {
         }
         if (user.role === "partner"){
             tabs = ["Profile", "Account", "KYP", "Performance", "About"];
+            console.log("partner", user)
             tabpanels = [
                 <ProfileTabPanel user={user}/>,
                 <AccountTabPanel />,
@@ -40,6 +45,17 @@ const ProfilePage = () => {
                 <PerformanceTabPanel />,
                 <AboutTabPanel />
             ]
+        }
+    }
+
+    if (window) {
+        const tab = window.location.href.split("?").pop()?.split("=").pop();
+        if (tab && parseInt(tab) < tabs.length){
+            if (selectedTab != parseInt(tab))
+                setSelectedTab(parseInt(tab));
+        } else {
+            if (selectedTab != 0)
+                setSelectedTab(0);
         }
     }
 
@@ -74,7 +90,7 @@ const ProfilePage = () => {
                             variant="scrollable"
                             value={selectedTab}
                             onChange={(_event, newValue) => {
-                                setSelectTab(newValue);
+                                navigate(`/profile?tab=${newValue}`);
                             }}
                             sx={{
                                 borderRight: 1,

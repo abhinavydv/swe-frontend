@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FileHandler, upload_files } from "../common/FileHandler";
 import { Clear, Delete, Edit } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 
 interface EditPropertyProps {
@@ -12,12 +13,12 @@ interface EditPropertyProps {
 }
 
 interface RoomInterface {
-    room_type?: string,
-    bed_type?: string,
-    max_occupancy?: number,
-    price?: number,
-    total_rooms?: number
-    room_amenities?: number,
+    room_type: number,
+    bed_type: string,
+    max_occupancy: number,
+    price: number,
+    total_rooms: number
+    room_amenities: number,
 }
 
 interface PropertyInterface {
@@ -55,7 +56,7 @@ const Room = ({room, onEdit, onDelete}: {room: RoomInterface, onEdit: () => void
         <Box sx={{display: "flex"}}>
             <Box sx={{display: "flex", flexDirection: "column", width: "100%"}}>
                 <Typography variant="h6">
-                    Room Type: {room.room_type}
+                    Room Type: {allRoomTypes[room.room_type]}
                 </Typography>
                 <Typography variant="h6">
                     Bed Type: {room.bed_type}
@@ -108,18 +109,15 @@ const allBedTypes = [
 ]
 
 const allRoomTypes = [
-    "Single",
-    "Double",
-    "Triple",
-    "Quad",
-    "Queen",
-    "King",
-    "Suite"
+    "Standard",
+    "Executive",
+    "Suite",
+    "Executive Suite",
 ]
 
 const RoomDialog = ({room, setRoom, open, onClose}: {room: RoomInterface, setRoom: (room: RoomInterface) => void, open: boolean, onClose: () => void}) => {
 
-    const [roomType, setRoomType] = useState<string>(room?.room_type || "");
+    const [roomType, setRoomType] = useState<number>(room?.room_type || 0);
     const [bedType, setBedType] = useState<string>(room?.bed_type || "");
     const [maxOccupancy, setMaxOccupancy] = useState<number>(room?.max_occupancy || 0);
     const [price, setPrice] = useState<number>(room?.price || 0);
@@ -141,10 +139,13 @@ const RoomDialog = ({room, setRoom, open, onClose}: {room: RoomInterface, setRoo
                         fullWidth
                         value={roomType}
                         onChange={(e) => {
-                            setRoomType(e.target.value);
+                            if (typeof e.target.value === "string")
+                                setRoomType(parseInt(e.target.value));
+                            else
+                                setRoomType(e.target.value)
                         }}
                     >
-                        {allRoomTypes.map((room_type, index) => <MenuItem key={index} value={room_type}>{room_type}</MenuItem>)}
+                        {allRoomTypes.map((room_type, index) => <MenuItem key={index} value={index}>{room_type}</MenuItem>)}
                     </Select>
                 </Box>
                 <Box sx={{display: "flex", flexDirection: "column", marginTop: "1rem"}}>
@@ -253,12 +254,15 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
         amenities: 0,
         tag_list: "",
         rooms: [],
+        property_paper: ""
     });
     const [rooms, setRooms] = useState<RoomInterface[]>([]);
     const [roomDialogIndex, setRoomDialogIndex] = useState<number>(-1);
     const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
     const [isPDFUploading, setIsPDFUploading] = useState<boolean>(false);
-    const [tags, setTags]   = useState<string[]>(property?.tag_list?.split(",").filter((tag => tag !== '')) || []);
+    const [tags, setTags] = useState<string[]>(property?.tag_list?.split(",").filter((tag => tag !== '')) || []);
+
+    const navigate = useNavigate();
 
     const amenities = [
         "Free Wifi",
@@ -284,9 +288,82 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
         }
     }, [isNew, hotelId])
 
-    const saveProperty = () => {
+    const saveProperty = async () => {
         console.log(property);
-        
+        try {
+            if (property.hotel_name === ""){
+                alert("Hotel name cannot be empty");
+                return;
+            }
+            if (!property.property_images || property.property_images.length === 0){
+                alert("Please upload atleast one image");
+                return;
+            }
+            if (property.description === ""){
+                alert("Description cannot be empty");
+                return;
+            }
+            if (property.pincode === ""){
+                alert("Pincode cannot be empty");
+                return;
+            }
+            if (property.locality === ""){
+                alert("Locality cannot be empty");
+                return;
+            }
+            if (property.address === ""){
+                alert("Address cannot be empty");
+                return;
+            }
+            if (property.city === ""){
+                alert("City cannot be empty");
+                return;
+            }
+            if (property.state === ""){
+                alert("State cannot be empty");
+                return;
+            }
+            if (property.country === ""){
+                alert("Country cannot be empty");
+                return;
+            }
+            if (!property.rooms || property.rooms.length === 0){
+                alert("Please add atleast one room");
+                return;
+            }
+            if (property.tag_list === ""){
+                alert("Please add atleast one tag");
+                return;
+            }
+            if (property.property_paper === ""){
+                alert("Please upload property paper");
+                return;
+            }
+
+            const res = await axios.post("/hotels/add_hotel", property)
+            console.log(res);
+            alert("Hotel Saved")
+            setProperty({
+                hotel_name: "",
+                property_images: [],
+                description: "",
+                pincode: "",
+                locality: "",
+                address: "",
+                city: "",
+                state: "",
+                country: "",
+                amenities: 0,
+                tag_list: "",
+                rooms: [],
+                property_paper: ""
+            })
+            setRooms([]);
+            setTags([]);
+            navigate("/partner?tab=1")
+        } catch (e){
+            alert("Error: " + e);
+        }
     }
 
     return (
@@ -521,7 +598,7 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
                     <Box sx={{marginTop: "1rem"}}>
                         <Button variant="outlined" onClick={() => {
                             const newRoom = {
-                                room_type: allRoomTypes[0],
+                                room_type: 0,
                                 bed_type: allBedTypes[0],
                                 max_occupancy: 0,
                                 price: 0,
@@ -568,6 +645,7 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
                                 <Typography marginRight="1rem">{tag}</Typography>
                                 <IconButton onClick={() => {
                                     setTags(tags.filter((_, i) => i != index));
+                                    setProperty({...property, tag_list: tags.filter((_, i) => i != index).join(",")});
                                 }}>
                                     <Clear />
                                 </IconButton>

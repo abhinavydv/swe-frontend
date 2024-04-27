@@ -4,6 +4,7 @@ import Navbar from "../Navbar";
 import { LeftTab, TabPanel } from "../common/TabPanel";
 import { UserDataInterface } from "../App";
 import { ListAPropertyTabPanel } from "./PartnerTabPanels";
+import { useNavigate } from "react-router-dom";
 
 interface PartnerHomeProps {
     user: UserDataInterface;
@@ -14,12 +15,25 @@ export const PartnerHome = ({user, ...props}: PartnerHomeProps) =>  {
 
     const [ selectedTab, setSelectedTab ] = useState(0);
 
+    const navigate = useNavigate();
+
     var tabs: string[] = ["List a Property", "My Properties", "Performance"];
     var tabpanels: any = [
         <ListAPropertyTabPanel />,
         <Box>My Properties</Box>,
         <Box>Performance</Box>,
     ];
+
+    if (window) {
+        const tab = window.location.href.split("?").pop()?.split("=").pop();
+        if (tab && parseInt(tab) < tabs.length){
+            if (selectedTab != parseInt(tab))
+                setSelectedTab(parseInt(tab));
+        } else {
+            if (selectedTab != 0)
+                setSelectedTab(0);
+        }
+    }
 
     return (
         <Box {...props}>
@@ -48,7 +62,7 @@ export const PartnerHome = ({user, ...props}: PartnerHomeProps) =>  {
                             variant="scrollable"
                             value={selectedTab}
                             onChange={(_event, newValue) => {
-                                setSelectedTab(newValue);
+                                navigate(`/partner?tab=${newValue}`);
                             }}
                             sx={{
                                 borderRight: 1,

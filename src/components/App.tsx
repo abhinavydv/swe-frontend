@@ -68,7 +68,7 @@ function App() {
         gender: "Attack Helicopter",
         dob: "03-05-2000",
         nationality: "India",
-        profile_picture: "https://oshiprint.in/image/cache/catalog/poster/new/mqp1380-1100x1100h.jpeg.webp",
+        profile_picture: "",
         role: "customer",
     });
     const [searchBar, setSearchBar] = useState<boolean>(false);
@@ -90,12 +90,11 @@ function App() {
                     address: res.data.user.address,
                     gender: res.data.user.gender,
                     dob: res.data.user.dob,
-                    profile_picture: res.data.user.profile_image_path,
+                    profile_picture: res.data.user.profile_img,
                     role: res.data.user.role,
                     nationality: res.data.user.nationality
                 } as UserDataInterface)}
             setMounted(true);
-            console.log("user", user);
         }, (err) => {
             console.log("error", err);
         });

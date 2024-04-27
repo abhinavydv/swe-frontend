@@ -21,7 +21,7 @@ export const ProfileTabPanel = ({user, ...props}: ProfileTabPanelProps) => {
     const [firstName, setFirstName] = useState(user?.first_name);
     const [lastName, setLastName] = useState(user?.last_name);
     const [email, setEmail] = useState(user?.email || "");
-    const [profilePicture, _setProfilePicture] = useState(user?.profile_picture || "");
+    const [profilePicture, setProfilePicture] = useState(user?.profile_picture || "");
     const [phone, setPhone] = useState(user?.phone);
     const [dob, setDob] = useState(dayjs(user?.dob || ""));
     const [gender, setGender] = useState(user?.gender || "");
@@ -78,7 +78,16 @@ export const ProfileTabPanel = ({user, ...props}: ProfileTabPanelProps) => {
             alert("Nationality cannot be empty");
             return;
         }
-
+        console.log({
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            dob: dob.format("YYYY-MM-DD"),
+            phone_number: phone,
+            gender: gender,
+            nationality: nationality,
+            profile_img: profilePicture || "",
+        })
         axios.post("/users/edit_profile", {
             first_name: firstName,
             last_name: lastName,
@@ -100,6 +109,18 @@ export const ProfileTabPanel = ({user, ...props}: ProfileTabPanelProps) => {
         })
     }
 
+    const profilePicInput = document.createElement("input");
+    profilePicInput.type = "file";
+    profilePicInput.accept = "image/*";
+    profilePicInput.multiple = false;
+    profilePicInput.onchange = async (e) => {
+        const target = e.target as HTMLInputElement;
+        if (target.files){
+            const urls = await upload_files(Array.from(target.files));
+            setProfilePicture(urls[0]);
+        }
+    }
+
     return (
         <Box {...props} sx={{display: "flex", flexDirection: "column"}}>
             <Box sx={{display: "flex", flexDirection: "row", marginRight: {xs: "0", sm: "1rem", md: "2rem", lg: "2rem", xl: "2rem"},}}>
@@ -116,7 +137,7 @@ export const ProfileTabPanel = ({user, ...props}: ProfileTabPanelProps) => {
                                 borderRadius: "50%",
                             }}
                             onError={(e) => {
-                                console.log("Error");
+                                console.log("Error", e);
                                 const target = e.target as HTMLImageElement;
                                 target.src = defaultProfilePic;
                             }}
@@ -128,10 +149,8 @@ export const ProfileTabPanel = ({user, ...props}: ProfileTabPanelProps) => {
                         <IconButton 
                             sx={{
                                 border: "1px solid grey",
-                                // display: editButtonVisible ? "inherit" : "none",
-                                // marginTop: "-5rem",
-                                // marginBottom: "5rem",
                             }}
+                            onClick={() => profilePicInput.click()}
                         >
                             <Edit />
                         </IconButton>
@@ -298,7 +317,25 @@ export const AccountTabPanel = ({...props}: any) => {
                 display: "flex",
                 justifyContent: "flex-end",
             }}>
-                <Button variant="contained" onClick={() => {}}>Update Password</Button>
+                <Button variant="contained" onClick={() => {
+                    if (newPassword !== confirmPassword){
+                        alert("Passwords do not match");
+                        return;
+                    }
+                    axios.post("/users/change_password", {
+                        old_password: oldPassword,
+                        new_password: newPassword,
+                    }).then(res => {
+                        if (res.data.status == "OK"){
+                            alert("Password Updated Successfully");
+                        }
+                        else {
+                            alert("Failed to update password. Please try again.")
+                        }
+                    }, (err) => {
+                        alert("Failed to update password. Please try again.\n"+err)
+                    })
+                }}>Update Password</Button>
             </Box>
         </Box>
         <Divider sx={{
@@ -342,6 +379,7 @@ export const KYPTabPanel = ({...props}: any) => {
 
     useEffect(() => {
         axios.get("/users/get_kyp").then((res) => {
+            console.log("kyp", res.data);
             if (res.data.status === "OK"){
                 setPanNo(res.data.kyp.pan_number);
                 setAadharNo(res.data.kyp.aadhar_number);
@@ -353,31 +391,12 @@ export const KYPTabPanel = ({...props}: any) => {
         })
     }, [])
 
-    const uploadFile = (file: File, url: string) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        axios.post(url, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then(res => {
-            if (res.data.status === "OK"){
-                alert("File Uploaded Successfully");
-            }
-            else {
-                alert("Failed to upload file. Please try again. " + res.data.message)
-            }
-        }, (err) => {
-            alert("Failed to upload file. Please try again.\n"+err)
-        })
-    }
-
     const updateKYP = (_e: any) => {
-        axios.post("/users/kyp", {
+        axios.post("/users/kyp_other_data", {
             pan_number: panNo,
-            // aadhar_photo_path: aadharNo,
-            // hotelling_license: hotellingLicense,
             aadhar_number: aadharNo,
+            aadhar_photo_path: aadharPdfPath,
+            hotelling_license: hotellingLicensePath,
             account_number: accountNo,
             ifsc_code: ifscCode,
         }).then(res => {
@@ -520,7 +539,6 @@ export const PreviousBookingsTabPanel = ({...props}: any) => {
         axios.get("/bookings/past_bookings").then((res) => {
             if (res.data.status === "OK"){
                 setBookings(res.data.bookings);
-                console.log(res.data.bookings);
             }
         }, (err) => {
             console.log(err);
