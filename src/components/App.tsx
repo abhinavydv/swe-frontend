@@ -86,7 +86,7 @@ function App() {
                     first_name: res.data.user.first_name,
                     last_name: res.data.user.last_name,
                     phone: res.data.user.phone_number,
-                    email: res.data.user.email_id,
+                    email: res.data.user.email,
                     address: res.data.user.address,
                     gender: res.data.user.gender,
                     dob: res.data.user.dob,

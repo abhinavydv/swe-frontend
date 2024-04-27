@@ -7,9 +7,10 @@ interface FileHandlerProps {
     onFileRemove?: (index: number) => void;
     multiple?: boolean;
     text: string;
+    isUploading?: boolean;
 }
 
-export const upload_files = async (files: File[], onUploadProgress: (progressEvent: AxiosProgressEvent) => void) => {
+export const upload_files = async (files: File[], onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) => {
     var urls: string[] = [];
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
@@ -36,7 +37,7 @@ export const upload_files = async (files: File[], onUploadProgress: (progressEve
 }
 
 
-export const FileHandler = ({type, multiple, onChange, onFileRemove, text="Upload Image", ...props}: FileHandlerProps) => {
+export const FileHandler = ({type, multiple, onChange, onFileRemove, isUploading, text="Upload Image", ...props}: FileHandlerProps) => {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = type == "image" ? "image/*" : type == "pdf" ? "application/pdf" : "*";
@@ -47,23 +48,10 @@ export const FileHandler = ({type, multiple, onChange, onFileRemove, text="Uploa
             onChange(target.files);
         }
     }
-    return <Box width="100%">
-        <Button variant="outlined" onClick={() => {
+    return <Box width="100%" {...props}>
+        <Button disabled={isUploading} variant="outlined" onClick={() => {
             input.click();
         }}>
-            <input
-                type="file"
-                accept={type == "image" ? "image/*" : type == "pdf" ? "application/pdf" : "*"}
-                onChange={(e) => {
-                    const target = e.target as HTMLInputElement;
-                    if (target.files){
-                        onChange(target.files);
-                    }
-                }}
-                multiple={multiple}
-                {...props}
-                style={{display: "none"}}
-            />
             {text}
         </Button>
     </Box>

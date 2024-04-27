@@ -16,6 +16,11 @@ const ProfilePage = () => {
 
     var tabs: string[] = [];
     var tabpanels: any = [];
+    
+    if (mounted && !user?.isLoggedIn) {
+        navigate('/customer/login?redirect=/profile');
+    }
+
     if (user?.isLoggedIn){
         if (user.role === "customer"){
             tabs = ["Profile", "Account", "Previous Bookings", "About"];
@@ -36,10 +41,6 @@ const ProfilePage = () => {
                 <AboutTabPanel />
             ]
         }
-    }
-
-    if (mounted && !user?.isLoggedIn) {
-        navigate('/customer/login?redirect=/profile');
     }
 
     if (!mounted || !user){

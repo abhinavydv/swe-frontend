@@ -1,5 +1,5 @@
 import { Box, Typography, TextField, IconButton, Button, Divider, Select, MenuItem} from "@mui/material";
-import { Edit } from "@mui/icons-material";
+import { Delete, Edit } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { UserDataInterface } from "../App";
 import { DatePicker } from '@mui/x-date-pickers';
@@ -8,6 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import dayjs from "dayjs";
 import axios from "axios";
 import defaultProfilePic from "../../assets/defaultProfilePic.png"
+import { FileHandler, upload_files } from "./FileHandler";
 
 
 interface ProfileTabPanelProps {
@@ -19,7 +20,7 @@ export const ProfileTabPanel = ({user, ...props}: ProfileTabPanelProps) => {
 
     const [firstName, setFirstName] = useState(user?.first_name);
     const [lastName, setLastName] = useState(user?.last_name);
-    const [email, setEmail] = useState(user?.email);
+    const [email, setEmail] = useState(user?.email || "");
     const [profilePicture, _setProfilePicture] = useState(user?.profile_picture || "");
     const [phone, setPhone] = useState(user?.phone);
     const [dob, setDob] = useState(dayjs(user?.dob || ""));
@@ -312,6 +313,16 @@ export const AccountTabPanel = ({...props}: any) => {
                 display: "flex",
                 maxWidth: "25rem"
             }}>
+                <Button color="error" variant="contained" onClick={async () => {
+                    await axios.get("/users/logout");
+                    window.location.href = "/";
+                }}>Logout</Button>
+            </Box>
+            <Box sx={{
+                marginTop: "2rem",
+                display: "flex",
+                maxWidth: "25rem"
+            }}>
                 <Button color="error" variant="contained" onClick={() => {}}>Delete Account</Button>
             </Box>
         </Box>
@@ -326,6 +337,8 @@ export const KYPTabPanel = ({...props}: any) => {
     const [hotellingLicensePath, setHotellingLicensePath] = useState("");
     const [accountNo, setAccountNo] = useState("");
     const [ifscCode, setIfscCode] = useState("");
+    const [isAadharUploading, setIsAadharUploading] = useState(false);
+    const [isHotellingLicenseUploading, setIsHotellingLicenseUploading] = useState(false);
 
     useEffect(() => {
         axios.get("/users/get_kyp").then((res) => {
@@ -400,15 +413,21 @@ export const KYPTabPanel = ({...props}: any) => {
                 {
                     aadharPdfPath !== "" ?
                     <Box>
-                        <Button variant="contained" href={aadharPdfPath} target="_blank">View Aadhar</Button>
+                        <Button variant="outlined" href={aadharPdfPath} target="_blank">View Aadhar</Button>
+                        <IconButton onClick={async () => {
+                            await axios.post("/misc/delete_file", {file_id: aadharPdfPath});
+                            setAadharPdfPath("");
+                        }}>
+                            <Delete />
+                        </IconButton>
                     </Box> :
                     <Box sx={{display: "flex",}}>
-                        <TextField type="file"
-                            onChange={(e) => {
-                                const target = e.target as HTMLInputElement;
-                                uploadFile(target.files![0], "/users/upload_aadhar");
-                            }}
-                        />
+                        <FileHandler type="pdf" text="Upload Aadhar" isUploading={isAadharUploading} onChange={async (files) => {
+                            setIsAadharUploading(true);
+                            const urls = await upload_files(Array.from(files));
+                            setAadharPdfPath(urls[0]);
+                            setIsAadharUploading(false);
+                        }}/>
                     </Box>
                 }
             </Box>
@@ -419,15 +438,21 @@ export const KYPTabPanel = ({...props}: any) => {
                 {
                     hotellingLicensePath !== "" ?
                     <Box>
-                        <Button variant="contained" href={hotellingLicensePath} target="_blank">View License</Button>
+                        <Button variant="outlined" href={hotellingLicensePath} target="_blank">View License</Button>
+                        <IconButton onClick={async () => {
+                            await axios.post("/misc/delete_file", {file_id: hotellingLicensePath});
+                            setHotellingLicensePath("");
+                        }}>
+                            <Delete />
+                        </IconButton>
                     </Box> :
                     <Box sx={{display: "flex",}}>
-                        <TextField type="file"
-                            onChange={(e) => {
-                                const target = e.target as HTMLInputElement;
-                                uploadFile(target.files![0], "/users/upload_hotelling_license");
-                            }}
-                        />
+                        <FileHandler type="pdf" text="Upload Hotelling License" isUploading={isHotellingLicenseUploading} onChange={async (files) => {
+                            setIsHotellingLicenseUploading(true);
+                            const urls = await upload_files(Array.from(files));
+                            setHotellingLicensePath(urls[0]);
+                            setIsHotellingLicenseUploading(false);
+                        }}/>
                     </Box>
                 }
             </Box>
