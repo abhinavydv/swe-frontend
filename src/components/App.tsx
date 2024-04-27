@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Home from './Home'
 import SearchResults from './SearchResults'
 import LoginCustomer from './LoginCustomer'
@@ -14,6 +14,7 @@ import HotelPage from './HotelPage';
 import axios from 'axios'
 import { Wishlist } from './Wishlist'
 import { PastBookings } from './PastBookings'
+import { SelectGuests } from './SelectGuests'
 
 
 axios.defaults.withCredentials = true;
@@ -41,18 +42,22 @@ export interface AppContextInterface {
     dateRange: Date[];
     priceRange: number[];
     maxLowestPrice: number;
+    bookingSummary?: BookingSummaryInterface;
     setUser: (user: UserDataInterface) => void;
     setSearchBar: (searchBar: boolean) => void;
     setDateRange: (dateRange: Date[]) => void;
     setPriceRange: (priceRange: number[]) => void;
     setMaxLowestPrice: (maxLowestPrice: number) => void;
+    setBookingSummary: (bookingSummary: BookingSummaryInterface) => void;
 }
 
-type QueryResults = {
-    status: string;
-    message: string;
-    alert: boolean;
-    user?: UserDataInterface;
+export interface BookingSummaryInterface {
+    user: UserDataInterface;
+    bill: number;
+    hotelID: number;
+    selectedRooms: number[];
+    dateRange: Date[];
+    guests?: number[];
 }
 
 export const AppContext = createContext<Partial<AppContextInterface>>({});
@@ -71,11 +76,12 @@ function App() {
         profile_picture: "",
         role: "customer",
     });
-    const [searchBar, setSearchBar] = useState<boolean>(false);
+    const [searchBar, setSearchBar] = useState<boolean>(true);
     const [mounted, setMounted] = useState<boolean>(false);
     const [dateRange, setDateRange] = useState<Date[]>([]);
     const [priceRange, setPriceRange] = useState<number[]>([0,Infinity]);
     const [maxLowestPrice, setMaxLowestPrice] = useState<number>(0);
+    const [bookingSummary, setBookingSummary]  = useState<BookingSummaryInterface>();
 
     useEffect(() => {
         axios.get("/users/logged").then((res) => {
@@ -101,7 +107,7 @@ function App() {
     }, [])
 
     return (
-        <AppContext.Provider value={{ user, searchBar, mounted, dateRange, priceRange, maxLowestPrice ,setUser, setSearchBar, setDateRange, setPriceRange, setMaxLowestPrice }} >
+        <AppContext.Provider value={{ user, searchBar, mounted, dateRange, priceRange, maxLowestPrice, bookingSummary, setUser, setSearchBar, setDateRange, setPriceRange, setMaxLowestPrice, setBookingSummary }} >
             <Box minHeight="100vh" sx={{display: "flex", flexDirection: "column"}}>
                 <Router>
                     <Routes>
@@ -116,6 +122,7 @@ function App() {
                         <Route path='/profile' element={<ProfilePage />} />
                         <Route path='/user/wishlist' element={<Wishlist />} />
                         <Route path='/user/past_bookings' element={<PastBookings />} />
+                        <Route path='/customer/booking/add_guests' element={<SelectGuests />} />
                     </Routes>
                     <Box sx={{marginTop: "auto"}}>
                         <Footer/>

@@ -1,17 +1,20 @@
 import '../styles/BookingSummary.css';
 import { Person } from "@mui/icons-material";
-import { BookingSummaryContext, BookingSummaryInterface } from './HotelPageBody';
-import { useContext } from 'react';
-import { duration } from 'moment';
-import { HotelPageContext, HotelPageInterface } from './HotelPage';
-import { AppContext, AppContextInterface } from './App';
+import { HotelInfo } from './HotelPage';
 import { roomTypeMap } from './RoomCard';
 
-export const BookingSummary = () => {
+interface Props {
+    bill: number;
+    selectedRooms: number[];
+    hotelInfo: HotelInfo;
+    dateRange: Date[];
+}
 
-    const { bill, selectedRooms } = useContext(BookingSummaryContext) as BookingSummaryInterface;
-    const { hotelInfo } = useContext(HotelPageContext) as HotelPageInterface;
-    const { dateRange } = useContext(AppContext) as AppContextInterface;
+export const BookingSummary: React.FC<Props> = ({ bill, selectedRooms, hotelInfo, dateRange }) => {
+
+    // const { bill, selectedRooms } = useContext(BookingSummaryContext) as BookingSummaryInterface;
+    // const { hotelInfo } = useContext(HotelPageContext) as HotelPageInterface;
+    // const { dateRange } = useContext(AppContext) as AppContextInterface;
 
     const availableRooms = hotelInfo.available_rooms;
 

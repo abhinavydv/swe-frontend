@@ -64,7 +64,8 @@ const SearchResults = () => {
     const { dateRange } = useContext(AppContext) as AppContextInterface;
 
     useEffect(() => {
-        const query = window.location.search.split('?')[1].split('&')[0].split('=')[1];
+        let query = window.location.search.split('?')[1].split('&')[0].split('=')[1];
+        query = query.split('%20').join(' ');
         const dates = window.location.search.split('?')[1].split('&')[1].split('=')[1];
         setQuery(query);
         setDates(dates);
@@ -76,9 +77,10 @@ const SearchResults = () => {
             headers: axiosHeader,
         }).then((res) => {
             setQueryResults(res.data);
+            console.log("Data: ",res.data);
 
             if(res.data.status === "OK") {
-                setHotels([...res.data.hotels])
+                setHotels(res.data.hotels);
             }
         }, (err) => {
             console.log("Error: ",err);

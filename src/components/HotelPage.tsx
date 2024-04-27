@@ -5,17 +5,12 @@ import HotelPageBody from "./HotelPageBody";
 import axios from "axios";
 import { axiosHeader } from "./SearchResults";
 
-export type RoomAmenity = {
-    name: string;
-    quality: 'good' | 'bad';
-}
-
 export type Room = {
     room_type: number;
     bed_type: string;
     max_occupancy: number;
-    amenities: RoomAmenity[];
-    number_of_rooms: number;
+    room_amenities: number;
+    total_rooms: number;
     price: number;
 }
 
@@ -29,13 +24,16 @@ export type HotelInfo = {
 
 export interface HotelPageInterface {
     hotelInfo: HotelInfo;
+    hotelID: number;
     setHotelInfo: (hotelInfo: HotelInfo) => void;
+    setHotelID: (hotelID: number) => void;
 }
 
 export const HotelPageContext = createContext<Partial<HotelPageInterface>>({});
 
 const HotelPage = () => {
     const { setSearchBar } = useContext(AppContext) as AppContextInterface;
+    const [hotelID, setHotelID] = useState<number>(0);
 
     const [hotelInfo, setHotelInfo] = useState<HotelInfo>({
         hotel_name: 'Aalia Villas Anjuna, Goa by Aalia Collection Opens',
@@ -55,84 +53,32 @@ const HotelPage = () => {
                 room_type: 0,
                 bed_type: 'Single',
                 max_occupancy: 2,
-                amenities: [
-                    {
-                        name: 'Free Cancellation',
-                        quality: 'good'
-                    },
-                    {
-                        name: 'Complimentary Breakfast',
-                        quality: 'good'
-                    },
-                    {
-                        name: 'Extra charges applicable for lunch and dinner',
-                        quality: 'bad'
-                    }
-                ],
-                number_of_rooms: 4,
+                room_amenities: 555,
+                total_rooms: 4,
                 price: 4000
             },
             {
                 room_type: 1,
                 bed_type: 'Queen',
                 max_occupancy: 3,
-                amenities: [
-                    {
-                        name: 'Free Cancellation',
-                        quality: 'good'
-                    },
-                    {
-                        name: 'Complimentary Breakfast',
-                        quality: 'good'
-                    },
-                    {
-                        name: 'Extra charges applicable for lunch and dinner',
-                        quality: 'bad'
-                    }
-                ],
-                number_of_rooms: 4,
+                room_amenities: 555,
+                total_rooms: 4,
                 price: 6000
             },
             {
                 room_type: 2,
                 bed_type: 'Queen',
                 max_occupancy: 3,
-                amenities: [
-                    {
-                        name: 'Free Cancellation',
-                        quality: 'good'
-                    },
-                    {
-                        name: 'Complimentary Breakfast',
-                        quality: 'good'
-                    },
-                    {
-                        name: 'Extra charges applicable for lunch and dinner',
-                        quality: 'bad'
-                    }
-                ],
-                number_of_rooms: 4,
+                room_amenities: 555,
+                total_rooms: 4,
                 price: 9000
             },
             {
                 room_type: 3,
                 bed_type: 'King',
                 max_occupancy: 4,
-                amenities: [
-                    {
-                        name: 'Free Cancellation',
-                        quality: 'good'
-                    },
-                    {
-                        name: 'Complimentary Breakfast',
-                        quality: 'good'
-                    },
-                    {
-                        name: 'Extra charges applicable for lunch and dinner',
-                        quality: 'bad'
-                    }
-                ],
-                number_of_rooms: 4,
+                room_amenities: 555,
+                total_rooms: 4,
                 price: 11000
             }
         ]
@@ -144,6 +90,8 @@ const HotelPage = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const hotel_id = urlParams.get('hotel_id');
         const _dateRange = urlParams.get('dates');
+
+        hotel_id !== null && setHotelID(parseInt(hotel_id));
         
         if (!hotel_id || !_dateRange) {
             console.error('Missing or malformed URL parameters');
@@ -176,7 +124,7 @@ const HotelPage = () => {
     },[])
 
     return (
-        <HotelPageContext.Provider value={{ hotelInfo, setHotelInfo }}>
+        <HotelPageContext.Provider value={{ hotelInfo, hotelID, setHotelInfo, setHotelID }}>
             <div>
                 <Navbar enteredDates={null} enteredQuery={null}/>
                 <HotelPageBody />

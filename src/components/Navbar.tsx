@@ -13,7 +13,7 @@ const Navbar: React.FC<Props> = ({ enteredQuery, enteredDates }) => {
         <div className='backGradient'>
             <Topsection />
             <Middlesection />
-            {enteredQuery && enteredDates && <Bottomsection enteredDates={enteredDates} enteredQuery={enteredQuery} />}
+            <Bottomsection enteredDates={enteredDates} enteredQuery={enteredQuery} />
         </div>
     )
 }

@@ -9,8 +9,8 @@ import { AppContext, AppContextInterface } from './App';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
-    enteredQuery: string | null;
-    enteredDates: string | null;
+    enteredQuery?: string | null;
+    enteredDates?: string | null;
 }
 
 const Bottomsection: React.FC<Props> = ({ enteredQuery, enteredDates }) => {
@@ -29,15 +29,6 @@ const Bottomsection: React.FC<Props> = ({ enteredQuery, enteredDates }) => {
             {searchBar ? (
                 <div id='bar'>
                     <div id='location'>
-                        {/* <Autocomplete
-                            freeSolo
-                            renderInput={(params) => <TextField {...params} placeholder="Where do you want to go?" />}
-                            options={['Option 1', 'Option 2']}
-                            sx={{
-                                width: '100%',
-                            }}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
-                        /> */}
                         <TextField 
                             sx={{
                                 width: '100%',

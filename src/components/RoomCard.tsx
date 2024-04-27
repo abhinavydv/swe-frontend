@@ -7,7 +7,6 @@ import KingBed from '../assets/king-bed.png'
 import Tick from '../assets/tick.png'
 import Cross from '../assets/cross.png'
 import { useContext, useState } from "react"
-import { RoomAmenity } from "./HotelPage"
 import { numNights } from "./HotelCard"
 import { AppContext, AppContextInterface } from "./App"
 import { BookingSummaryContext, BookingSummaryInterface } from "./HotelPageBody"
@@ -24,8 +23,10 @@ interface Props {
     capacity: number;
     bedType: string;
     maxAvailable: number;
-    roomAmenities: RoomAmenity[];
+    roomAmenities: number;
     rate: number;
+    maxGuests: number;
+    setMaxGuests: (maxGuests: number) => void;
 }
 
 interface IconMapInterface {
@@ -38,10 +39,24 @@ const bedIconMap: IconMapInterface = {
     'King': KingBed,
 }
 
-export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvailable, roomAmenities, rate }) => {
+export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvailable, roomAmenities, rate, maxGuests, setMaxGuests }) => {
     const { dateRange } = useContext(AppContext) as AppContextInterface;
 
     const totalPrice = rate*numNights(dateRange);
+
+    const allRoomAmenities = [
+        "Breakfast",
+        "Wifi",
+        "TV",
+        "AC",
+        "Mini Fridge",
+        "Iron",
+        "Microwave",
+        "Sofas",
+        "Wardrobe",
+        "Bathtub/Shower",
+        "Vanity Area",
+    ]
     
     const { bill, selectedRooms, setBill, setSelectedRooms } = useContext(BookingSummaryContext) as BookingSummaryInterface;
     const [maxFlag, setMaxFlag] = useState(false);
@@ -59,6 +74,7 @@ export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvai
                 return room;
             }));
             setBill(bill + totalPrice);
+            setMaxGuests(maxGuests + capacity);
         }
     }
 
@@ -74,6 +90,7 @@ export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvai
                 return room;
             }));
             setBill(bill - totalPrice);
+            setMaxGuests(maxGuests - capacity);
         }
     }
 
@@ -94,20 +111,20 @@ export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvai
                     <div className='roomCardContent'>
                         Bed: <img src={bedIconMap[bedType]} className='bedIcon' /> {bedType}-sized bed
                         <div className='features'>
-                            {roomAmenities.map((amenity, index) => (
-                                amenity.quality == 'good' && (
+                            {allRoomAmenities.map((amenity, index) => (
+                                (roomAmenities >> index)%2 == 1 && (
                                     <div key={index} className="feature">
-                                        <img src={Tick} className='green-tick' /> {amenity.name}
+                                        <img src={Tick} className='green-tick' /> {amenity}
                                     </div>
                                 )
                             ))}
-                            {roomAmenities.map((amenity, index) => (
-                                amenity.quality == 'bad' && (
+                            {allRoomAmenities.map((amenity, index) => (
+                                (roomAmenities >> index)%2 == 0 && (
                                     <div key={index} className="bad">
                                         <img src={Cross} className='red-cross' />
                                         <div className="cross-spacer"></div>
                                         <div className="feature">
-                                            {amenity.name}
+                                            {amenity}
                                         </div>
                                     </div>
                                 )

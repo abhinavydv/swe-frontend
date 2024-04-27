@@ -232,7 +232,7 @@ const Register = ({role}:any) => {
             <div className="register-body">
                 <div className='register-name'>
 
-                {role == "partner" && "Partner Login" || "Customer Login"}
+                {role == "partner" && "Partner Register" || "Customer Register"}
                 </div>
 
                 <FormControl className='register-form'>
@@ -398,7 +398,7 @@ const Register = ({role}:any) => {
                 </FormControl>
 
                 <Box sx={{display: "flex", justifyContent: "center"}}>
-                    <Link to={'/customer/register'}><div className='register-switch'>Are you a {role == "partner"? "customer": "partner"}?</div></Link>
+                    <Link to={`/${role == 'customer' ? 'partner' : 'customer'}/register`}><div className='register-switch'>Are you a {role == "partner"? "customer": "partner"}?</div></Link>
                 </Box>
 
             </div>
