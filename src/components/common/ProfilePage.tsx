@@ -4,7 +4,7 @@ import Topsection from "../Topsection";
 import { AppContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { LeftTab, TabPanel } from "./TabPanel";
-import { ProfileTabPanel, AccountTabPanel, KYPTabPanel, PerformanceTabPanel, AboutTabPanel, PreviousBookingsTabPanel } from "./TabPanels";
+import { ProfileTabPanel, AccountTabPanel, KYPTabPanel, PerformanceTabPanel, AboutTabPanel, PreviousBookingsTabPanel } from "./ProfileTabPanels";
 
 
 const ProfilePage = () => {

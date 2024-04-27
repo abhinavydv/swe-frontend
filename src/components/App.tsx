@@ -18,7 +18,7 @@ import { PastBookings } from './PastBookings'
 
 axios.defaults.withCredentials = true;
 // axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
-axios.defaults.baseURL = "http://127.0.0.1:8000";
+axios.defaults.baseURL = "http://localhost:8000";
 
 export interface UserDataInterface {
     isLoggedIn: boolean;
@@ -108,7 +108,7 @@ function App() {
                     <Routes>
                         <Route path='/' element={<Home />}/>
                         <Route path='/search' element={<SearchResults />}/>
-                        <Route path='/partner' element={<PartnerHome />} />
+                        <Route path='/partner' element={<PartnerHome user={user}/>} />
                         <Route path='/partner/login' element={<LoginPartner />} />
                         <Route path='/partner/register' element={<RegisterPartner />}/>
                         <Route path='/customer/login' element={<LoginCustomer />}/>

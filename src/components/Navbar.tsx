@@ -4,8 +4,8 @@ import Middlesection from "./Middlesection";
 import Bottomsection from "./Bottomsection";
 
 interface Props {
-    enteredQuery: string | null;
-    enteredDates: string | null;
+    enteredQuery?: string | null;
+    enteredDates?: string | null;
 }
 
 const Navbar: React.FC<Props> = ({ enteredQuery, enteredDates }) => {
@@ -13,7 +13,7 @@ const Navbar: React.FC<Props> = ({ enteredQuery, enteredDates }) => {
         <div className='backGradient'>
             <Topsection />
             <Middlesection />
-            <Bottomsection enteredDates={enteredDates} enteredQuery={enteredQuery} />
+            {enteredQuery && enteredDates && <Bottomsection enteredDates={enteredDates} enteredQuery={enteredQuery} />}
         </div>
     )
 }

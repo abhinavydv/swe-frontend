@@ -14,7 +14,7 @@ export const TabPanel = ({title, ...props}: any) => {
         >
             {value === index && (
                 <Box>
-                    <Box>
+                    {title && <Box>
                         <Typography sx={{
                             marginLeft: "2rem",
                             fontSize: "2rem",
@@ -23,7 +23,7 @@ export const TabPanel = ({title, ...props}: any) => {
                             {title}
                         </Typography>
                         <Divider />
-                    </Box>
+                    </Box>}
                     {children}
                 </Box>
             )}

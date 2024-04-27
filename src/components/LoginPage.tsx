@@ -43,10 +43,11 @@ const Login= ({role}: any) => {
             ).then((response: any) => {
                 var result = JSON.stringify(response.data);
                 var json = JSON.parse(result);
-
+                console.log(json);
                 if (json.status == 'OK') {
                     setButtonStatus("Login");
                     axios.get("/users/logged").then((res: any) => {
+                        console.log("res: ", res)
                         if (res.data.status === "OK") {
                             setUser && setUser({
                                 isLoggedIn: true,

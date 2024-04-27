@@ -20,11 +20,11 @@ export const ProfileTabPanel = ({user, ...props}: ProfileTabPanelProps) => {
     const [firstName, setFirstName] = useState(user?.first_name);
     const [lastName, setLastName] = useState(user?.last_name);
     const [email, setEmail] = useState(user?.email);
-    const [profilePicture, _setProfilePicture] = useState(user?.profile_picture);
+    const [profilePicture, _setProfilePicture] = useState(user?.profile_picture || "");
     const [phone, setPhone] = useState(user?.phone);
-    const [dob, setDob] = useState(dayjs(user?.dob));
-    const [gender, setGender] = useState(user?.gender);
-    const [nationality, setNationality] = useState(user?.nationality);
+    const [dob, setDob] = useState(dayjs(user?.dob || ""));
+    const [gender, setGender] = useState(user?.gender || "");
+    const [nationality, setNationality] = useState(user?.nationality || "");
     const [countries, setCountries] = useState([user?.nationality]);
 
     useEffect(() => {
@@ -115,6 +115,7 @@ export const ProfileTabPanel = ({user, ...props}: ProfileTabPanelProps) => {
                                 borderRadius: "50%",
                             }}
                             onError={(e) => {
+                                console.log("Error");
                                 const target = e.target as HTMLImageElement;
                                 target.src = defaultProfilePic;
                             }}
