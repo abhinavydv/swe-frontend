@@ -182,19 +182,20 @@ const Register = ({role}:any) => {
                     setStatus(res.data.status);
                     if (res.data.status === "OK"){
                         axios.get("/users/logged").then((res2) => {
-                            console.log("data", res2.data);
+                            // console.log("data", res2.data);
+                            const user = res2.data.user;
                             if (res2.data.status === "OK") {
                                 setUser && setUser({
                                     isLoggedIn: true,
-                                    first_name: res2.data.first_name,
-                                    last_name: res2.data.last_name,
-                                    phone: res2.data.phone,
-                                    email: res2.data.email,
-                                    address: res2.data.address,
-                                    gender: res2.data.gender,
-                                    dob: res2.data.dob,
-                                    profile_picture: res2.data.profile_picture,
-                                    role: res2.data.role,
+                                    first_name: user.first_name,
+                                    last_name: user.last_name,
+                                    phone: user.phone,
+                                    email: user.email,
+                                    address: user.address,
+                                    gender: user.gender,
+                                    dob: user.dob,
+                                    profile_picture: user.profile_picture,
+                                    role: user.role,
                                 } as UserDataInterface);
                                 navigate('/');
                             }

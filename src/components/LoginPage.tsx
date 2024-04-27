@@ -43,23 +43,23 @@ const Login= ({role}: any) => {
             ).then((response: any) => {
                 var result = JSON.stringify(response.data);
                 var json = JSON.parse(result);
-                console.log(json);
                 if (json.status == 'OK') {
                     setButtonStatus("Login");
                     axios.get("/users/logged").then((res: any) => {
                         console.log("res: ", res)
+                        const user = res.data.user;
                         if (res.data.status === "OK") {
                             setUser && setUser({
                                 isLoggedIn: true,
-                                first_name: res.data.first_name,
-                                last_name: res.data.last_name,
-                                phone: res.data.phone,
-                                email: res.data.email,
-                                address: res.data.address,
-                                gender: res.data.gender,
-                                dob: res.data.dob,
-                                profile_picture: res.data.profile_picture,
-                                role: res.data.role,
+                                first_name: user.first_name,
+                                last_name: user.last_name,
+                                phone: user.phone,
+                                email: user.email,
+                                address: user.address,
+                                gender: user.gender,
+                                dob: user.dob,
+                                profile_picture: user.profile_picture,
+                                role: user.role,
                             } as UserDataInterface);
                             navigate('/');
                         } else {
