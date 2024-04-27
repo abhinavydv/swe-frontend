@@ -52,7 +52,7 @@ const Register = ({role}:any) => {
     useEffect(() => {
         let intervalId: NodeJS.Timeout;
 
-        if(time == 0) {setOtpStatus(false);}
+        if(time == 0) {setOtpStatus(false);setDisplay(false)}
 
         if (otpstatus) {
         intervalId = setInterval(() => {

@@ -4,7 +4,7 @@ import Topsection from "../Topsection";
 import { AppContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import { LeftTab, TabPanel } from "./TabPanel";
-import { ProfileTabPanel, AccountTabPanel, KYPTabPanel, PerformanceTabPanel, AboutTabPanel, PreviousBookingsTabPanel } from "./ProfileTabPanels";
+import { ProfileTabPanel,GuestProfiles, AccountTabPanel, KYPTabPanel, PerformanceTabPanel, AboutTabPanel, PreviousBookingsTabPanel } from "./ProfileTabPanels";
 
 
 const ProfilePage = () => {
@@ -27,12 +27,14 @@ const ProfilePage = () => {
 
     if (user?.isLoggedIn){
         if (user.role === "customer"){
-            tabs = ["Profile", "Account", "Previous Bookings", "About"];
+            tabs = ["Profile", "Account", "Previous Bookings","Guest Profiles", "About",];
             tabpanels = [
                 <ProfileTabPanel user={user}/>,
                 <AccountTabPanel />,
                 <PreviousBookingsTabPanel />,
+                <GuestProfiles/>,
                 <AboutTabPanel />
+
             ]
         }
         if (user.role === "partner"){
@@ -44,6 +46,7 @@ const ProfilePage = () => {
                 <KYPTabPanel />,
                 <PerformanceTabPanel />,
                 <AboutTabPanel />
+
             ]
         }
     }

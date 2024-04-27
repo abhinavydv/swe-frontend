@@ -1,4 +1,4 @@
-import { Box, Typography, TextField, IconButton, Button, Divider, Select, MenuItem} from "@mui/material";
+import { Box, Typography, TextField, IconButton, Button, Divider, Select, MenuItem, FormControl, Paper} from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { UserDataInterface } from "../App";
@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import axios from "axios";
 import defaultProfilePic from "../../assets/defaultProfilePic.png"
 import { FileHandler, upload_files } from "./FileHandler";
-
 
 interface ProfileTabPanelProps {
     user?: UserDataInterface;
@@ -556,3 +555,210 @@ export const PreviousBookingsTabPanel = ({...props}: any) => {
         }
     </Box>
 }
+
+type Guest = {
+    guest_id: number,
+    guest_name: string,
+    gender: string,
+    age: string,
+    user_id: number
+}
+
+
+export  const GuestProfiles = ({...props}: any) => {
+    const [Name,setName] = useState('')
+    const [NameError,setNameError] = useState(false)
+    const [guests,setGuests] = useState<Guest[]>([]);
+
+    const [age,setAge] = useState('')
+    const [ageError,setAgeError] = useState(false)
+
+    const [gender,setGender] = useState('')
+    const genders = [
+        "Male",
+        "Female",
+        "Other",
+    ]
+
+    const [ID,setID] = useState(0)
+    useEffect(() => {
+
+        axios.get("/bookings/get_guests").then(res => {
+
+            if (res.data.status == "OK"){
+    
+                setGuests(res.data.guests)
+            }
+        })
+    }, [])
+
+    const AddGuest = (e: any) => {
+        e.preventDefault()
+
+        axios.post("/bookings/add_guest",{
+            guest_name:Name,
+            age:age,
+            gender:gender
+        }).then(res => {
+            
+            if (res.data.status == "OK"){
+
+                axios.get("/bookings/get_guests").then(res => {
+
+                    if (res.data.status == "OK"){
+                
+                        setGuests(res.data.guests)
+                    }
+                    else{
+                        if (res.data.alert){
+                            alert(res.data.message)
+                        }
+                    }
+                })
+
+            }
+        })
+    }
+
+    const DeleteGuest = (guest_id: number) => {
+
+        axios.post("/bookings/delete_guest",{
+            guest_id: guest_id
+        }).then(res => {
+            
+            if (res.data.status == "OK"){
+                setGuests(guests.filter((x) => x.guest_id != guest_id))
+            }
+        })
+    }
+
+
+    return <Box {...props} sx={{marginTop: "2rem"}}>
+        <FormControl>
+        <Box
+            sx={{
+                display:"flex",
+                justifyContent:"space-between",
+
+            }}
+            >
+            <Box
+                sx={{
+                    margin: "0 1rem",
+                }}
+                >
+                <Typography variant="h6">Name</Typography>
+                <TextField  
+                    name="name"
+                    onChange={(e) => {setName(e.target.value)}}
+                    error={NameError}
+                    value={Name}
+                    required
+                    />
+            </Box>
+            <Box
+                sx={{
+                    margin: "0 1rem",
+                }}
+            >
+            <Typography variant="h6">Age</Typography>
+                <TextField  
+                    type="number"
+                    name="age"
+                    onChange={(e) => {setAge(e.target.value)}}
+                    error={ageError}
+                    value={age}
+                    required
+                    sx={{
+                        width: "9rem"
+                    }}
+                    />
+            </Box>
+            <Box sx={{
+                    margin: "0 1rem",
+                }}>
+                    <Typography variant="h6">Gender</Typography>
+                    <Select
+                        sx={{minWidth: "10rem"}}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={gender}
+                        label="Age"
+                        onChange={(e: any) => {
+                            setGender(e.target.value);
+                        }}
+                    >
+                        {genders.map((g, i) => 
+                            <MenuItem key={i} value={g}>{g}</MenuItem>
+                        )}
+                        required
+                    </Select>
+                </Box>
+
+                    <Button
+                    sx={{
+                        marginTop: "2rem",
+                        marginLeft: "2rem",
+                        height: '3rem',
+                        border: 'none',
+                        borderRadius: '5px',
+                        backgroundColor: '#1c39bb' ,
+                        color: 'white',
+                        fontSize: '16px',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.3s ease',
+                        "&.Mui-disabled": {
+                            background: "#F2F2F2",
+                            color: "black"
+                        },
+                        ":hover": {
+                            backgroundColor: 'white',
+                            border: '2px #1c39bb solid',
+                            color: '#1c39bb',
+                        }
+                    }}
+                    onClick={AddGuest}
+                    >
+                        +Add
+                    </Button>
+                
+        </Box>
+        </FormControl>
+        
+        {guests.map((guest,index) => {
+            return <Paper key={index} elevation={2} sx={{
+                width: '100%',
+                padding: '1.6rem 1.2rem',
+                margin: '1rem 0',
+                }}>
+                    <Box sx={{
+                        display: 'flex',
+                    }}>
+                        <Box sx={{
+                            fontStyle: 'Hind',
+                            fontWeight: '500',
+                            fontSize: '1.2rem',
+                        }}>
+                            {guest.guest_name} ● {guest.gender} ● {guest.age}
+                        </Box>
+                        <Box sx={{
+                            flexGrow: 1,
+                        }}></Box>
+
+                    <IconButton
+
+                        onClick={() => {
+                            DeleteGuest(guest.guest_id)
+                        }}
+                    >
+                        <Delete />
+                    </IconButton>
+                    </Box>
+
+
+
+            </Paper>
+        })}
+    </Box>
+}
+
