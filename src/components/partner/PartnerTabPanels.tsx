@@ -294,7 +294,7 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
                         max_occupancy: room.max_occupancy,
                         price: room.price,
                         total_rooms: room.total_rooms,
-                        room_amenities: room.room_amenities
+                        room_amenities: room.room_amenities || 0
                     }
                 })
 
