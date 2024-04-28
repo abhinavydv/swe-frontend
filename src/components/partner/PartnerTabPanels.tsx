@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FileHandler, upload_files } from "../common/FileHandler";
 import { Clear, Delete, Edit } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 
 interface EditPropertyProps {
@@ -23,7 +23,7 @@ interface RoomInterface {
 
 interface PropertyInterface {
     hotel_name: string,
-    property_paper?: string,
+    property_paper_path?: string,
     property_images?: string[],
     description?: string,
     pincode?: string,
@@ -254,7 +254,7 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
         amenities: 0,
         tag_list: "",
         rooms: [],
-        property_paper: ""
+        property_paper_path: ""
     });
     const [rooms, setRooms] = useState<RoomInterface[]>([]);
     const [roomDialogIndex, setRoomDialogIndex] = useState<number>(-1);
@@ -277,15 +277,35 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
     ]
 
     useEffect(() => {
-        if (!isNew){
-            axios.get(`/hotel/${hotelId}`)
-            .then((res) => {
-                setProperty(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+        const func = async () => {
+            if (!isNew){
+                var temp_property = property;
+
+                var res = await axios.post(`/hotels/view_hotel`, {hotel_id: hotelId})
+                setTags(res.data.listings.tag_list.split(","));
+                temp_property = {...temp_property, ...res.data.listings};
+
+                res = await axios.post(`/hotels/get_rooms`, {hotel_id: hotelId})
+
+                const temp_rooms = res.data.rooms.map((room: any) => {
+                    return {
+                        room_type: room.room_type,
+                        bed_type: room.bed_type,
+                        max_occupancy: room.max_occupancy,
+                        price: room.price,
+                        total_rooms: room.total_rooms,
+                        room_amenities: room.room_amenities
+                    }
+                })
+
+                setRooms(temp_rooms);
+                temp_property = {...temp_property, rooms: temp_rooms};
+
+                res = await axios.post("/hotels/get_images", {hotel_id: hotelId})
+                setProperty({...temp_property, property_images: res.data.images.map((image: any) => image.photo_url)});
+            }
         }
+        func();
     }, [isNew, hotelId])
 
     const saveProperty = async () => {
@@ -335,13 +355,18 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
                 alert("Please add atleast one tag");
                 return;
             }
-            if (property.property_paper === ""){
+            if (property.property_paper_path === ""){
                 alert("Please upload property paper");
                 return;
             }
 
-            const res = await axios.post("/hotels/add_hotel", property)
-            console.log(res);
+            if (isNew){
+                const res = await axios.post("/hotels/add_hotel", property)
+                console.log(res);
+            } else {
+                const res = await axios.post(`/hotels/edit_hotel/${hotelId}`, property)
+                console.log(res);
+            }
             alert("Hotel Saved")
             setProperty({
                 hotel_name: "",
@@ -356,7 +381,7 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
                 amenities: 0,
                 tag_list: "",
                 rooms: [],
-                property_paper: ""
+                property_paper_path: ""
             })
             setRooms([]);
             setTags([]);
@@ -509,17 +534,17 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
                     <Typography variant="h6" sx={{marginRight: "2rem"}}>
                         Property Paper
                     </Typography>
-                    {property?.property_paper && <Box display="flex" alignItems="center">
+                    {property?.property_paper_path && <Box display="flex" alignItems="center">
                         <Typography sx={{marginRight: "1rem"}}>
-                            <a href={property?.property_paper} target="_blank" rel="noreferrer">View Property Paper</a>
+                            <a href={property?.property_paper_path} target="_blank" rel="noreferrer">View Property Paper</a>
                         </Typography>
-                        <IconButton onClick={async () => {
-                            const res = await axios.post("/misc/delete_file", {file_id: property?.property_paper});
+                        {isNew && <IconButton onClick={async () => {
+                            const res = await axios.post("/misc/delete_file", {file_id: property?.property_paper_path});
                             console.log(res);
-                            setProperty({...property, property_paper: ""})
+                            setProperty({...property, property_paper_path: ""})
                         }}>
                             <Delete/>
-                        </IconButton>
+                        </IconButton>}
                     </Box> || <FileHandler
                         type="pdf"
                         onChange={async (files: FileList) => {
@@ -528,14 +553,14 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
                                 console.log(progress);
                             });
                             setIsPDFUploading(false);
-                            if (property?.property_paper && property?.property_paper !== ""){
-                                const res = await axios.post("/misc/delete_file", {file_id: property?.property_paper});
+                            if (property?.property_paper_path && property?.property_paper_path !== ""){
+                                const res = await axios.post("/misc/delete_file", {file_id: property?.property_paper_path});
                                 console.log(res);
                             }
-                            setProperty({...property, property_paper: url[0]})
+                            setProperty({...property, property_paper_path: url[0]})
                         }}
-                        text={isPDFUploading ? "Uploading..." : "Upload PDF"}
-                        isUploading={isPDFUploading}
+                        text={hotelId != null ? "Cannot re-upload property papers" : (isPDFUploading ? "Uploading..." : "Upload PDF")}
+                        isUploading={isPDFUploading || hotelId != null}
                     />}
                 </Box>
                 <Divider sx={{marginY: "1rem"}} />
@@ -665,6 +690,11 @@ export const EditPropertyTabPanel = ({isNew, hotelId, ...props}: EditPropertyPro
 
 
 export const ListAPropertyTabPanel = () => {
+    const [ searchParams, _setSearchParams ] = useSearchParams();
+    const hotel_id = searchParams.get("hotel_id");
+    if (hotel_id){
+        return <EditPropertyTabPanel hotelId={parseInt(hotel_id)} />
+    }
     return <Box>
         <EditPropertyTabPanel isNew />
     </Box>

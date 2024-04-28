@@ -41,7 +41,7 @@ const SearchResultBody: React.FC<Props> = ({ place, maxLowestPrice }) => {
 
         const updatedHotels = hotels.map((hotel) => {
             if (hotel.hotel_id === hotel_id) {
-                return {...hotel, isWishlisted: false};
+                return {...hotel, is_wishlisted: false};
             }
             return hotel;
         });
@@ -59,7 +59,7 @@ const SearchResultBody: React.FC<Props> = ({ place, maxLowestPrice }) => {
 
         const updatedHotels = hotels.map((hotel) => {
             if (hotel.hotel_id === hotel_id) {
-                return {...hotel, isWishlisted: true};
+                return {...hotel, is_wishlisted: true};
             }
             return hotel;
         });

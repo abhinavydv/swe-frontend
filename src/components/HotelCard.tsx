@@ -17,7 +17,7 @@ export const numNights = (dateRange: Date[]) => Math.floor((dateRange[1]?.getTim
 
 const HotelCard: React.FC<Props> = ({ hotel, removeFromWishlist = () => {}, addToWishlist = () => {} }) => {
     const { setSearchBar, dateRange } = useContext(AppContext) as AppContextInterface;
-    const [ isWishlisted, setIsWishlisted ] = useState<boolean>(hotel.isWishlisted || false);
+    const [ isWishlisted, setIsWishlisted ] = useState<boolean>(hotel.is_wishlisted || false);
 
     const navigate = useNavigate();
     const amenities = [<Wifi />, <BeachAccess />, <LocalParking />, <SportsVolleyball />, <FreeBreakfast />, <LocalTaxi />]

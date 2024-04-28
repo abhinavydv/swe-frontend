@@ -48,7 +48,11 @@ const Topsection = () => {
                         </div>
                     ) : (
                         <div className='tabSection'>
-                            <Button sx={{
+                            <Button
+                                onClick={() => {
+                                    navigate('/partner?tab=1');
+                                }}
+                                sx={{
                                 color: 'white',
                                 fontWeight: '100',
                                 textTransform: 'none',
@@ -57,7 +61,11 @@ const Topsection = () => {
                                 View listings
                             </Button>
                             <div className='separator'></div>
-                            <Button sx={{
+                            <Button
+                                onClick={() => {
+                                    navigate('/partner?tab=0');
+                                }}
+                                sx={{
                                 color: 'white',
                                 fontWeight: '100',
                                 textTransform: 'none',

@@ -13,7 +13,7 @@ export type Hotel = {
     lowest_price: number;
     rating: number;
     img_path: string;
-    isWishlisted?: boolean;
+    is_wishlisted?: boolean;
 }
 
 type QueryResults = {

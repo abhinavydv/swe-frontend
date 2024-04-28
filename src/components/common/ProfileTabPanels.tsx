@@ -787,6 +787,17 @@ export  const GuestProfiles = ({...props}: any) => {
                     <IconButton
 
                         onClick={() => {
+                            setName(guest.guest_name);
+                            setAge(guest.age);
+                            setGender(guest.gender);
+                            DeleteGuest(guest.guest_id)
+                        }}
+                    >
+                        <Edit />
+                    </IconButton>
+                    <IconButton
+
+                        onClick={() => {
                             DeleteGuest(guest.guest_id)
                         }}
                     >

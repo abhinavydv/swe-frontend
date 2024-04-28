@@ -4,7 +4,8 @@ import Navbar from "../Navbar";
 import { LeftTab, TabPanel } from "../common/TabPanel";
 import { UserDataInterface } from "../App";
 import { ListAPropertyTabPanel } from "./PartnerTabPanels";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { ViewListings } from "./ViewListings";
 
 interface PartnerHomeProps {
     user: UserDataInterface;
@@ -15,17 +16,19 @@ export const PartnerHome = ({user, ...props}: PartnerHomeProps) =>  {
 
     const [ selectedTab, setSelectedTab ] = useState(0);
 
+    const [ searchParams, _setSearchParams ] = useSearchParams();
+
     const navigate = useNavigate();
 
     var tabs: string[] = ["List a Property", "My Properties", "Performance"];
     var tabpanels: any = [
         <ListAPropertyTabPanel />,
-        <Box>My Properties</Box>,
+        <ViewListings />,
         <Box>Performance</Box>,
     ];
 
     if (window) {
-        const tab = window.location.href.split("?").pop()?.split("=").pop();
+        const tab = searchParams.get("tab");
         if (tab && parseInt(tab) < tabs.length){
             if (selectedTab != parseInt(tab))
                 setSelectedTab(parseInt(tab));
