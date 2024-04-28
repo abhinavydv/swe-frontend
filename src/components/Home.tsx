@@ -4,7 +4,7 @@ import { AppContext, AppContextInterface } from "./App";
 import { useContext, useEffect } from "react";
 
 const Home = () => {
-    const { searchBar, setSearchBar, setDateRange } = useContext(AppContext) as AppContextInterface;
+    const { setSearchBar, setDateRange } = useContext(AppContext) as AppContextInterface;
 
     useEffect(() => {
         setSearchBar(true);

@@ -17,12 +17,12 @@ export type Booking = {
     rating?: number;
 }
 
-type QueryResults = {
-    status: string;
-    message: string;
-    alert: boolean;
-    past_bookings: Booking[];
-}
+// type QueryResults = {
+//     status: string;
+//     message: string;
+//     alert: boolean;
+//     past_bookings: Booking[];
+// }
 
 export const PastBookings = ()  => {
     const [bookings, setBookings] = useState<Booking[]>([
@@ -62,9 +62,9 @@ export const PastBookings = ()  => {
                 }
             } else if(res.data.status == "OK") setBookings(res.data.past_bookings);
         }, (err) => {
-            console.log(err);
+            alert(err);
         });
-    },[])
+    }, [])
 
     return (
         <div>

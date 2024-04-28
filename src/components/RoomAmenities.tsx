@@ -8,10 +8,9 @@ import CabServices from '../assets/cab.png';
 import Kitchen from '../assets/kitchen.png';
 import SwimmingPool from '../assets/swimming-pool.png';
 import '../styles/RoomAmenities.css';
-import { SearchResultsContext, SearchResultsInterface, amenityCheckInterface } from './SearchResults';
+import { amenityCheckInterface } from './SearchResults';
 import { useContext, useState } from 'react';
 import { HotelPageContext, HotelPageInterface } from './HotelPage';
-import { LocalParking, SportsGymnastics } from '@mui/icons-material';
 
 interface AmenityProps {
     amenityName: string;
@@ -46,7 +45,7 @@ export const RoomAmenities = () => {
     // const { amenities } = useContext(SearchResultsContext) as SearchResultsInterface;
     const { hotelInfo } = useContext(HotelPageContext) as HotelPageInterface;
 
-    const [amenities, setAmenities] = useState<amenityCheckInterface>({
+    const [amenities, _setAmenities] = useState<amenityCheckInterface>({
         'Wifi': false,
         'Beach Access': false,
         'Gym': false,

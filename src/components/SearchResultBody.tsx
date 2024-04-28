@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import '../styles/SearchResultBody.css';
 import Filters from './Filters';
 import HotelCard from './HotelCard';

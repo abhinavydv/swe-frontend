@@ -39,7 +39,7 @@ const Register = ({role}:any) => {
 
     const navigate = useNavigate();
     const [time, setTime] = useState(0);
-    const [OTPError, setOTPError] = useState(false);
+    // const [OTPError, setOTPError] = useState(false);
     const [inputotp, setInputOtp] = useState('');
     const [actualotp, setActualOtp] = useState('');
     const [otpstatus, setOtpStatus] = useState(false);
@@ -134,7 +134,7 @@ const Register = ({role}:any) => {
         }
 
         if (actualotp !== inputotp){
-            setOTPError(true)
+            // setOTPError(true)
             err= true
             alert("Incorrect OTP")
         }

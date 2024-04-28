@@ -1,5 +1,5 @@
 import { Button, Checkbox, Paper, Tooltip } from '@mui/material';
-import SampleHotel from '../assets/sampleHotel.jpeg';
+// import SampleHotel from '../assets/sampleHotel.jpeg';
 import '../styles/HotelCard.css';
 import { BeachAccess, ChevronRight, Favorite, FavoriteBorder, FreeBreakfast, LocalParking, LocalTaxi, SportsVolleyball, Wifi } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +22,7 @@ const HotelCard: React.FC<Props> = ({ hotel, removeFromWishlist = () => {}, addT
     const navigate = useNavigate();
     const amenities = [<Wifi />, <BeachAccess />, <LocalParking />, <SportsVolleyball />, <FreeBreakfast />, <LocalTaxi />]
 
-    const [mystyle, setMyStyle] = useState("");
+    // const [mystyle, setMyStyle] = useState("");
 
     const handleButtonClick = () => {
         if(dateRange.length == 0) {

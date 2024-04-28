@@ -1,5 +1,5 @@
 import { Circle, ExpandMoreOutlined, Star } from "@mui/icons-material"
-import { Accordion, AccordionDetails, AccordionSummary, Box, Rating, TextField, Tooltip } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Box, Rating, TextField } from "@mui/material"
 import '../styles/Booking.css'
 import { Link } from "react-router-dom"
 import { useState } from "react"
@@ -76,10 +76,10 @@ export const BookingCard: React.FC<Props> = ({ booking }) => {
                                     value={(booking.rating as number)/2}
                                     precision={0.5}
                                     getLabelText={getLabelText}
-                                    onChange={(event, newValue) => {
+                                    onChange={(_event, newValue) => {
                                         setValue(newValue);
                                     }}
-                                    onChangeActive={(event, newHover) => {
+                                    onChangeActive={(_event, newHover) => {
                                         setHover(newHover);
                                     }}
                                     emptyIcon={<Star style={{ opacity: 0.55 }} fontSize="inherit" />}
@@ -110,10 +110,10 @@ export const BookingCard: React.FC<Props> = ({ booking }) => {
                                     value={value}
                                     precision={0.5}
                                     getLabelText={getLabelText}
-                                    onChange={(event, newValue) => {
+                                    onChange={(_event, newValue) => {
                                         setValue(newValue);
                                     }}
-                                    onChangeActive={(event, newHover) => {
+                                    onChangeActive={(_event, newHover) => {
                                         setHover(newHover);
                                     }}
                                     emptyIcon={<Star style={{ opacity: 0.55 }} fontSize="inherit" />}
@@ -129,6 +129,7 @@ export const BookingCard: React.FC<Props> = ({ booking }) => {
                                 multiline
                                 label='Write a review'
                                 onChange={(e) => setReview(e.target.value)}
+                                value={review}
                             />
                             </>
                         )}

@@ -6,15 +6,15 @@ import { Hotel, axiosHeader } from "./SearchResults"
 import '../styles/Wishlist.css'
 import { useNavigate } from "react-router-dom"
 
-type QueryResults = {
-    status: string;
-    message: string;
-    alert: boolean;
-    wishlist: Hotel[];
-}
+// type QueryResults = {
+//     status: string;
+//     message: string;
+//     alert: boolean;
+//     wishlist: Hotel[];
+// }
 
 export const Wishlist = () => {
-    const [queryResults, setQueryResults] = useState<QueryResults>();
+    // const [queryResults, setQueryResults] = useState<QueryResults>();
     const [hotels, setHotels] = useState<Hotel[]>([]);
 
     const navigate = useNavigate();

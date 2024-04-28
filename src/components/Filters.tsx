@@ -1,4 +1,4 @@
-import { Card, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, FormLabel, Slider } from "@mui/material";
+import { Card, Checkbox, FormControl, FormControlLabel, FormGroup, Slider } from "@mui/material";
 import '../styles/Filters.css';
 import { useContext } from "react";
 import { DateRangePicker } from "rsuite";
@@ -40,7 +40,7 @@ const Filters: React.FC<Props> = ({ place, maxLowestPrice }) => {
                             getAriaLabel={() => 'Price range'}
                             valueLabelDisplay="on"
                             value={priceRange}
-                            onChange={(event: Event, newValue: number | number[]) => setPriceRange(newValue as number[])}
+                            onChange={(_event: Event, newValue: number | number[]) => setPriceRange(newValue as number[])}
                             getAriaValueText={valueText}
 
                             sx={{
