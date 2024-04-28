@@ -4,7 +4,7 @@ import '../styles/Booking.css'
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { Booking } from "./PastBookings"
-import axios, { AxiosHeaders } from "axios"
+import axios from "axios"
 import { axiosHeader } from "./SearchResults"
 
 interface Props {
@@ -79,7 +79,7 @@ export const BookingCard: React.FC<Props> = ({ booking, bookings, setBookings })
         }).then((res) => {
             console.log(res.data);
             if(res.data.status === 'OK') {
-                setBookings(bookings.map((booking, index) => {
+                setBookings(bookings.map((booking) => {
                     if(booking.booking_id === data.booking_id) {
                         booking.review = '';
                         booking.rating = 0;

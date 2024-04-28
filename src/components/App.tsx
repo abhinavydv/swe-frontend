@@ -19,7 +19,7 @@ import { SelectGuests } from './SelectGuests'
 
 axios.defaults.withCredentials = true;
 // axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://backend.iith-ac.in";
 
 export interface UserDataInterface {
     isLoggedIn: boolean;

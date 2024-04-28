@@ -62,6 +62,7 @@ export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvai
     const [maxFlag, setMaxFlag] = useState(false);
 
     const handleIncrement = () => {
+        console.log(selectedRooms)
         if(selectedRooms[roomType] == maxAvailable) {
             setMaxFlag(true)
         } else {
@@ -74,6 +75,7 @@ export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvai
             setBill(bill + totalPrice);
             setMaxGuests(maxGuests + capacity);
         }
+        console.log(selectedRooms)
     }
 
     const handleDecrement = () => {

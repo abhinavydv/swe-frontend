@@ -44,7 +44,7 @@ const HotelPageBody = () => {
             selectedRooms: selectedRooms,
             dateRange: dateRange
         })
-        console.log("hotelInfo", hotelInfo)
+        console.log("hotelInfo", selectedRooms)
         navigate(`/customer/booking/add_guests?maxGuests=${maxGuests}`,{
             state: {
                 bill: bill,
@@ -78,9 +78,10 @@ const HotelPageBody = () => {
             <BookingSummaryContext.Provider value={{ bill, selectedRooms, setBill, setSelectedRooms, setMaxGuests }}>
                 <div className='rooms-row'>
                     <div className='rooms'>
-                        {hotelInfo.available_rooms.map((room, index) => (
-                            <RoomCard key={index} roomAmenities={room.room_amenities} rate={room.price} roomType={room.room_type} capacity={room.max_occupancy} bedType={room.bed_type} maxAvailable={room.total_rooms} maxGuests={maxGuests} setMaxGuests={setMaxGuests} />
-                        ))}
+                        {hotelInfo.available_rooms.map((room, index) => 
+                            {console.log(room.room_amenities);
+                             return (<RoomCard key={index} roomAmenities={room.room_amenities} rate={room.price} roomType={room.room_type} capacity={room.max_occupancy} bedType={room.bed_type} maxAvailable={room.total_rooms} maxGuests={maxGuests} setMaxGuests={setMaxGuests} />)}
+                        )}
                     </div>
                     <div className='right-summary'>
                         <BookingSummary bill={bill} selectedRooms={selectedRooms} hotelInfo={hotelInfo} dateRange={dateRange} />
