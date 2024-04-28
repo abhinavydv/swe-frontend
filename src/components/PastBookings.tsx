@@ -72,7 +72,7 @@ export const PastBookings = ()  => {
             <div className="page">
                 {bookings.length > 0 && <div className="heading">Past Bookings</div>}
                 {bookings.length > 0 ? bookings.map((booking, index) => {
-                    return <BookingCard key={index} booking={booking} />
+                    return <BookingCard key={index} booking={booking} bookings={bookings} setBookings={setBookings} />
                 }) : (
                     <div className="heading">No past bookings found</div>
                 )}

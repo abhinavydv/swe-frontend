@@ -5,12 +5,15 @@ import { Link } from "react-router-dom"
 import { useState } from "react"
 import { Booking } from "./PastBookings"
 import axios from "axios"
+import { axiosHeader } from "./SearchResults"
 
 interface Props {
     booking: Booking;
+    bookings: Booking[];
+    setBookings: (bookings: Booking[]) => void;
 }
 
-export const BookingCard: React.FC<Props> = ({ booking }) => {
+export const BookingCard: React.FC<Props> = ({ booking, bookings, setBookings }) => {
     const labels: { [index: string]: string } = {
         0.5: 'Useless',
         1: 'Useless+',
@@ -35,6 +38,34 @@ export const BookingCard: React.FC<Props> = ({ booking }) => {
     const today = new Date().toISOString().split("T")[0];
 
     console.log(booking)
+    const submitReview = () => {
+        const data = {
+            booking_id: booking.booking_id,
+            hotel_id: booking.hotel_id,
+            rating: value !== null ? value * 2 : 0,
+            title: '',
+            description: review,
+        }
+
+        axios.post('/review/submit_review',data,{
+            headers: axiosHeader,
+        }).then((res) => {
+            console.log(res.data);
+            if(res.data.status === 'OK') {
+                setBookings(bookings.map((booking, index) => {
+                    if(booking.booking_id === data.booking_id) {
+                        booking.review = data.description;
+                        booking.rating = data.rating;
+                        booking.reviewExists = true;
+                    }
+
+                    return booking;
+                }))
+            }
+        }, (err) => {
+            console.log(err);
+        })
+    }
 
     return (
         <div>
@@ -141,6 +172,14 @@ export const BookingCard: React.FC<Props> = ({ booking }) => {
                                 {value !== null && (
                                     <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
                                 )}
+                                <Button
+                                    variant='contained'
+                                    disabled={review === '' || value === null}
+                                    style={{ padding: '11px 20px', marginLeft: 'auto' }}
+                                    onClick={submitReview}
+                                >
+                                    Submit
+                                </Button>
                             </Box>
                             <TextField 
                                 sx={{
