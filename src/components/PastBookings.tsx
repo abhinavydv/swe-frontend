@@ -15,6 +15,7 @@ export type Booking = {
     reviewExists: boolean;
     review?: string;
     rating?: number;
+    status?: number
 }
 
 // type QueryResults = {

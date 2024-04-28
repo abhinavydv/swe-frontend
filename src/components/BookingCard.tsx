@@ -30,7 +30,7 @@ export const BookingCard: React.FC<Props> = ({ booking, bookings, setBookings })
     const getLabelText = (value: number) => {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
-    
+
     const [review, setReview] = useState<string>('');
     const [value, setValue] = useState<number | null>(2);
     const [hover, setHover] = useState(-1);
@@ -50,18 +50,19 @@ export const BookingCard: React.FC<Props> = ({ booking, bookings, setBookings })
 
         axios.post('/review/submit_review',data,{
             headers: axiosHeader,
-        }).then((res) => {
+        }).then((res: any) => {
             console.log(res.data);
             if(res.data.status === 'OK') {
-                setBookings(bookings.map((booking, index) => {
+                setBookings(bookings.map((booking) => {
                     if(booking.booking_id === data.booking_id) {
                         booking.review = data.description;
                         booking.rating = data.rating;
                         booking.reviewExists = true;
                     }
-
                     return booking;
                 }))
+            } else if (res.data.alert) {
+                alert(res.data.message)
             }
         }, (err) => {
             console.log(err);
@@ -90,6 +91,8 @@ export const BookingCard: React.FC<Props> = ({ booking, bookings, setBookings })
             }
         })
     }
+
+    const [isCancelled, setIsCancelled] = useState(booking.status == -1);
 
     return (
         <div>
@@ -126,19 +129,22 @@ export const BookingCard: React.FC<Props> = ({ booking, bookings, setBookings })
                         <Box>
                             {booking.check_in_date > today && <Button variant="contained" color="error"
                                 onClick={async () => {
+
                                     const res = await axios.post('/bookings/cancel', {
                                         booking_id: booking.booking_id
                                     })
                                     console.log(res.data)
+                                    setIsCancelled(true);
                                 }}
+                                disabled={isCancelled}
                             >
-                                Cancel
+                                {isCancelled ? 'Cancelled' : 'Cancel'}
                             </Button>}
                         </Box>
                     </Box>
                 </AccordionSummary>
                 <AccordionDetails>
-                        {booking.reviewExists ? (
+                        {booking.reviewExists || isCancelled ? (
                             <>
                             <Box sx={{
                                 display: 'flex',

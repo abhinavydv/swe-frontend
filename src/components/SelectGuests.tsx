@@ -128,6 +128,11 @@ export const SelectGuests = () => {
             transaction_id: 1,
         }
 
+        if (dateRange[0] < new Date()) {
+            alert("Please select a valid date");
+            return;
+        }
+
         axios.post('/bookings/book', bookingData).then((res) => {
             if(res.data.status === "OK") {
                 navigate('/user/past_bookings');
