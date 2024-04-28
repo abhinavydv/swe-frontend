@@ -4,7 +4,7 @@ import '../styles/Booking.css'
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { Booking } from "./PastBookings"
-import axios from "axios"
+import axios, { AxiosHeaders } from "axios"
 import { axiosHeader } from "./SearchResults"
 
 interface Props {
@@ -37,7 +37,8 @@ export const BookingCard: React.FC<Props> = ({ booking, bookings, setBookings })
 
     const today = new Date().toISOString().split("T")[0];
 
-    console.log(booking)
+    console.log(booking);
+
     const submitReview = () => {
         const data = {
             booking_id: booking.booking_id,
@@ -64,6 +65,29 @@ export const BookingCard: React.FC<Props> = ({ booking, bookings, setBookings })
             }
         }, (err) => {
             console.log(err);
+        })
+    }
+
+    const deleteReview = () => {
+        const data = {
+            booking_id: booking.booking_id,
+        }
+        
+        axios.post('/review/delete_review',data,{
+            headers: axiosHeader,
+        }).then((res) => {
+            console.log(res.data);
+            if(res.data.status === 'OK') {
+                setBookings(bookings.map((booking, index) => {
+                    if(booking.booking_id === data.booking_id) {
+                        booking.review = '';
+                        booking.rating = 0;
+                        booking.reviewExists = false;
+                    }
+
+                    return booking;
+                }))
+            }
         })
     }
 
@@ -138,6 +162,13 @@ export const BookingCard: React.FC<Props> = ({ booking, bookings, setBookings })
                                 {value !== null && (
                                     <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
                                 )}
+                                <Button
+                                    variant='contained'
+                                    style={{ padding: '11px 20px', marginLeft: 'auto', backgroundColor: '#ca2222'}}
+                                    onClick={deleteReview}
+                                >
+                                    Delete
+                                </Button>
                             </Box>
                             <TextField 
                                 sx={{
