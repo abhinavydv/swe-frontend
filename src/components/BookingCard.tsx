@@ -1,9 +1,10 @@
 import { Circle, ExpandMoreOutlined, Star } from "@mui/icons-material"
-import { Accordion, AccordionDetails, AccordionSummary, Box, Rating, TextField } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Rating, TextField } from "@mui/material"
 import '../styles/Booking.css'
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { Booking } from "./PastBookings"
+import axios from "axios"
 
 interface Props {
     booking: Booking;
@@ -31,6 +32,10 @@ export const BookingCard: React.FC<Props> = ({ booking }) => {
     const [value, setValue] = useState<number | null>(2);
     const [hover, setHover] = useState(-1);
 
+    const today = new Date().toISOString().split("T")[0];
+
+    console.log(booking)
+
     return (
         <div>
             <Accordion elevation={3} sx={{
@@ -42,25 +47,40 @@ export const BookingCard: React.FC<Props> = ({ booking }) => {
                 aria-controls="panel1-content"
                 id="panel1-header"
                 >
-                <div>
-                    <Link to='/hotel' style={{
-                        textDecoration: 'none',
-                        color: 'black',
-                        fontFamily: 'Hind',
-                        fontSize: '1.4rem',
-                        fontWeight: 800,
-                    }}>{booking.hotel_name}</Link>
-                    <div className='location'>{booking.hotel_location}</div>
-                    <div className='date-bill location'>
-                        <div className="duration">{booking.check_in_date} - {booking.check_out_date}</div>
-                        <Circle sx={{
-                            height: '0.6rem',
-                            width: '0.6rem',
-                            margin: '0 0.4rem',
-                        }} />
-                        <div className="total-bill">Total bill: ₹ {booking.bill}</div>
-                    </div>
-                </div>
+                    <Box sx={{display: "flex", flexDirection: "row", width: "100%"}}>
+                        <div>
+                            <Link to='/hotel' style={{
+                                textDecoration: 'none',
+                                color: 'black',
+                                fontFamily: 'Hind',
+                                fontSize: '1.4rem',
+                                fontWeight: 800,
+                            }}>{booking.hotel_name}</Link>
+                            <div className='location'>{booking.hotel_location}</div>
+                            <div className='date-bill location'>
+                                <div className="duration">{booking.check_in_date} - {booking.check_out_date}</div>
+                                <Circle sx={{
+                                    height: '0.6rem',
+                                    width: '0.6rem',
+                                    margin: '0 0.4rem',
+                                }} />
+                                <div className="total-bill">Total bill: ₹ {booking.bill}</div>
+                            </div>
+                        </div>
+                        <Box flexGrow={1} />
+                        <Box>
+                            {booking.check_in_date > today && <Button variant="contained" color="error"
+                                onClick={async () => {
+                                    const res = await axios.post('/bookings/cancel', {
+                                        booking_id: booking.booking_id
+                                    })
+                                    console.log(res.data)
+                                }}
+                            >
+                                Cancel
+                            </Button>}
+                        </Box>
+                    </Box>
                 </AccordionSummary>
                 <AccordionDetails>
                         {booking.reviewExists ? (
