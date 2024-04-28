@@ -574,13 +574,13 @@ export  const GuestProfiles = ({...props}: any) => {
     const [ageError,setAgeError] = useState(false)
 
     const [gender,setGender] = useState('')
+    const [genderError,setGenderError] = useState(false)
     const genders = [
         "Male",
         "Female",
         "Other",
     ]
 
-    const [ID,setID] = useState(0)
     useEffect(() => {
 
         axios.get("/bookings/get_guests").then(res => {
@@ -593,31 +593,51 @@ export  const GuestProfiles = ({...props}: any) => {
     }, [])
 
     const AddGuest = (e: any) => {
+        var err = false;
         e.preventDefault()
+        setNameError(false)
+        setAgeError(false)
+        setGenderError(false)
 
-        axios.post("/bookings/add_guest",{
-            guest_name:Name,
-            age:age,
-            gender:gender
-        }).then(res => {
-            
-            if (res.data.status == "OK"){
 
-                axios.get("/bookings/get_guests").then(res => {
-
-                    if (res.data.status == "OK"){
+        if (Name == ''){
+            setNameError(true)
+            err = true
+        }
+        if (age == ''){
+            setAgeError(true)
+            err = true
+        }
+        if (gender == ''){
+            setGenderError(true)
+            err = true
+        }
+        if (!err){
+            axios.post("/bookings/add_guest",{
+                guest_name:Name,
+                age:age,
+                gender:gender
+            }).then(res => {
                 
-                        setGuests(res.data.guests)
-                    }
-                    else{
-                        if (res.data.alert){
-                            alert(res.data.message)
+                if (res.data.status == "OK"){
+    
+                    axios.get("/bookings/get_guests").then(res => {
+    
+                        if (res.data.status == "OK"){
+                    
+                            setGuests(res.data.guests)
                         }
-                    }
-                })
-
-            }
-        })
+                        else{
+                            if (res.data.alert){
+                                alert(res.data.message)
+                            }
+                        }
+                    })
+    
+                }
+            })
+        }
+        
     }
 
     const DeleteGuest = (guest_id: number) => {
@@ -680,6 +700,7 @@ export  const GuestProfiles = ({...props}: any) => {
                     <Typography variant="h6">Gender</Typography>
                     <Select
                         sx={{minWidth: "10rem"}}
+                        error={genderError}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={gender}
