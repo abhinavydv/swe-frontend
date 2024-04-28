@@ -61,8 +61,6 @@ export const RoomCard: React.FC<Props> = ({ roomType, capacity, bedType, maxAvai
     const { bill, selectedRooms, setBill, setSelectedRooms } = useContext(BookingSummaryContext) as BookingSummaryInterface;
     const [maxFlag, setMaxFlag] = useState(false);
 
-    console.log(dateRange);
-
     const handleIncrement = () => {
         if(selectedRooms[roomType] == maxAvailable) {
             setMaxFlag(true)

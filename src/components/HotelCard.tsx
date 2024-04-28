@@ -19,8 +19,6 @@ const HotelCard: React.FC<Props> = ({ hotel, removeFromWishlist = () => {}, addT
     const { setSearchBar, dateRange } = useContext(AppContext) as AppContextInterface;
     const [ isWishlisted, setIsWishlisted ] = useState<boolean>(hotel.isWishlisted || false);
 
-    console.log("isWislisted: ", isWishlisted);
-
     const navigate = useNavigate();
     const amenities = [<Wifi />, <BeachAccess />, <LocalParking />, <SportsVolleyball />, <FreeBreakfast />, <LocalTaxi />]
 

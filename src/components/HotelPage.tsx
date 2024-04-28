@@ -15,6 +15,7 @@ export type Room = {
 }
 
 export type HotelInfo = {
+    hotel_id: number;
     hotel_name: string;
     amenities: number;
     photos: string[];
@@ -36,6 +37,7 @@ const HotelPage = () => {
     const [hotelID, setHotelID] = useState<number>(0);
 
     const [hotelInfo, setHotelInfo] = useState<HotelInfo>({
+        hotel_id: hotelID,
         hotel_name: 'Aalia Villas Anjuna, Goa by Aalia Collection Opens',
         amenities: 55,
         photos: [

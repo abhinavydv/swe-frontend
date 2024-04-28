@@ -71,13 +71,11 @@ const SearchResults = () => {
         setDates(dates);
 
         const data = {text: query, date_range: dates};
-        console.log(data);
         
         axios.post('/search/',data,{
             headers: axiosHeader,
         }).then((res) => {
             setQueryResults(res.data);
-            console.log("Data: ",res.data);
 
             if(res.data.status === "OK") {
                 setHotels(res.data.hotels);

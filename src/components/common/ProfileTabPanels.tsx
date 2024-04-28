@@ -1,7 +1,7 @@
 import { Box, Typography, TextField, IconButton, Button, Divider, Select, MenuItem, FormControl, Paper} from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { useEffect, useState } from "react";
-import { UserDataInterface } from "../App";
+import { useContext, useEffect, useState } from "react";
+import { AppContext, UserDataInterface } from "../App";
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import axios from "axios";
 import defaultProfilePic from "../../assets/defaultProfilePic.png"
 import { FileHandler, upload_files } from "./FileHandler";
+import { useNavigate } from "react-router-dom";
 
 interface ProfileTabPanelProps {
     user?: UserDataInterface;
@@ -281,6 +282,10 @@ export const AccountTabPanel = ({...props}: any) => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    const { setUser } = useContext(AppContext);
+
+    const navigate = useNavigate();
+
     return <Box {...props} sx={{display: "flex", flexDirection: "column", marginTop: "2rem"}}>
         <Box sx={{
             display: "flex",
@@ -359,7 +364,20 @@ export const AccountTabPanel = ({...props}: any) => {
                 display: "flex",
                 maxWidth: "25rem"
             }}>
-                <Button color="error" variant="contained" onClick={() => {}}>Delete Account</Button>
+                <Button color="error" variant="contained" onClick={() => {
+                    axios.get("/users/delete_account").then(res => {
+                        if (res.data.status == "OK"){
+                            alert("Account Deleted Successfully");
+                            setUser
+                            navigate("/");
+                        }
+                        else {
+                            alert("Failed to delete account. Please try again.")
+                        }
+                    }, (err) => {
+                        alert("Failed to delete account. Please try again.\n"+err)
+                    })
+                }}>Delete Account</Button>
             </Box>
         </Box>
     </Box>
@@ -531,30 +549,30 @@ export const AboutTabPanel = ({...props}: any) => {
 }
 
 
-export const PreviousBookingsTabPanel = ({...props}: any) => {
-    const [bookings, setBookings] = useState<any[]>([]);
+// export const PreviousBookingsTabPanel = ({...props}: any) => {
+//     const [bookings, setBookings] = useState<any[]>([]);
 
-    useEffect(() => {
-        axios.get("/bookings/past_bookings").then((res) => {
-            if (res.data.status === "OK"){
-                setBookings(res.data.bookings);
-            }
-        }, (err) => {
-            console.log(err);
-        })
-    }, [])
+//     useEffect(() => {
+//         axios.get("/bookings/past_bookings").then((res) => {
+//             if (res.data.status === "OK"){
+//                 setBookings(res.data.bookings);
+//             }
+//         }, (err) => {
+//             console.log(err);
+//         })
+//     }, [])
 
-    return <Box {...props} sx={{marginTop: "2rem"}}>
-        Previous Bookings
-        {
-            bookings.map((_booking, i) => (
-                <Box key={i}>
-                    Booking ID: {i}
-                </Box>
-            ))
-        }
-    </Box>
-}
+//     return <Box {...props} sx={{marginTop: "2rem"}}>
+//         Previous Bookings
+//         {
+//             bookings.map((_booking, i) => (
+//                 <Box key={i}>
+//                     Booking ID: {i}
+//                 </Box>
+//             ))
+//         }
+//     </Box>
+// }
 
 type Guest = {
     guest_id: number,

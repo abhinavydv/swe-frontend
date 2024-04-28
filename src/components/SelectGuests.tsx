@@ -3,7 +3,7 @@ import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import Navbar from "./Navbar"
 import { BookingSummary } from "./BookingSummary"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { AppContext, AppContextInterface } from "./App"
 
 type Guest = {
@@ -74,20 +74,21 @@ const GuestCard: React.FC<Props> = ({ guest, selectedGuests, setSelectedGuests, 
 }
 
 export const SelectGuests = () => {
-    const { bill, selectedRooms, hotelInfo, dateRange } = useLocation().state;
+    const { bill, selectedRooms, hotelInfo, dateRange, hotelID } = useLocation().state;
 
     const { setSearchBar } = useContext(AppContext) as AppContextInterface;
 
     const maxGuestLimitReached = () => selectedGuests?.reduce((total, selected) => total + (selected ? 1 : 0), 0) === maxGuests;
 
     const [maxGuests, setMaxGuests] = useState(0);
-    const [guests, setGuests] = useState<Guest[]>();
-    const [selectedGuests, setSelectedGuests] = useState<boolean[]>();
+    const [guests, setGuests] = useState<Guest[]>([]);
+    const [selectedGuests, setSelectedGuests] = useState<boolean[]>([]);
     const [maxFlag, setMaxFlag] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get('/bookings/get_guests').then((res) => {
-            console.log(res.data);
             if(res.data.status === "OK") {
                 setGuests(res.data.guests);
                 setSelectedGuests(Array(res.data.guests.length).fill(false));
@@ -97,11 +98,46 @@ export const SelectGuests = () => {
         });
 
         setSearchBar(false);
-        
+
         const urlParams = new URLSearchParams(window.location.search);
         const _maxGuests = urlParams.get('maxGuests');
         _maxGuests !== null && setMaxGuests(parseInt(_maxGuests));
     },[]);
+
+    const book = () => {
+        if (selectedGuests.reduce((total, selected) => total + (selected ? 1 : 0), 0) === 0) {
+            alert("Please select atleast one guest");
+            return;
+        }
+        const bookingData = {
+            hotel_id: hotelID,
+            date_range: dateRange.map((date: Date) => date.toISOString().split("T")[0]).join("__"),
+            rooms: selectedRooms.filter((c: number) => c!=0).map((count: number, index: number) => {
+                return {
+                    room_type: index,
+                    number_of_rooms: count,
+                }
+            }),
+            guests: selectedGuests.map((selected, index) => {
+                if(selected) {
+                    return guests[index].guest_id;
+                }
+                return null;
+            }).filter((guest: number | null) => guest !== null),
+            bill: bill,
+            transaction_id: 1,
+        }
+
+        axios.post('/bookings/book', bookingData).then((res) => {
+            if(res.data.status === "OK") {
+                navigate('/user/past_bookings');
+            } else {
+                alert("Error: " + res.data.message);
+            }
+        }, (err) => {
+            alert("Error" + err);
+        })
+    }
 
     return (
         <div>
@@ -135,6 +171,7 @@ export const SelectGuests = () => {
                                     textTransform: 'none',
                                     marginTop: '2rem',
                                 }}
+                                onClick={book}
                             >
                                 Proceed to payment
                             </Button>

@@ -44,13 +44,14 @@ const HotelPageBody = () => {
             selectedRooms: selectedRooms,
             dateRange: dateRange
         })
-
+        console.log("hotelInfo", hotelInfo)
         navigate(`/customer/booking/add_guests?maxGuests=${maxGuests}`,{
             state: {
                 bill: bill,
                 selectedRooms: selectedRooms,
                 hotelInfo: hotelInfo,
                 dateRange: dateRange,
+                hotelID: hotelID,
             }
         });
     }
